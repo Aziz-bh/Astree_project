@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using API.DTOs;
+using API.Interfaces;
 using API.Models;
 using API.Persistence;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,15 @@ namespace API.Controllers
     public class AccountController : BaseApiController
     {
         private readonly AstreeDbContext _context;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(AstreeDbContext context)
+        public AccountController(AstreeDbContext context, ITokenService tokenService)
         {
+            _tokenService = tokenService;
             _context = context;
         }
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register( RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register( RegisterDto registerDto)
         {
                if (await UserExists(registerDto.Email))
         return BadRequest("Email is taken");
@@ -37,7 +40,14 @@ namespace API.Controllers
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return user;
+            return new UserDto
+            {
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role.ToString(),
+        };
         }
 
         [HttpPost("login")]
@@ -52,7 +62,7 @@ namespace API.Controllers
             return new UserDto
             {
                 Email = user.Email,
-                Token = "This will be a token",
+               Token = _tokenService.CreateToken(user),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Role = user.Role.ToString(),

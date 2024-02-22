@@ -1,11 +1,13 @@
 using API.Models;
 using API.Persistence;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
 
+[Authorize]
     public class UsersController:BaseApiController
     {
                 private readonly AstreeDbContext _context;
@@ -26,6 +28,9 @@ namespace API.Controllers
             return users;
         }
 
+
+        
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
