@@ -1,8 +1,50 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+  <div class="page-header header-filter my-0" filter-color="blue">
+    <div class="page-header-image" style="background-image:url(/img/fam1.png)"></div>
+    <div class="content">
+      <div class="container d-flex justify-content-center align-items-center ">
+        <div class="col-md-5 ml-auto mr-auto">
+          <div class="card card-login card-plain">
+            <form class="form" method="" action="">
+              <div class="card-header text-center">
+                <div class="logo-container">
+                  <img src="/img/logo.png" alt="">
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="input-group no-border input-lg">
+                  <div class="input-group-prepend">
+                    @* <span class="input-group-text"><i class="now-ui-icons users_circle-08"></i></span> *@
+                  </div>
+                  <input type="text" class="form-control" placeholder="First Name...">
+                </div>
+                <div class="input-group no-border input-lg">
+                  <div class="input-group-prepend">
+                    @* <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span> *@
+                  </div>
+                  <input type="password" class="form-control" placeholder="Password...">
+                </div>
+              </div>
+              <div class="card-footer text-center">
+                <a href="#pablo" class="btn btn-primary btn-round btn-lg btn-block">Get Started</a>
+              </div>
+              <div class="pull-left">
+                <h6>
+                  <a href="#pablo" class="link footer-link">Create Account</a>
+                </h6>
+              </div>
+              <div class="pull-right">
+                <h6>
+                  <a href="#pablo" class="link footer-link">Need Help?</a>
+                </h6>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
