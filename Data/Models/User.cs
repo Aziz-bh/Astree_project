@@ -19,6 +19,14 @@ namespace Data.Models
             User
         }
 
+        public enum CivilStatus
+        {
+            Single,
+            Married,
+            Divorced,
+            Widowed
+        }
+
         public User()
         {
             Role = UserRole.User;
@@ -32,7 +40,19 @@ namespace Data.Models
 
         public string? LastName { get; set; }
 
-        public string? nickName { get; set; }
+        [Required]
+        [
+            StringLength(
+                8,
+                MinimumLength = 8,
+                ErrorMessage = "The CIN must be exactly 8 characters long.")
+        ]
+        [
+            RegularExpression(
+                "^[0-9]*$",
+                ErrorMessage = "The CIN must be numbers only.")
+        ]
+        public string? CIN { get; set; }
 
         [Required]
         [EmailAddress]
@@ -44,19 +64,28 @@ namespace Data.Models
 
         [
             RegularExpression(
-                @"^\d{10,15}$",
+                @"^\d{8,9}$",
                 ErrorMessage =
                     "The PhoneNumber field is not a valid phone number.")
         ]
         public string? PhoneNumber { get; set; }
 
-        public string Picture { get; set; }
+        public string? Picture { get; set; }
 
         [JsonConverter(typeof (JsonStringEnumConverter))]
         public UserGender? Gender { get; set; }
 
         [JsonConverter(typeof (JsonStringEnumConverter))]
         public UserRole? Role { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
+
+        [Required]
+        public string Nationality { get; set; }
+
+        [JsonConverter(typeof (JsonStringEnumConverter))]
+        public CivilStatus? Civility { get; set; }
 
         public Boolean? IsDeleted { get; set; }
 

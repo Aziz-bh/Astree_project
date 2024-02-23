@@ -1,8 +1,10 @@
+using ClientAstrees.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient<IClient, Client>(cl=> cl.BaseAddress= new Uri("https://localhost:44339"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
