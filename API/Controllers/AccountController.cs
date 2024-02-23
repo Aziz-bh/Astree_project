@@ -7,7 +7,7 @@ using Data.Persistence;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Service.Interfaces;
+using Business.Interfaces;
 
 namespace API.Controllers
 {

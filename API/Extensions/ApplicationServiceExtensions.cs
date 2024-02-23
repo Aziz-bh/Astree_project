@@ -1,8 +1,8 @@
 
 using Data.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Service.Interfaces;
-using Service.Services;
+using Business.Interfaces;
+using Business.Services;
 
 namespace API.Extensions
 {

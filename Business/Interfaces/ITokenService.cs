@@ -1,6 +1,6 @@
 using Data.Models;
 
-namespace Service.Interfaces
+namespace Business.Interfaces
 {
     public interface ITokenService
     {
