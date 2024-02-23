@@ -1,6 +1,6 @@
 
 
-using ClientAstrees.Services.Base;
+using ClientAstree.Services.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
