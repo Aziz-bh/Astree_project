@@ -2,8 +2,9 @@ using System.Security.Cryptography;
 using System.Text;
 using API.DTOs;
 using API.Interfaces;
-using API.Models;
-using API.Persistence;
+using Data.Models;
+using Data.Persistence;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,8 +33,8 @@ namespace API.Controllers
                 Email = registerDto.Email,
                 PasswordHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key,
-                Role = Models.User.UserRole.User,
-                Gender = Models.User.UserGender.NA,
+                Role = Data.Models.User.UserRole.User,
+                Gender = Data.Models.User.UserGender.NA,
                 IsDeleted = false,
                 Picture = "https://res.cloudinary.com/dk5b3jxjp/image/upload/v1633660733/astree/placeholder.png",
                 nickName=registerDto.Email,

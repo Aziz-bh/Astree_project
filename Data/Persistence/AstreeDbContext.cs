@@ -1,7 +1,8 @@
+
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Persistence
+namespace Data.Persistence
 {
     public class AstreeDbContext : DbContext
     {

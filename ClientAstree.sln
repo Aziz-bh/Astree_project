@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientAstree", "ClientAstre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{1FC596F1-42AB-4439-8737-1A4C75FD0A69}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{470BCC34-D49A-4AFB-A610-C42EDB16C342}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{1FC596F1-42AB-4439-8737-1A4C75FD0A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FC596F1-42AB-4439-8737-1A4C75FD0A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FC596F1-42AB-4439-8737-1A4C75FD0A69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{470BCC34-D49A-4AFB-A610-C42EDB16C342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{470BCC34-D49A-4AFB-A610-C42EDB16C342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{470BCC34-D49A-4AFB-A610-C42EDB16C342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{470BCC34-D49A-4AFB-A610-C42EDB16C342}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
