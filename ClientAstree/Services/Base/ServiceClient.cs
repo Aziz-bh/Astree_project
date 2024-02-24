@@ -18,6 +18,7 @@
 
 namespace ClientAstree.Services.Base
 {
+    using System.Net.Http;
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -516,6 +517,7 @@ namespace ClientAstree.Services.Base
         }
 
         public bool ReadResponseAsString { get; set; }
+   
 
         protected virtual async System.Threading.Tasks.Task<ObjectResponseResult<T>> ReadObjectResponseAsync<T>(System.Net.Http.HttpResponseMessage response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Threading.CancellationToken cancellationToken)
         {
@@ -620,11 +622,13 @@ namespace ClientAstree.Services.Base
 
         _0 = 0,
 
-        _1 = 1,
+        Single = 1,
 
-        _2 = 2,
+       Married= 2,
 
-        _3 = 3,
+       Divorced = 3,
+       Widowed=4,
+
 
     }
 
@@ -789,11 +793,11 @@ namespace ClientAstree.Services.Base
     public enum UserGender
     {
 
-        _0 = 0,
+        Male = 0,
 
-        _1 = 1,
+        _Female  = 1,
 
-        _2 = 2,
+        NA = 2,
 
     }
 
@@ -801,11 +805,12 @@ namespace ClientAstree.Services.Base
     public enum UserRole
     {
 
-        _0 = 0,
+        Admin = 0,
 
-        _1 = 1,
+        Moderator = 1,
 
-        _2 = 2,
+        User = 2,
+
 
     }
 
