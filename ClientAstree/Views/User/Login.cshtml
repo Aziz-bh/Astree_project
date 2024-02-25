@@ -1,6 +1,6 @@
 ﻿@model ClientAstree.Models.LoginVM
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Login";
 }
 <div class="text-center">
   <div class="page-header header-filter my-0" filter-color="blue">
@@ -36,7 +36,7 @@
               <span asp-validation-for="Email" class="text-danger"></span>
               <span asp-validation-for="Password" class="text-danger"></span>
               <div class="card-footer text-center">
-                <a href="#pablo" class="btn btn-primary btn-round btn-lg btn-block" type="submit" value="Login">Get Started</a>
+                <input  class="btn btn-primary btn-round btn-lg btn-block" type="submit" value="Login"/>
               </div>
               <div class="pull-left">
                 <h6>

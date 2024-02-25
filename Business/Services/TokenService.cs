@@ -20,6 +20,7 @@ namespace Business.Services
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email)
                 // new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 // new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                 // new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),

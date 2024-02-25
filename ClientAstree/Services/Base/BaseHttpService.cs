@@ -35,9 +35,10 @@ namespace ClientAstree.Services.Base
 
         protected void AddBearerToken()
         {
-            if (_localStorage.Exists("token"))
+
+            if (_localStorage.Exists("token")){
                 _client.HttpClient.DefaultRequestHeaders.Authorization = 
-                    new AuthenticationHeaderValue("Bearer", _localStorage.GetStorageValue<string>("token"));
+                    new AuthenticationHeaderValue("Bearer", _localStorage.GetStorageValue<string>("token"));}
         }
     }
 }

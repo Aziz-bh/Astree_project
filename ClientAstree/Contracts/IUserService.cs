@@ -4,7 +4,7 @@ namespace ClientAstree.Contracts
 {
     public interface IUserService
     {
-               Task<List<UserVM>> GetUsersAsync();
+        Task<List<UserVM>> GetUsersAsync();
 
         Task<UserVM> GetUserAsync(int id);
     }

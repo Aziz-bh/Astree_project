@@ -4,6 +4,7 @@ using System.Reflection;
 using ClientAstree.Contracts;
 using ClientAstree.Services;
 using ClientAstree.Services.Base;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,15 @@ builder.Services.AddHttpClient<IClient, Client>(cl=> cl.BaseAddress= new Uri("ht
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddHttpContextAccessor();
+ builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+ builder.Services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie();
 
 var app = builder.Build();
 
@@ -28,6 +38,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCookiePolicy();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

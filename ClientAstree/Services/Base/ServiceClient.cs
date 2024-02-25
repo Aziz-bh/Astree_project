@@ -642,6 +642,7 @@ namespace ClientAstree.Services.Base
         [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Password { get; set; }
+        
 
     }
 

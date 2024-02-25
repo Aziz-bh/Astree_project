@@ -21,5 +21,5 @@ public class CreateUser
 
 public class UserVM : CreateUser
 {
-    public string? Id { get; set; }
+    public int? Id { get; set; }
 }

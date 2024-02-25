@@ -22,13 +22,14 @@ namespace ClientAstree.Services
         }
         public async Task<UserVM> GetUserAsync(int id)
         {
+             AddBearerToken();
             var user = await _client.UsersAsync(id);
             return _mapper.Map<UserVM>(user);
         }
 
         public async Task<List<UserVM>> GetUsersAsync()
         {
-                        // AddBearerToken();
+                         AddBearerToken();
             var users = await _client.UsersAllAsync();
             return _mapper.Map<List<UserVM>>(users);
         }
