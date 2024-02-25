@@ -40,7 +40,10 @@ namespace ClientAstree.Services
                     var claims = ParseClaims(tokenContent);
                     var user = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
-                    var login =  _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, user);
+                    if (_httpContextAccessor.HttpContext != null)
+                    {
+                        await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, user);
+                    }
 
                     _localStorage.SetStorageValue("token", authenticationResponse.Token);
 

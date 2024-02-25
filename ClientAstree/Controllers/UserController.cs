@@ -76,7 +76,7 @@ namespace ClientAstree.Controllers
             return View();
         }
 
-                [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Logout(string returnUrl)
         {
             returnUrl ??= Url.Content("~/");
