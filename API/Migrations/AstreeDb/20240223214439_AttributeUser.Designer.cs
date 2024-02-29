@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Data.Migrations.AstreeDb
+namespace API.Migrations.AstreeDb
 {
     [DbContext(typeof(AstreeDbContext))]
     [Migration("20240223214439_AttributeUser")]

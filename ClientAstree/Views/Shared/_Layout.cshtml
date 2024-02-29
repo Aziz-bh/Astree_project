@@ -46,7 +46,8 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
+                            <li class="nav-item"> 
+                                
 
 
       <form class="form-inline" method="post" asp-action="Logout" asp-controller="User" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

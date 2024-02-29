@@ -1,0 +1,71 @@
+[
+    {
+        "Email": "dorothy@example.com",
+        "UserName": "Dorothy",
+        "PhoneNumber": "987654321",
+        "FirstName": "Dorothy",
+        "LastName": "Smith",
+        "CIN": "87654321",
+        "Gender": "Female",
+        "BirthDate": "1979-04-19",
+        "Nationality": "Mongolia",
+        "Civility": "Married",
+        "CreatedAt": "2017-01-21",
+        "UpdatedAt": "2017-01-21",
+        "Password": "password",
+        "Photos": [
+          {
+            "url": "https://randomuser.me/api/portraits/women/49.jpg",
+            "isMain": true,
+            "description": "Elit culpa eu excepteur ut elit tempor nulla duis dolore."
+          }
+        ]
+      }
+,      
+{
+    "Email": "lola@example.com",
+    "UserName": "Lola",
+    "PhoneNumber": "123456789",
+    "FirstName": "Lola",
+    "LastName": "Doe",
+    "CIN": "12345678",
+    "Gender": "Female",
+    "BirthDate": "1994-02-21",
+    "Nationality": "Burundi",
+    "Civility": "Single",
+    "CreatedAt": "2017-08-02",
+    "UpdatedAt": "2017-08-02",
+    "Password": "password",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/women/3.jpg",
+        "isMain": true,
+        "description": "Non deserunt labore sunt ex laboris et adipisicing ullamco officia minim."
+      }
+    ]
+  }
+,  
+{
+    "Email": "lloyd@example.com",
+    "UserName": "Lloyd",
+    "PhoneNumber": "321321321",
+    "FirstName": "Lloyd",
+    "LastName": "Williams",
+    "CIN": "43214321",
+    "Gender": "Male",
+    "BirthDate": "1957-03-07",
+    "Nationality": "Paraguay",
+    "Civility": "Widowed",
+    "CreatedAt": "2017-08-22",
+    "UpdatedAt": "2017-08-22",
+    "Password": "password",
+    "Photos": [
+      {
+        "url": "https://randomuser.me/api/portraits/men/4.jpg",
+        "isMain": true,
+        "description": "Cupidatat veniam ea magna cillum velit minim non minim tempor ipsum excepteur."
+      }
+    ]
+  }
+  
+]

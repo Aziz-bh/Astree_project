@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
-namespace Data.Models
+namespace API.Models
 {
     public class User: IdentityUser<int>
     {
@@ -13,12 +13,6 @@ namespace Data.Models
             NA
         }
 
-        public enum UserRole
-        {
-            Admin,
-            Moderator,
-            User
-        }
 
         public enum CivilStatus
         {
@@ -30,7 +24,6 @@ namespace Data.Models
 
         public User()
         {
-            Role = UserRole.User;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -68,9 +61,6 @@ namespace Data.Models
 
         [JsonConverter(typeof (JsonStringEnumConverter))]
         public UserGender? Gender { get; set; }
-
-        [JsonConverter(typeof (JsonStringEnumConverter))]
-        public UserRole? Role { get; set; }
 
         [Required]
         public DateTime BirthDate { get; set; }

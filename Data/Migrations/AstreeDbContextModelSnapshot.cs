@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Migrations.AstreeDb
+namespace Data.Migrations.AstreeDb
 {
     [DbContext(typeof(AstreeDbContext))]
     partial class AstreeDbContextModelSnapshot : ModelSnapshot

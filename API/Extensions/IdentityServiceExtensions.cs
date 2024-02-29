@@ -1,6 +1,9 @@
 using System.Text;
+using API.Models;
+using API.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions
@@ -9,6 +12,13 @@ namespace API.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
         {
+
+            services.AddIdentityCore<User>(opt=>{
+                opt.Password.RequireNonAlphanumeric=false;
+  
+            }).AddRoles<AppRole>().
+            AddRoleManager<RoleManager<AppRole>>().AddEntityFrameworkStores<AstreeDbContext>();
+
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -26,5 +36,6 @@ namespace API.Extensions
                 });
             return services;
         }
+
     }
 }

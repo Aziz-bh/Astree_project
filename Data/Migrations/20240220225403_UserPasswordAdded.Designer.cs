@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Migrations
+namespace Data.Migrations
 {
     [DbContext(typeof(AstreeDbContext))]
     [Migration("20240220225403_UserPasswordAdded")]

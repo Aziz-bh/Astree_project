@@ -1,8 +1,11 @@
 
-using Data.Persistence;
+using API.Interfaces;
+using API.Persistence;
+using API.Services;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Business.Interfaces;
-using Business.Services;
+// using Business.Interfaces;
+// using Business.Services;
 
 namespace API.Extensions
 {
@@ -31,6 +34,7 @@ namespace API.Extensions
                           .AllowAnyMethod()
                           .AllowCredentials()); // Added AllowCredentials
 });
+services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             return services;
         }
     }

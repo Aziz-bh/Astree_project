@@ -2,24 +2,30 @@ using System.Security.Cryptography;
 using System.Text;
 using API.DTOs;
 
-using Data.Models;
-using Data.Persistence;
+
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Business.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using API.Models;
+using AutoMapper;
+using API.Interfaces;
 
 namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly AstreeDbContext _context;
+        private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+           private readonly IMapper _mapper;
+ 
 
-        public AccountController(AstreeDbContext context, ITokenService tokenService)
+        public AccountController(IMapper mapper,UserManager<User> userManager, ITokenService tokenService)
         {
             _tokenService = tokenService;
-            _context = context;
+             _mapper = mapper;
+            _userManager = userManager;
+          
         }
 
 
@@ -30,29 +36,10 @@ public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     if (await UserExists(registerDto.Email))
         return BadRequest("Email is taken");
 
-    using var hmac = new HMACSHA512();
-
-    var user = new User
-    {
-        FirstName = registerDto.FirstName,
-        LastName = registerDto.LastName,
-        Email = registerDto.Email.ToLower(),
-        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-        PasswordSalt = hmac.Key,
-        PhoneNumber = registerDto.PhoneNumber,
-        // Gender = Enum.Parse<Data.Models.User.UserGender>(registerDto.Gender, true), // Assuming Gender is valid enum string
-        Gender = Data.Models.User.UserGender.NA, 
-        BirthDate = registerDto.BirthDate,
-        Nationality = registerDto.Nationality,
-        Civility = Data.Models.User.CivilStatus.Married, // Convert Civility string to enum
-        CIN = registerDto.CIN,
-        Role = Data.Models.User.UserRole.User, // Default role for new registrations
-        IsDeleted = false,
-        Picture = "https://res.cloudinary.com/dk5b3jxjp/image/upload/v1633660733/astree/placeholder.png" // Default picture
-    };
-
-    _context.Users.Add(user);
-    await _context.SaveChangesAsync();
+var user= _mapper.Map<User>(registerDto);
+user.UserName=registerDto.Email;
+var result=await _userManager.CreateAsync(user ,registerDto.Password);
+if(!result.Succeeded) return BadRequest(result.Errors);
 
 return new UserDto
 {
@@ -60,7 +47,6 @@ return new UserDto
     Token = _tokenService.CreateToken(user),
     FirstName = user.FirstName,
     LastName = user.LastName,
-    Role = user.Role.ToString(),
     CIN = user.CIN,
     BirthDate = user.BirthDate,
     Nationality = user.Nationality,
@@ -72,40 +58,39 @@ return new UserDto
 [HttpPost("login")]
 public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
 {
-    var user = await _context.Users
-        .SingleOrDefaultAsync(user => user.Email == loginDto.Email.ToLower());
-
-    if (user == null) 
+    // Find the user by email
+    var user = await _userManager.FindByEmailAsync(loginDto.Email.ToLower());
+    
+    if (user == null)
         return Unauthorized("Invalid Email or Password");
 
-    using var hmac = new HMACSHA512(user.PasswordSalt);
-    var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
+    // Check the password
 
-    for (int i = 0; i < computedHash.Length; i++)
-    {
-        if (computedHash[i] != user.PasswordHash[i]) 
-            return Unauthorized("Invalid Email or Password");
-    }
+    var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
+    if (!result)
+        return Unauthorized("Invalid Email or Password");
+
+    // Assuming _tokenService.CreateToken(user) is correctly implemented to generate a JWT or similar token
     return new UserDto
     {
         Email = user.Email,
         Token = _tokenService.CreateToken(user),
-        FirstName = user.FirstName,
+        FirstName = user.FirstName, // Make sure these properties exist in your User class or are accessible
         LastName = user.LastName,
-        Role = user.Role.ToString(),
         CIN = user.CIN,
         BirthDate = user.BirthDate,
         Nationality = user.Nationality,
-        Civility = user.Civility.ToString() // Assuming Civility is stored as an enum and needs conversion to string
+        Civility = user.Civility.ToString() // Assuming Civility is an enum and ToString() converts it to a string representation
     };
 }
 
 
 
+
                 private async Task<bool> UserExists(string email)
         {
-            return await _context.Users.AnyAsync(user => user.Email == email.ToLower());
+            return await _userManager.Users.AnyAsync(user => user.Email == email.ToLower());
         }
 
 

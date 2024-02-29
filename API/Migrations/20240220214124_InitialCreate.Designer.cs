@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Data.Migrations.AstreeDb
+namespace API.Migrations
 {
     [DbContext(typeof(AstreeDbContext))]
-    [Migration("20240223214439_AttributeUser")]
-    partial class AttributeUser
+    [Migration("20240220214124_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,18 +32,7 @@ namespace Data.Migrations.AstreeDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CIN")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<int?>("Civility")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -51,40 +40,35 @@ namespace Data.Migrations.AstreeDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nationality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Role")
+                    b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("nickName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

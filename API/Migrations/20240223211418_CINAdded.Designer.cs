@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Data.Migrations.AstreeDb
+namespace Data.Migrations
 {
     [DbContext(typeof(AstreeDbContext))]
-    [Migration("20240223214439_AttributeUser")]
-    partial class AttributeUser
+    [Migration("20240223211418_CINAdded")]
+    partial class CINAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,16 +32,10 @@ namespace Data.Migrations.AstreeDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CIN")
                         .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
-
-                    b.Property<int?>("Civility")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -62,10 +56,6 @@ namespace Data.Migrations.AstreeDb
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
@@ -78,6 +68,7 @@ namespace Data.Migrations.AstreeDb
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Picture")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Role")

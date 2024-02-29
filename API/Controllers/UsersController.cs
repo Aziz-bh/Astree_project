@@ -1,5 +1,5 @@
-using Data.Models;
-using Data.Persistence;
+using API.Models;
+using API.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ namespace API.Controllers
   [Authorize]
     public class UsersController:BaseApiController
     {
-                private readonly AstreeDbContext _context;
+        private readonly AstreeDbContext _context;
 
         public UsersController(AstreeDbContext context)
         {

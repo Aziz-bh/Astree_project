@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Data.Migrations.AstreeDb
+namespace API.Migrations.AstreeDb
 {
     public partial class AttributeUser : Migration
     {
