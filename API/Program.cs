@@ -40,7 +40,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var userManager = services.GetRequiredService<UserManager<User>>();
-        await Seed.SeedUsers(userManager);
+        var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+        await Seed.SeedUsers(userManager,roleManager);
     }
     catch (Exception ex)
     {

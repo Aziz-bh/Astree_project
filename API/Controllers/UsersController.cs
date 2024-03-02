@@ -19,6 +19,7 @@ namespace API.Controllers
 
 
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -30,7 +31,7 @@ namespace API.Controllers
 
 
         
-        
+        [Authorize(Roles = "Member")]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {

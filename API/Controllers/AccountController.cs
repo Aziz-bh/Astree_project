@@ -38,13 +38,17 @@ public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
 
 var user= _mapper.Map<User>(registerDto);
 user.UserName=registerDto.Email;
+user.IsDeleted=false;
 var result=await _userManager.CreateAsync(user ,registerDto.Password);
 if(!result.Succeeded) return BadRequest(result.Errors);
+
+        var roleResults= await _userManager.AddToRoleAsync(user, "Member");
+        if(!roleResults.Succeeded) return BadRequest(roleResults.Errors); 
 
 return new UserDto
 {
     Email = user.Email,
-    Token = _tokenService.CreateToken(user),
+    Token = await _tokenService.CreateToken(user),
     FirstName = user.FirstName,
     LastName = user.LastName,
     CIN = user.CIN,
@@ -71,17 +75,19 @@ public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     if (!result)
         return Unauthorized("Invalid Email or Password");
 
-    // Assuming _tokenService.CreateToken(user) is correctly implemented to generate a JWT or similar token
+
+
+  
     return new UserDto
     {
         Email = user.Email,
-        Token = _tokenService.CreateToken(user),
-        FirstName = user.FirstName, // Make sure these properties exist in your User class or are accessible
+        Token = await _tokenService.CreateToken(user),
+        FirstName = user.FirstName, 
         LastName = user.LastName,
         CIN = user.CIN,
         BirthDate = user.BirthDate,
         Nationality = user.Nationality,
-        Civility = user.Civility.ToString() // Assuming Civility is an enum and ToString() converts it to a string representation
+        Civility = user.Civility.ToString() 
     };
 }
 
