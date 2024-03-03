@@ -13,24 +13,19 @@ namespace API.Persistence
             base(options)
         {
         }
-
+        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
              builder.Entity<User>().HasMany(ur=>ur.UserRoles).WithOne(u=>u.User).HasForeignKey(ur=>ur.UserId).IsRequired();
              builder.Entity<AppRole>().HasMany(ur=>ur.UserRoles).WithOne(u=>u.Role).HasForeignKey(ur=>ur.RoleId).IsRequired();
-            // builder.Entity<AppUserRole>(userRole =>
-            // {
-            //     userRole.HasKey(ur => new {ur.UserId, ur.RoleId});
-            //     userRole.HasOne(ur => ur.Role)
-            //         .WithMany(r => r.UserRoles)
-            //         .HasForeignKey(ur => ur.RoleId)
-            //         .IsRequired();
-            //     userRole.HasOne(ur => ur.User)
-            //         .WithMany(r => r.UserRoles)
-            //         .HasForeignKey(ur => ur.UserId)
-            //         .IsRequired();
-            // });
+
+        builder.Entity<Complaint>()
+            .HasOne(c => c.User) 
+            .WithMany(u => u.Complaints) 
+            .HasForeignKey(c => c.UserId); 
         }
 
 

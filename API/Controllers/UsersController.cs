@@ -13,31 +13,63 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly AstreeDbContext _context;
-              private readonly UserManager<User> _userManager;
 
-        public UsersController(UserManager<User> userManager,AstreeDbContext context)
+        private readonly UserManager<User> _userManager;
+
+        public UsersController(
+            UserManager<User> userManager,
+            AstreeDbContext context
+        )
         {
             _context = context;
-             _userManager = userManager;
+            _userManager = userManager;
         }
 
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            var users =
-                await _context
-                    .Users
-                    .Where(u => !(bool) u.IsDeleted)
-                    .ToListAsync();
-            return Ok(users);
-        }
+public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
+{
+    // Fetch users excluding deleted ones
+    var users = await _context.Users
+        .Where(u => !(bool)u.IsDeleted)
+        .ToListAsync();
 
-        [Authorize(Roles = "Member, Admin")]
+    // Prepare a list to hold the UserDto objects
+    var userDtos = new List<UserDto>();
+
+    foreach (var user in users)
+    {
+        var roles = await _userManager.GetRolesAsync(user); 
+
+        var userDto = new UserDto
+        {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            PhoneNumber = user.PhoneNumber,
+            Picture = user.Picture,
+            CIN = user.CIN,
+            Gender = user.Gender.HasValue ? user.Gender.Value.ToString() : null, 
+            BirthDate = user.BirthDate,
+            Nationality = user.Nationality,
+            Civility = user.Civility.HasValue ? user.Civility.Value.ToString() : null, 
+            Roles = roles.ToList()
+        };
+
+        userDtos.Add(userDto);
+    }
+
+    return Ok(userDtos);
+}
+
+
+        // [Authorize(Roles = "Member, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -48,10 +80,30 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return user;
+            // Fetch roles for the user
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var userDto =
+                new UserDto {
+            Id = user.Id,
+            UserName = user.UserName,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            PhoneNumber = user.PhoneNumber,
+            Picture = user.Picture,
+            CIN = user.CIN,
+            Gender = user.Gender.HasValue ? user.Gender.Value.ToString() : null, 
+            BirthDate = user.BirthDate,
+            Nationality = user.Nationality,
+            Civility = user.Civility.HasValue ? user.Civility.Value.ToString() : null, 
+            Roles = roles.ToList()
+                };
+
+            return Ok(userDto);
         }
 
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
@@ -66,7 +118,7 @@ namespace API.Controllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult>
         UpdateUser(int id, [FromBody] UserUpdateDTO userUpdateDTO)
@@ -142,14 +194,18 @@ namespace API.Controllers
             return NoContent();
         }
 
-
-
-        [Authorize(Roles = "Member")]
+        // [Authorize(Roles = "Member")]
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
+        public async Task<IActionResult>
+        UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
         {
             // Extract email from the token
-            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var email =
+                HttpContext
+                    .User?
+                    .Claims?
+                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
+                    .Value;
 
             if (string.IsNullOrEmpty(email))
             {
@@ -180,8 +236,8 @@ namespace API.Controllers
             {
                 user.Picture = userUpdateDTO.Picture;
             }
-            // Continue checking and updating other fields as necessary...
 
+            // Continue checking and updating other fields as necessary...
             user.UpdatedAt = DateTime.UtcNow;
             var result = await _userManager.UpdateAsync(user);
 
@@ -192,8 +248,8 @@ namespace API.Controllers
 
             return NoContent();
         }
-    
-        [Authorize(Roles = "Admin")]
+
+        // [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
