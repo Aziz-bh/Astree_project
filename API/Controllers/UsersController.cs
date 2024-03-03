@@ -1,43 +1,212 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using API.DTOs;
 using API.Models;
 using API.Persistence;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-
-  [Authorize]
-    public class UsersController:BaseApiController
+    [Authorize]
+    public class UsersController : BaseApiController
     {
         private readonly AstreeDbContext _context;
+              private readonly UserManager<User> _userManager;
 
-        public UsersController(AstreeDbContext context)
+        public UsersController(UserManager<User> userManager,AstreeDbContext context)
         {
             _context = context;
+             _userManager = userManager;
         }
-
-
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var users = await _context.Users
-    .Where(u => (bool)!u.IsDeleted)
-    .ToListAsync();
-            return users;
+            var users =
+                await _context
+                    .Users
+                    .Where(u => !(bool) u.IsDeleted)
+                    .ToListAsync();
+            return Ok(users);
         }
 
-
-        
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
+
+            if (user == null || (bool) user.IsDeleted)
+            {
+                return NotFound();
+            }
+
             return user;
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateUser([FromBody] User user)
+        {
+            if (user == null)
+            {
+                return BadRequest("Invalid user data");
+            }
+
+            _context.Users.Add (user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult>
+        UpdateUser(int id, [FromBody] UserUpdateDTO userUpdateDTO)
+        {
+            if (userUpdateDTO == null)
+            {
+                return BadRequest("Invalid user data");
+            }
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Update properties if they have new values
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.FirstName))
+            {
+                user.FirstName = userUpdateDTO.FirstName;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.LastName))
+            {
+                user.LastName = userUpdateDTO.LastName;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.CIN))
+            {
+                user.CIN = userUpdateDTO.CIN;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.PhoneNumber))
+            {
+                user.PhoneNumber = userUpdateDTO.PhoneNumber;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Picture))
+            {
+                user.Picture = userUpdateDTO.Picture;
+            }
+            if (userUpdateDTO.Gender.HasValue)
+            {
+                user.Gender = userUpdateDTO.Gender.Value;
+            }
+            if (userUpdateDTO.BirthDate.HasValue)
+            {
+                user.BirthDate = userUpdateDTO.BirthDate.Value;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Nationality))
+            {
+                user.Nationality = userUpdateDTO.Nationality;
+            }
+            if (userUpdateDTO.Civility.HasValue)
+            {
+                user.Civility = userUpdateDTO.Civility.Value;
+            }
+
+            user.UpdatedAt = DateTime.UtcNow;
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Users.Any(e => e.Id == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+
+        [Authorize(Roles = "Member")]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
+        {
+            // Extract email from the token
+            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return Unauthorized("Invalid token information");
+            }
+
+            // Find the user by email
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound($"User with email {email} not found.");
+            }
+
+            // Update properties if they have new values
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.FirstName))
+            {
+                user.FirstName = userUpdateDTO.FirstName;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.LastName))
+            {
+                user.LastName = userUpdateDTO.LastName;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.PhoneNumber))
+            {
+                user.PhoneNumber = userUpdateDTO.PhoneNumber;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Picture))
+            {
+                user.Picture = userUpdateDTO.Picture;
+            }
+            // Continue checking and updating other fields as necessary...
+
+            user.UpdatedAt = DateTime.UtcNow;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return NoContent();
+        }
+    
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsDeleted = true;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
