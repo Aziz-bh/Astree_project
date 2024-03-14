@@ -13,7 +13,7 @@ public class UserUpdateDTO
     public DateTime? BirthDate { get; set; }
     public string? Nationality { get; set; }
     public User.CivilStatus? Civility { get; set; }
-    // Add other properties that can be updated
+
 }
 
 }

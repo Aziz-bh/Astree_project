@@ -80,7 +80,7 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
                 return NotFound();
             }
 
-            // Fetch roles for the user
+
             var roles = await _userManager.GetRolesAsync(user);
 
             var userDto =
@@ -134,7 +134,7 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
                 return NotFound();
             }
 
-            // Update properties if they have new values
+
             if (!string.IsNullOrWhiteSpace(userUpdateDTO.FirstName))
             {
                 user.FirstName = userUpdateDTO.FirstName;
@@ -199,7 +199,7 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         public async Task<IActionResult>
         UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
         {
-            // Extract email from the token
+
             var email =
                 HttpContext
                     .User?
@@ -212,14 +212,14 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
                 return Unauthorized("Invalid token information");
             }
 
-            // Find the user by email
+   
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return NotFound($"User with email {email} not found.");
             }
 
-            // Update properties if they have new values
+
             if (!string.IsNullOrWhiteSpace(userUpdateDTO.FirstName))
             {
                 user.FirstName = userUpdateDTO.FirstName;
@@ -237,7 +237,7 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
                 user.Picture = userUpdateDTO.Picture;
             }
 
-            // Continue checking and updating other fields as necessary...
+
             user.UpdatedAt = DateTime.UtcNow;
             var result = await _userManager.UpdateAsync(user);
 

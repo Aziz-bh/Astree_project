@@ -30,13 +30,13 @@ namespace API.DTOs
         public string Nationality { get; set; }
 
         [Required]
-        public string Civility { get; set; } // Assuming Civil Status as a string
+        public string Civility { get; set; } 
 
         [Required]
         [RegularExpression(@"^\+?\d{8,9}$", ErrorMessage = "The PhoneNumber field is not a valid phone number.")]
         public string PhoneNumber { get; set; }
 
         [Required]
-        public string Gender { get; set; } // Assuming Gender as a string to keep DTO simple. Adjust as necessary.
+        public string Gender { get; set; } 
     }
 }

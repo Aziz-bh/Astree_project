@@ -71,6 +71,13 @@ namespace API.Models
         [JsonConverter(typeof (JsonStringEnumConverter))]
         public CivilStatus? Civility { get; set; }
 
+        public string? VerificationToken  { get; set; }
+
+        public DateTime? VerifiedAt { get; set; }
+
+        public string?  PasswordRestToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
+
         public Boolean? IsDeleted { get; set; }
 
         public DateTime? CreatedAt { get; set; }

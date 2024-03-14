@@ -29,7 +29,7 @@ public class ChatController : BaseApiController
 public async Task<IActionResult> SendMessage([FromBody] SendMessageDto messageDto)
 {
     var email = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    // Find or create a chat room based on the user's participation
+
     var chatRoomId = await _chatService.FindOrCreateChatRoomForUserAsync(email);
 
     if (chatRoomId <= 0)
@@ -37,12 +37,9 @@ public async Task<IActionResult> SendMessage([FromBody] SendMessageDto messageDt
         return BadRequest("Unable to find or create a chat room.");
     }
 
-    // Now that we have a valid chatRoomId, we can proceed to send the message
-    // Ensure the DTO has the correct chatRoomId
     messageDto.ChatRoomId = chatRoomId;
     
-    // Assuming AddMessageAsync accepts a userId and SendMessageDto
-    // The user's ID needs to be resolved; assuming UserManager can do this
+
     var user = await _userManager.FindByEmailAsync(email);
     if (user == null)
     {

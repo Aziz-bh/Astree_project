@@ -27,7 +27,7 @@ namespace API.Controllers
         [HttpPost("submit")]
         [Authorize(Roles = "Member")]
         public async Task<ActionResult<ComplaintDto>>
-        SubmitComplaint([FromBody] ComplaintDtoSubmit complaintDtoSubmit)
+        SubmitComplaint([FromForm] ComplaintDtoSubmit complaintDtoSubmit)
         {
             var email =
                 HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -37,11 +37,11 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-
+ string filePath = await SaveFile(complaintDtoSubmit.Attachment);
             var complaint =
                 new Complaint {
                     UserId = user.Id,
-                    Attachment = complaintDtoSubmit.Attachment,
+                    Attachment = filePath,
                     Description = complaintDtoSubmit.Description,
                     ComplaintsSubject = complaintDtoSubmit.ComplaintsSubject,
                     ComplaintState = ComplaintState.Waiting,
@@ -52,7 +52,6 @@ namespace API.Controllers
             _context.Complaints.Add (complaint);
             await _context.SaveChangesAsync();
 
-            // Map the saved Complaint entity to a ComplaintDto to include the Id and other generated fields
             var complaintDto =
                 new ComplaintDto {
                     Id = complaint.Id,
@@ -62,7 +61,6 @@ namespace API.Controllers
                     ComplaintState = complaint.ComplaintState.ToString(),
                     ComplaintType = complaint.ComplaintType.ToString(),
                     UserId = complaint.UserId
-                    // Map other properties as necessary
                 };
 
             return CreatedAtAction(nameof(GetComplaint),
@@ -157,6 +155,72 @@ namespace API.Controllers
             return Ok(MapToDto(complaint));
         }
 
+[HttpDelete("deletecomplaint/{id}")]
+[Authorize(Roles = "Member")]
+public async Task<IActionResult> DeleteComplaint(long id)
+{
+    var email = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await _userManager.FindByEmailAsync(email);
+    if (user == null)
+    {
+        return Unauthorized("User not found.");
+    }
+
+    var complaint = await _context.Complaints.FindAsync(id);
+    if (complaint == null)
+    {
+        return NotFound();
+    }
+
+    if (complaint.UserId != user.Id)
+    {
+        return Forbid("You do not have permission to delete this complaint.");
+    }
+
+    _context.Complaints.Remove(complaint);
+    await _context.SaveChangesAsync();
+    return NoContent();
+}
+
+
+[HttpPut("updatecomplaint/{id}")]
+[Authorize(Roles = "Member")]
+public async Task<IActionResult> UpdateComplaint(long id, [FromForm] ComplaintUpdateDto complaintUpdateDto)
+{
+    var email = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await _userManager.FindByEmailAsync(email);
+    if (user == null)
+    {
+        return Unauthorized("User not found.");
+    }
+
+    var complaint = await _context.Complaints.FindAsync(id);
+    if (complaint == null)
+    {
+        return NotFound();
+    }
+
+    if (complaint.UserId != user.Id)
+    {
+        return Forbid("You do not have permission to update this complaint.");
+    }
+
+    // Update the complaint details
+    complaint.Description = complaintUpdateDto.Description;
+    complaint.ComplaintsSubject = complaintUpdateDto.ComplaintsSubject;
+
+    // Handle file update if a new file is provided
+    if (complaintUpdateDto.Attachment != null)
+    {
+        string filePath = await SaveFile(complaintUpdateDto.Attachment);
+        complaint.Attachment = filePath; // Update the file path to the new file
+    }
+
+    await _context.SaveChangesAsync();
+    return NoContent();
+}
+
+
 
 private static ComplaintDto MapToDto(Complaint complaint)
 {
@@ -173,6 +237,50 @@ private static ComplaintDto MapToDto(Complaint complaint)
                 UserEmail = complaint.User?.Email
     };
 }
+
+private async Task<string> SaveFile(IFormFile file)
+{
+    if (file == null || file.Length == 0)
+    {
+        return null; 
+    }
+
+
+    var uploadsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+    if (!Directory.Exists(uploadsDirectory))
+    {
+        Directory.CreateDirectory(uploadsDirectory);
+    }
+
+
+    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+    var filePath = Path.Combine(uploadsDirectory, uniqueFileName);
+
+
+    using (var fileStream = new FileStream(filePath, FileMode.Create))
+    {
+        await file.CopyToAsync(fileStream);
+    }
+
+    return uniqueFileName;
+}
+
+
+[HttpGet("image/{fileName}")]
+public IActionResult GetImage(string fileName)
+{
+    var uploadsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+    var filePath = Path.Combine(uploadsDirectory, fileName);
+
+    if (!System.IO.File.Exists(filePath))
+    {
+        return NotFound("Image not found.");
+    }
+
+    var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+    return File(fileStream, "image/jpeg"); 
+}
+
 
 
     }

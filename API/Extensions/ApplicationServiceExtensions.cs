@@ -32,9 +32,12 @@ namespace API.Extensions
         builder => builder.WithOrigins("https://localhost:44470")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
-                          .AllowCredentials()); // Added AllowCredentials
+                          .AllowCredentials());
 });
 services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+services.AddSingleton<IEmailService, EmailService>(provider =>
+    new EmailService("linkzlinkz04@gmail.com", "zixg obnz xohb fizv"));
+
             return services;
         }
     }

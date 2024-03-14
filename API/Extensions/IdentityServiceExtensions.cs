@@ -39,6 +39,7 @@ namespace API.Extensions
                  opt.AddPolicy("Moderator",policy=>policy.RequireRole("Admin","Moderator"));
                 
                 });
+                
             return services;
         }
 
