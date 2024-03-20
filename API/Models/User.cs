@@ -85,5 +85,6 @@ namespace API.Models
         public DateTime? UpdatedAt { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
         public virtual ICollection<Complaint> Complaints { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
     }
 }

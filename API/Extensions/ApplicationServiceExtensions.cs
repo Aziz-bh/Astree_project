@@ -18,6 +18,9 @@ namespace API.Extensions
         )
         {
             services.AddScoped<ITokenService, TokenService>();
+            
+            services.AddScoped<IAutomobileService, AutomobileService>();
+            services.AddScoped<IPropertyService, PropertyService>();
             services
                 .AddDbContext<AstreeDbContext>(options =>
                 {

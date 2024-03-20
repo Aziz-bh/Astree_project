@@ -4,6 +4,7 @@ using API.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations.AstreeDb
 {
     [DbContext(typeof(AstreeDbContext))]
-    partial class AstreeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319101234_Contract")]
+    partial class Contract
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,8 +180,6 @@ namespace API.Migrations.AstreeDb
                     b.HasIndex("UserId");
 
                     b.ToTable("Contracts");
-
-                    b.HasDiscriminator<int>("ContractType");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -419,7 +419,7 @@ namespace API.Migrations.AstreeDb
                     b.Property<float>("VehicleValue")
                         .HasColumnType("real");
 
-                    b.HasDiscriminator().HasValue(0);
+                    b.ToTable("Automobiles", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Property", b =>
@@ -442,7 +442,7 @@ namespace API.Migrations.AstreeDb
                     b.Property<DateTime>("YearOfConstruction")
                         .HasColumnType("datetime2");
 
-                    b.HasDiscriminator().HasValue(1);
+                    b.ToTable("Properties", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.AppUserRole", b =>
@@ -538,6 +538,24 @@ namespace API.Migrations.AstreeDb
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Automobile", b =>
+                {
+                    b.HasOne("API.Models.Contract", null)
+                        .WithOne()
+                        .HasForeignKey("API.Models.Automobile", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Models.Property", b =>
+                {
+                    b.HasOne("API.Models.Contract", null)
+                        .WithOne()
+                        .HasForeignKey("API.Models.Property", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
