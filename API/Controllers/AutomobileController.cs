@@ -27,24 +27,68 @@ namespace API.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllAutomobiles()
-        {
-            var automobiles = await _automobileService.GetAllAutomobilesAsync();
-            return Ok(automobiles);
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetAllAutomobiles()
+    {
+        var automobiles = await _automobileService.GetAllAutomobilesAsync();
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAutomobileById(long id)
+        // Convert each Automobile entity to AutomobileDto
+        var automobileDtos = automobiles.Select(auto => new AutomobileDto
         {
-            var automobile =
-                await _automobileService.GetAutomobileByIdAsync(id);
-            if (automobile == null)
-            {
-                return NotFound();
-            }
-            return Ok(automobile);
-        }
+            Id = auto.Id,
+            ContractType = auto.ContractType,
+            StartDate = auto.StartDate,
+            EndDate = auto.EndDate,
+            Quota = auto.Quota,
+            UserId = auto.UserId,
+            VehicleType = auto.VehicleType,
+            RegistrationNumber = auto.RegistrationNumber,
+            RegistrationDate = auto.RegistrationDate,
+            EnginePower = auto.EnginePower,
+            VehicleMake = auto.VehicleMake,
+            SeatsNumber = auto.SeatsNumber,
+            VehicleValue = auto.VehicleValue,
+            TrueVehicleValue = auto.TrueVehicleValue,
+            Guarantees = auto.Guarantees, // This sets the integer value (not shown in output if not desired)
+            // GuaranteesList is dynamically generated based on the Guarantees property
+        }).ToList();
+
+        return Ok(automobileDtos);
+    }
+
+  [HttpGet("{id}")]
+public async Task<IActionResult> GetAutomobileById(long id)
+{
+    var automobile = await _automobileService.GetAutomobileByIdAsync(id);
+    if (automobile == null)
+    {
+        return NotFound();
+    }
+
+    // Convert the Automobile entity to AutomobileDto
+    var automobileDto = new AutomobileDto
+    {
+        Id = automobile.Id,
+        ContractType = automobile.ContractType,
+        StartDate = automobile.StartDate,
+        EndDate = automobile.EndDate,
+        Quota = automobile.Quota,
+        UserId = automobile.UserId,
+        VehicleType = automobile.VehicleType,
+        RegistrationNumber = automobile.RegistrationNumber,
+        RegistrationDate = automobile.RegistrationDate,
+        EnginePower = automobile.EnginePower,
+        VehicleMake = automobile.VehicleMake,
+        SeatsNumber = automobile.SeatsNumber,
+        VehicleValue = automobile.VehicleValue,
+        TrueVehicleValue = automobile.TrueVehicleValue,
+        Guarantees = automobile.Guarantees, // This sets the integer value (not directly shown if you choose to hide it in your DTO definition)
+        // GuaranteesList is dynamically generated based on the Guarantees property
+    };
+
+    return Ok(automobileDto);
+}
+
 
         [HttpPost]
         public async Task<IActionResult>
@@ -55,6 +99,17 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
+            // Get user email from JWT token
+            var userEmail =
+                HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Fetch user by email
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
+
             // Map from DTO to domain model
             var automobile =
                 new Automobile {
@@ -63,7 +118,7 @@ namespace API.Controllers
                     StartDate = automobileDto.StartDate,
                     EndDate = automobileDto.EndDate,
                     Quota = automobileDto.Quota,
-                    UserId = automobileDto.UserId,
+                    UserId = user.Id,
                     VehicleType = automobileDto.VehicleType,
                     RegistrationNumber = automobileDto.RegistrationNumber,
                     RegistrationDate = automobileDto.RegistrationDate,
@@ -114,15 +169,43 @@ namespace API.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult>
-        UpdateAutomobile(long id, [FromBody] Automobile automobile)
+        UpdateAutomobile(long id, [FromBody] AutomobileUpdateDto updateDto)
         {
-            if (id != automobile.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
+            var automobile =
+                await _automobileService.GetAutomobileByIdAsync(id);
+            if (automobile == null)
+            {
+                return NotFound();
+            }
+
+            // Map the updated fields from the DTO to the automobile entity
+            automobile.StartDate = updateDto.StartDate;
+            automobile.EndDate = updateDto.EndDate;
+            automobile.VehicleValue = updateDto.VehicleValue;
+            automobile.Guarantees = updateDto.Guarantees;
+            automobile.VehicleMake = updateDto.VehicleMake;
+            if (
+                updateDto.TrueVehicleValue.HasValue // Check if provided before updating
+            )
+            {
+                automobile.TrueVehicleValue = updateDto.TrueVehicleValue.Value;
+            }
+
+            // Mapping the newly added fields
+            automobile.RegistrationNumber = updateDto.RegistrationNumber;
+            automobile.RegistrationDate = updateDto.RegistrationDate;
+            automobile.EnginePower = updateDto.EnginePower;
+            automobile.SeatsNumber = updateDto.SeatsNumber;
+
+            // Perform the update operation
             await _automobileService.UpdateAutomobileAsync(automobile);
-            return NoContent();
+
+            return NoContent(); // or return appropriate response
         }
 
         [HttpDelete("{id}")]

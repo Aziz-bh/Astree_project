@@ -2,18 +2,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.Models
 {
-        [Flags] // This attribute indicates that the enum can be treated as a bit field; that is, a set of flags.
+    [Flags]
     public enum Guarantees
     {
         None = 0,
-        CollisionCoverage = 1,
-        ComprehensiveCoverage = 2,
-        Uninsured = 4
+        RC = 1 << 0, // 1
+        INC = 1 << 1, // 2
+        VOL = 1 << 2, // 4
+        ASST = 1 << 3, // 8
+        TR = 1 << 4, // 16
     }
+
     public enum VehicleType { Personal, Business }
 
-public class Automobile : Contract,IValidatableObject
-{
+    public class Automobile : Contract, IValidatableObject
+    {
         [Required]
         public VehicleType VehicleType { get; set; }
 
@@ -55,17 +58,17 @@ public class Automobile : Contract,IValidatableObject
             }
 
             // Custom validation logic for Automobile-specific properties
-            // Example: Ensuring RegistrationDate is not in the future
             if (RegistrationDate > DateTime.UtcNow.Date)
             {
-                yield return new ValidationResult(
-                    "Registration date cannot be in the future.",
-                    new[] { nameof(RegistrationDate) });
+                yield return new ValidationResult("Registration date cannot be in the future.", new[] { nameof(RegistrationDate) });
             }
 
-            // Example: Validate Guarantees contains a valid combination if necessary
-            // This is more complex due to the flags attribute and might not be needed
-            // if you allow all combinations.
+            // Add any custom validation for guarantees if needed. For flags, specific combination checks may be unnecessary,
+            // but you could enforce that at least one guarantee is selected, if that's a requirement.
+            if (Guarantees == Guarantees.None)
+            {
+                yield return new ValidationResult("At least one guarantee must be selected.", new[] { nameof(Guarantees) });
+            }
         }
     }
 }
