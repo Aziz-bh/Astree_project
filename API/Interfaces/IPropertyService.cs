@@ -10,5 +10,6 @@ namespace API.Interfaces
         Task UpdatePropertyAsync(Property property);
         Task DeletePropertyAsync(long id);
         Task<IEnumerable<Property>> GetPropertiesByUserIdAsync(int userId);
+        byte[] GeneratePropertyContractQRCode(Property property);
     }
 }

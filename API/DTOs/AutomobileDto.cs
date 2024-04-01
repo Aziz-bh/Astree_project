@@ -9,6 +9,7 @@ namespace API.DTOs
         public DateTime RegistrationDate { get; set; }
         public int EnginePower { get; set; }
         public string VehicleMake { get; set; }
+        public string Model { get; set; }
         public int SeatsNumber { get; set; }
         public float VehicleValue { get; set; }
         public float TrueVehicleValue { get; set; }

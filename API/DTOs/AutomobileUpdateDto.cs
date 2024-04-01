@@ -21,6 +21,8 @@ namespace API.DTOs
         [StringLength(100, MinimumLength = 1)]
         public string VehicleMake { get; set; }
 
+         public string Model { get; set; }
+
         public float? TrueVehicleValue { get; set; } // Nullable to indicate it's optional
 
         // Newly added properties

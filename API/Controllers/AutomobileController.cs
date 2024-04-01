@@ -27,68 +27,71 @@ namespace API.Controllers
             _context = context;
         }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllAutomobiles()
-    {
-        var automobiles = await _automobileService.GetAllAutomobilesAsync();
-
-        // Convert each Automobile entity to AutomobileDto
-        var automobileDtos = automobiles.Select(auto => new AutomobileDto
+        [HttpGet]
+        public async Task<IActionResult> GetAllAutomobiles()
         {
-            Id = auto.Id,
-            ContractType = auto.ContractType,
-            StartDate = auto.StartDate,
-            EndDate = auto.EndDate,
-            Quota = auto.Quota,
-            UserId = auto.UserId,
-            VehicleType = auto.VehicleType,
-            RegistrationNumber = auto.RegistrationNumber,
-            RegistrationDate = auto.RegistrationDate,
-            EnginePower = auto.EnginePower,
-            VehicleMake = auto.VehicleMake,
-            SeatsNumber = auto.SeatsNumber,
-            VehicleValue = auto.VehicleValue,
-            TrueVehicleValue = auto.TrueVehicleValue,
-            Guarantees = auto.Guarantees, // This sets the integer value (not shown in output if not desired)
-            // GuaranteesList is dynamically generated based on the Guarantees property
-        }).ToList();
+            var automobiles = await _automobileService.GetAllAutomobilesAsync();
 
-        return Ok(automobileDtos);
-    }
+            // Convert each Automobile entity to AutomobileDto
+            var automobileDtos =
+                automobiles
+                    .Select(auto =>
+                        new AutomobileDto {
+                            Id = auto.Id,
+                            ContractType = auto.ContractType,
+                            StartDate = auto.StartDate,
+                            EndDate = auto.EndDate,
+                            Quota = auto.Quota,
+                            UserId = auto.UserId,
+                            VehicleType = auto.VehicleType,
+                            RegistrationNumber = auto.RegistrationNumber,
+                            RegistrationDate = auto.RegistrationDate,
+                            EnginePower = auto.EnginePower,
+                            VehicleMake = auto.VehicleMake,
+                            SeatsNumber = auto.SeatsNumber,
+                            VehicleValue = auto.VehicleValue,
+                            TrueVehicleValue = auto.TrueVehicleValue,
+                            Guarantees = auto.Guarantees // This sets the integer value (not shown in output if not desired)
+                            // GuaranteesList is dynamically generated based on the Guarantees property
+                        })
+                    .ToList();
 
-  [HttpGet("{id}")]
-public async Task<IActionResult> GetAutomobileById(long id)
-{
-    var automobile = await _automobileService.GetAutomobileByIdAsync(id);
-    if (automobile == null)
-    {
-        return NotFound();
-    }
+            return Ok(automobileDtos);
+        }
 
-    // Convert the Automobile entity to AutomobileDto
-    var automobileDto = new AutomobileDto
-    {
-        Id = automobile.Id,
-        ContractType = automobile.ContractType,
-        StartDate = automobile.StartDate,
-        EndDate = automobile.EndDate,
-        Quota = automobile.Quota,
-        UserId = automobile.UserId,
-        VehicleType = automobile.VehicleType,
-        RegistrationNumber = automobile.RegistrationNumber,
-        RegistrationDate = automobile.RegistrationDate,
-        EnginePower = automobile.EnginePower,
-        VehicleMake = automobile.VehicleMake,
-        SeatsNumber = automobile.SeatsNumber,
-        VehicleValue = automobile.VehicleValue,
-        TrueVehicleValue = automobile.TrueVehicleValue,
-        Guarantees = automobile.Guarantees, // This sets the integer value (not directly shown if you choose to hide it in your DTO definition)
-        // GuaranteesList is dynamically generated based on the Guarantees property
-    };
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAutomobileById(long id)
+        {
+            var automobile =
+                await _automobileService.GetAutomobileByIdAsync(id);
+            if (automobile == null)
+            {
+                return NotFound();
+            }
 
-    return Ok(automobileDto);
-}
+            // Convert the Automobile entity to AutomobileDto
+            var automobileDto =
+                new AutomobileDto {
+                    Id = automobile.Id,
+                    ContractType = automobile.ContractType,
+                    StartDate = automobile.StartDate,
+                    EndDate = automobile.EndDate,
+                    Quota = automobile.Quota,
+                    UserId = automobile.UserId,
+                    VehicleType = automobile.VehicleType,
+                    RegistrationNumber = automobile.RegistrationNumber,
+                    RegistrationDate = automobile.RegistrationDate,
+                    EnginePower = automobile.EnginePower,
+                    VehicleMake = automobile.VehicleMake,
+                    SeatsNumber = automobile.SeatsNumber,
+                    VehicleValue = automobile.VehicleValue,
+                    TrueVehicleValue = automobile.TrueVehicleValue,
+                    Guarantees = automobile.Guarantees // This sets the integer value (not directly shown if you choose to hide it in your DTO definition)
+                    // GuaranteesList is dynamically generated based on the Guarantees property
+                };
 
+            return Ok(automobileDto);
+        }
 
         [HttpPost]
         public async Task<IActionResult>
@@ -189,6 +192,7 @@ public async Task<IActionResult> GetAutomobileById(long id)
             automobile.VehicleValue = updateDto.VehicleValue;
             automobile.Guarantees = updateDto.Guarantees;
             automobile.VehicleMake = updateDto.VehicleMake;
+            automobile.Model = updateDto.Model;
             if (
                 updateDto.TrueVehicleValue.HasValue // Check if provided before updating
             )
@@ -246,6 +250,21 @@ public async Task<IActionResult> GetAutomobileById(long id)
 
             // Optionally, map the contract to DTOs if you're not sending entities directly
             return Ok(contract);
+        }
+
+        [HttpGet("{id}/qr")]
+        public async Task<IActionResult> GetContractQrCode(long id)
+        {
+            var automobile =
+                await _automobileService.GetAutomobileByIdAsync(id);
+            if (automobile == null)
+            {
+                return NotFound();
+            }
+
+            var qrCodeBytes =
+                _automobileService.GenerateContractQRCode(automobile);
+            return File(qrCodeBytes, "image/png");
         }
         // Add other actions as necessary...
     }

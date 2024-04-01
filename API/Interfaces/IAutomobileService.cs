@@ -10,5 +10,6 @@ namespace API.Interfaces
         Task UpdateAutomobileAsync(Automobile automobile);
         Task DeleteAutomobileAsync(long id);
         Task<IEnumerable<Automobile>> GetAutomobilesByUserIdAsync(int userId);
+        byte[] GenerateContractQRCode(Automobile automobile);
     }
 }

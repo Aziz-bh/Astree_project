@@ -37,6 +37,11 @@ namespace API.Models
         public string VehicleMake { get; set; }
 
         [Required]
+        [StringLength(100)]
+        public string Model { get; set; }
+
+
+        [Required]
         [Range(1, 100, ErrorMessage = "Seats number must be between 1 and 100.")]
         public int SeatsNumber { get; set; }
 

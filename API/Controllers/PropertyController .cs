@@ -37,27 +37,27 @@ namespace API.Controllers
             return Ok(properties);
         }
 
-[HttpGet("{id}")]
-public async Task<IActionResult> GetPropertyById(long id)
-{
-    var property = await _propertyService.GetPropertyByIdAsync(id);
-    if (property == null)
-    {
-        return NotFound();
-    }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPropertyById(long id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
 
-    var propertyDto = new PropertyDto
-    {
-        // Assign all other necessary fields from the property to the DTO
-        Location = property.Location,
-        Type = property.Type,
-        YearOfConstruction = property.YearOfConstruction,
-        PropertyValue = property.PropertyValue,
-        Coverage = property.Coverage // This will be used to generate CoveragesList
-    };
+            var propertyDto =
+                new PropertyDto {
+                    // Assign all other necessary fields from the property to the DTO
+                    Location = property.Location,
+                    Type = property.Type,
+                    YearOfConstruction = property.YearOfConstruction,
+                    PropertyValue = property.PropertyValue,
+                    Coverage = property.Coverage // This will be used to generate CoveragesList
+                };
 
-    return Ok(propertyDto);
-}
+            return Ok(propertyDto);
+        }
 
         // Example: Create a new property
         [HttpPost]
@@ -82,7 +82,6 @@ public async Task<IActionResult> GetPropertyById(long id)
 
             // Set the UserId from the JWT token
             // propertyDto.UserId = user.Id;
-
             var property =
                 new Property {
                     // Manual mapping from propertyDto to property
@@ -207,6 +206,20 @@ public async Task<IActionResult> GetPropertyById(long id)
             // Optionally, map the properties to DTOs if you're not sending entities directly
             return Ok(properties);
         }
+
         // Add other actions as necessary...
+        [HttpGet("{id}/qr")]
+        public async Task<IActionResult> GetPropertyContractQrCode(long id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+
+            var qrCodeBytes =
+                _propertyService.GeneratePropertyContractQRCode(property);
+            return File(qrCodeBytes, "image/png");
+        }
     }
 }

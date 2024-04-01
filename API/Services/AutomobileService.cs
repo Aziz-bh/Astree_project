@@ -4,6 +4,9 @@ using API.Interfaces;
 using API.Models;
 using API.Persistence;
 using Microsoft.EntityFrameworkCore;
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace API.Services
 {
@@ -162,5 +165,32 @@ namespace API.Services
             automobile.Quota = quota;
             return automobile;
         }
+
+        public byte[] GenerateContractQRCode(Automobile automobile)
+    {
+        // Convert contract data to a string format, e.g., JSON
+        // For simplicity, this example just concatenates some fields
+        string contractData = $"Id: {automobile.Id}, Make: {automobile.VehicleMake}, Model: {automobile.Model}, Value: {automobile.VehicleValue}";
+
+        // Create a QR code generator instance
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(contractData, QRCodeGenerator.ECCLevel.Q);
+
+        // Create a QR code instance from the data
+        QRCode qrCode = new QRCode(qrCodeData);
+
+        // Convert the QR code to a bitmap
+        using (var qrCodeImage = qrCode.GetGraphic(20))
+        {
+            // Convert the bitmap to a byte array
+            using (var stream = new MemoryStream())
+            {
+                qrCodeImage.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
+            }
+        }
+    }
+
+        
     }
 }
