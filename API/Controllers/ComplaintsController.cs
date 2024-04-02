@@ -93,7 +93,7 @@ namespace API.Controllers
             return Ok(complaints);
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("updateState/{id}")]
          [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult>
         UpdateComplaintStatus(long id, [FromBody] ComplaintState state)

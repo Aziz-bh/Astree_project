@@ -196,6 +196,7 @@ namespace API.Controllers
             {
                 return Unauthorized("User not found.");
             }
+
             var properties =
                 await _propertyService.GetPropertiesByUserIdAsync(user.Id);
             if (properties == null || !properties.Any())
@@ -203,8 +204,23 @@ namespace API.Controllers
                 return NotFound($"No properties found for user ID {user.Id}.");
             }
 
-            // Optionally, map the properties to DTOs if you're not sending entities directly
-            return Ok(properties);
+            // Map properties to PropertyDto list
+            var propertyDtos =
+                properties
+                    .Select(property =>
+                        new PropertyDto {
+                            // Assign all other necessary fields from the property to the DTO
+                            Location = property.Location,
+                            Type = property.Type,
+                            YearOfConstruction = property.YearOfConstruction,
+                            PropertyValue = property.PropertyValue,
+                            Coverage = property.Coverage
+                            // Make sure to include any additional fields that PropertyDto expects
+                            // and are available in the Property entity
+                        })
+                    .ToList();
+
+            return Ok(propertyDtos);
         }
 
         // Add other actions as necessary...

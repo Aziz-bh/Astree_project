@@ -86,5 +86,6 @@ namespace API.Models
         public ICollection<AppUserRole> UserRoles { get; set; }
         public virtual ICollection<Complaint> Complaints { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
+        
     }
 }

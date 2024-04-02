@@ -241,15 +241,39 @@ namespace API.Controllers
             {
                 return Unauthorized("User not found.");
             }
-            var contract =
+
+            var automobiles =
                 await _automobileService.GetAutomobilesByUserIdAsync(user.Id);
-            if (contract == null || !contract.Any())
+            if (automobiles == null || !automobiles.Any())
             {
-                return NotFound($"No contract found for user ID {user.Id}.");
+                return NotFound($"No contracts found for user ID {user.Id}.");
             }
 
-            // Optionally, map the contract to DTOs if you're not sending entities directly
-            return Ok(contract);
+            // Map each Automobile entity to AutomobileDto
+            var automobileDtos =
+                automobiles
+                    .Select(automobile =>
+                        new AutomobileDto {
+                            Id = automobile.Id,
+                            ContractType = automobile.ContractType,
+                            StartDate = automobile.StartDate,
+                            EndDate = automobile.EndDate,
+                            Quota = automobile.Quota,
+                            UserId = automobile.UserId,
+                            VehicleType = automobile.VehicleType,
+                            RegistrationNumber = automobile.RegistrationNumber,
+                            RegistrationDate = automobile.RegistrationDate,
+                            EnginePower = automobile.EnginePower,
+                            VehicleMake = automobile.VehicleMake,
+                            SeatsNumber = automobile.SeatsNumber,
+                            VehicleValue = automobile.VehicleValue,
+                            TrueVehicleValue = automobile.TrueVehicleValue,
+                            Guarantees = automobile.Guarantees
+                            // Ensure to map any additional fields if present
+                        })
+                    .ToList();
+
+            return Ok(automobileDtos);
         }
 
         [HttpGet("{id}/qr")]

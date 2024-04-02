@@ -47,13 +47,30 @@ public async Task<Property> CreatePropertyAsync(Property property)
     {
         throw new ArgumentException("EndDate must be after StartDate.");
     }
-
+    property = CalculateAndSetQuota(property);
     await _context.Properties.AddAsync(property);
     await _context.SaveChangesAsync();
 
     return property;
 }
 
+
+    public Property CalculateAndSetQuota(Property property)
+    {
+        // Base quota based on property value (this is a simplified example)
+        float baseQuota = property.PropertyValue * 0.05f; // 5% of property value
+
+        // Adjust quota based on coverage options
+        float coverageMultiplier = 1.0f;
+        if (property.Coverage.HasFlag(Coverage.Fire)) coverageMultiplier += 0.1f; // 10% increase for fire coverage
+        if (property.Coverage.HasFlag(Coverage.Theft)) coverageMultiplier += 0.2f; // 20% increase for theft coverage
+        if (property.Coverage.HasFlag(Coverage.Natural_Disasters)) coverageMultiplier += 0.3f; // 30% increase for natural disaster coverage
+
+        // Apply the coverage multiplier to the base quota
+        property.Quota = baseQuota * coverageMultiplier;
+
+        return property;
+    }
         public async Task UpdatePropertyAsync(Property property)
         {
             _context.Properties.Update(property);
@@ -65,6 +82,7 @@ public async Task<Property> CreatePropertyAsync(Property property)
             var property = await _context.Properties.FindAsync(id);
             if (property != null)
             {
+                property = CalculateAndSetQuota(property);
                 _context.Properties.Remove(property);
                 await _context.SaveChangesAsync();
             }
