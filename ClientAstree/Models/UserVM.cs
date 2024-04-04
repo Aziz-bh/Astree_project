@@ -11,9 +11,9 @@ public class CreateUser
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? PhoneNumber { get; set; }
-    public string? Role { get; set; } 
+    public System.Collections.Generic.ICollection<string>? Roles { get; set; }
     public string? CIN { get; set; } 
-    public DateTime? BirthDate { get; set; } 
+    public DateTimeOffset? BirthDate { get; set; } 
     public string? Nationality { get; set; } 
     public string? Gender { get; set; } 
     public string? Civility { get; set; } 

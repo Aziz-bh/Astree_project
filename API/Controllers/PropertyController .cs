@@ -49,11 +49,17 @@ namespace API.Controllers
             var propertyDto =
                 new PropertyDto {
                     // Assign all other necessary fields from the property to the DTO
-                    Location = property.Location,
-                    Type = property.Type,
-                    YearOfConstruction = property.YearOfConstruction,
-                    PropertyValue = property.PropertyValue,
-                    Coverage = property.Coverage // This will be used to generate CoveragesList
+                        Id = property.Id,
+                        ContractType = property.ContractType,
+                        StartDate = property.StartDate,
+                        EndDate = property.EndDate,
+                        Quota = property.Quota,
+                        Location = property.Location,
+                        Type = property.Type,
+                        YearOfConstruction = property.YearOfConstruction,
+                        PropertyValue = property.PropertyValue,
+                        Coverage = property.Coverage,
+                        UserId = property.UserId // This will be used to generate CoveragesList
                 };
 
             return Ok(propertyDto);
@@ -181,9 +187,27 @@ namespace API.Controllers
             {
                 return NotFound($"No properties found for user ID {userId}.");
             }
-
+ 
+                                var propertyDtos =
+                properties
+                    .Select(property =>
+                        new PropertyDto {
+                        // Manual mapping from createdProperty to returnDto
+                        Id = property.Id,
+                        ContractType = property.ContractType,
+                        StartDate = property.StartDate,
+                        EndDate = property.EndDate,
+                        Quota = property.Quota,
+                        Location = property.Location,
+                        Type = property.Type,
+                        YearOfConstruction = property.YearOfConstruction,
+                        PropertyValue = property.PropertyValue,
+                        Coverage = property.Coverage,
+                        UserId = property.UserId // Make sure PropertyDto has a UserId property.
+                    })
+                    .ToList();
             // Optionally, map the properties to DTOs if you're not sending entities directly
-            return Ok(properties);
+            return Ok(propertyDtos);
         }
 
         [HttpGet("mycontracts")]

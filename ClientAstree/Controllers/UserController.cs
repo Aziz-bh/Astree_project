@@ -39,7 +39,7 @@ namespace ClientAstree.Controllers
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
-                    Role = user.Role,
+                    Roles = user.Roles,
                     CIN = user.CIN,
                     BirthDate = user.BirthDate,
                     Nationality = user.Nationality,
@@ -49,6 +49,23 @@ namespace ClientAstree.Controllers
                 };
 
             return View(model);
+        }
+              //  GET: /User/Delete/{id}
+        public async Task<IActionResult> Delete(int id)
+        {
+            // TODO: Implement logic to retrieve and display the user delete confirmation page based on the provided id
+           
+          await  _userService.UsersDELETEAsync(id);
+            return RedirectToAction("Index");
+        }
+
+
+        //      // POST: /User/Delete/{id}
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            // TODO: Implement logic to delete the user based on the provided id
+            return RedirectToAction("Index");
         }
 
 

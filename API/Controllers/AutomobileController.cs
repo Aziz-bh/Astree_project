@@ -228,7 +228,31 @@ namespace API.Controllers
             {
                 return NotFound($"No automobiles found for user ID {userId}.");
             }
-            return Ok(automobiles);
+                   var automobileDtos =
+                automobiles
+                    .Select(automobile =>
+                        new AutomobileDto {
+                            Id = automobile.Id,
+                            ContractType = automobile.ContractType,
+                            StartDate = automobile.StartDate,
+                            EndDate = automobile.EndDate,
+                            Quota = automobile.Quota,
+                            UserId = automobile.UserId,
+                            VehicleType = automobile.VehicleType,
+                            RegistrationNumber = automobile.RegistrationNumber,
+                            RegistrationDate = automobile.RegistrationDate,
+                            EnginePower = automobile.EnginePower,
+                            VehicleMake = automobile.VehicleMake,
+                            SeatsNumber = automobile.SeatsNumber,
+                            VehicleValue = automobile.VehicleValue,
+                            TrueVehicleValue = automobile.TrueVehicleValue,
+                            Guarantees = automobile.Guarantees
+                            // Ensure to map any additional fields if present
+                        })
+                    .ToList();
+
+            return Ok(automobileDtos);
+       
         }
 
         [HttpGet("mycontracts")]

@@ -71,7 +71,7 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
 
         // [Authorize(Roles = "Member, Admin")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserDto>> GetUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -105,7 +105,7 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
 
         // [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser([FromBody] User user)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] User user)
         {
             if (user == null)
             {

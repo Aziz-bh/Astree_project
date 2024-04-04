@@ -7,5 +7,6 @@ namespace ClientAstree.Contracts
         Task<List<UserVM>> GetUsersAsync();
 
         Task<UserVM> GetUserAsync(int id);
+        Task UsersDELETEAsync(int id);
     }
 }
