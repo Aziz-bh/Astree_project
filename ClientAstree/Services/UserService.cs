@@ -24,14 +24,7 @@ namespace ClientAstree.Services
         {
              AddBearerToken();
             var user = await _client.UsersGETAsync(id);
-            Console.WriteLine($"User: {user}, Role: {user.Cin}");
-             Console.WriteLine($"User: {user}, Role: {user.Gender}");
-              Console.WriteLine($"User: {user}, Role: {user.Gender}");
-               Console.WriteLine($"User: {user}, Role: {user.Roles}");
-                Console.WriteLine($"User: {user}, Role: {user.Gender}");
-                 Console.WriteLine($"User: {user}, Role: {user.Gender}");
-                  Console.WriteLine($"User: {user}, Role: {user.Gender}");
-                   Console.WriteLine($"User: {user}, Role: {user.Gender}");
+
                               var model =
                 new UserVM {
                     // Map your user data to the UserVM model
@@ -49,14 +42,6 @@ namespace ClientAstree.Services
                     // Continue mapping other fields
                 };
 
-                          Console.WriteLine($"User: {user}, Role: {user.Cin}");
-             Console.WriteLine($"User: {model}, Role: {model.Gender}");
-              Console.WriteLine($"model: {model}, Role: {model.Gender}");
-               Console.WriteLine($"model: {model}, Role: {model.Gender}");
-                Console.WriteLine($"model: {model}, Role: {model.Gender}");
-                 Console.WriteLine($"model: {model}, Role: {model.Gender}");
-                  Console.WriteLine($"model: {model}, Role: {model.Gender}");
-                   Console.WriteLine($"model: {model}, Role: {model.Gender}");
             return model;
         }
 

@@ -3648,7 +3648,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 200 || status_ == 204)
                         {
                             return;
                         }
@@ -4122,13 +4122,13 @@ namespace ClientAstree.Services.Base
     public enum CivilStatus
     {
 
-        _0 = 0,
+        Single,
 
-        _1 = 1,
+        Married,
 
-        _2 = 2,
+        Divorced,
 
-        _3 = 3,
+        Widowed,
 
     }
 
@@ -4641,11 +4641,11 @@ namespace ClientAstree.Services.Base
     public enum UserGender
     {
 
-        _0 = 0,
+        Male,
 
-        _1 = 1,
+        Female,
 
-        _2 = 2,
+        NA
 
     }
 

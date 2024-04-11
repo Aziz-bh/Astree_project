@@ -69,10 +69,11 @@ namespace ClientAstree.Controllers
         }
 
 
-        public IActionResult Login(string returnUrl = null)
-        {
-            return View();
-        }
+public IActionResult Login(string message = "")
+{
+    ViewBag.Message = message;
+    return View();
+}
 
          [HttpPost]
         public async Task<IActionResult> Login(LoginVM login, string returnUrl)

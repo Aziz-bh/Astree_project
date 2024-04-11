@@ -3,9 +3,16 @@
     ViewData["Title"] = "Login";
 }
 <div class="text-center">
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success my-0">
+        @ViewBag.Message
+    </div>
+}
   <div class="page-header header-filter my-0" filter-color="blue">
     <div class="page-header-image" style="background-image:url(/img/fam1.png)"></div>
     <div class="content">
+      @Html.Partial("_SideMenu")
       <div class="container d-flex justify-content-center align-items-center ">
         <div class="col-md-5 ml-auto mr-auto">
           <div class="card card-login card-plain">

@@ -1,4 +1,5 @@
 using ClientAstree.Models;
+using ClientAstree.Services.Base;
 
 namespace ClientAstree.Contracts
 {
@@ -6,6 +7,7 @@ namespace ClientAstree.Contracts
     {
   Task<bool> Authenticate(string email, string password);
         // Task<bool> Register(RegisterVM registration);
+        Task<bool> Register(RegisterDto registration);
         Task Logout();
     }
 }

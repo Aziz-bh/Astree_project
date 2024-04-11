@@ -58,19 +58,33 @@ namespace ClientAstree.Services
             }
         }
 
-        // public async Task<bool> Register(RegisterVM registration)
-        // {
+    public async Task<bool> Register(RegisterDto registration)
+    {
+        // Map the view model to DTO
+       // RegisterDto registrationRequest = _mapper.Map<RegisterDto>(registration);
 
-        //     RegistrationRequest registrationRequest = _mapper.Map<RegistrationRequest>(registration);
-        //     var response = await _client.RegisterAsync(registrationRequest);
+        try
+        {
+            // Make the asynchronous request to the registration API
+            var response = await _client.RegisterAsync(registration);
 
-        //     if (!string.IsNullOrEmpty(response.UserId))
-        //     {
-        //         await Authenticate(registration.Email, registration.Password);
-        //         return true;
-        //     }
-        //     return false;
-        // }
+            // Check if the account creation was successful
+            if (response!= null) // Assuming 'IsRegistered' is a bool indicating success
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it as necessary
+            Console.WriteLine($"Registration failed: {ex.Message}");
+            return false;
+        }
+    }
 
         public async Task Logout()
         {

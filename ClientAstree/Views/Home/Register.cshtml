@@ -2,71 +2,116 @@
     ViewData["Title"] = "Privacy Policy";
 }
 <div class="text-center">
+    @if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger my-0">
+        @foreach (var item in ViewData.ModelState.Values)
+        {
+            foreach (var error in item.Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        }
+    </div>
+}
     <div class="page-header header-filter my-0" filter-color="blue">
         <div class="page-header-image" style="background-image:url(/img/fam1.png)"></div>
         <div class="content">
-            <div class="container d-flex justify-content-center align-items-center ">
-                <div class="col-md-8 mr-auto">
-                    <div class="card card-signup">
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="col-lg-10 mr-auto ml-auto">
+                    <div class="card card-signup" style="max-width: 660px; width: 100%;">
                         <div class="card-body">
-                                                          <div class="progress-container progress-primary">
-  <span class="progress-badge text-center">Register</span>
-  <div class="progress">
-    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-      <span class="progress-value">0%</span>
-    </div>
-  </div>
-</div>
-                            <form id="registrationForm">
-                                <!-- Section 1 -->
-                                <div class="form-section">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="First Name..." autocomplete="fullname" required>
+                            <h4 class="card-title text-center text-black">Register</h4>
+                            <div class="step-indicators text-center mb-4">
+                                <img src="/img/register/p1.png" alt="Step 1" class="step-img" data-step="1">
+                                <span class="connector"></span>
+                                <img src="/img/register/p2.png" alt="Step 2" class="step-img" data-step="2">
+                                <span class="connector"></span>
+                                <img src="/img/register/p3.png" alt="Step 3" class="step-img" data-step="3">
+                            </div>
+                                <form id="registrationForm" asp-action="Register" asp-controller="Home" method="post">
+                                    <!-- Step 1: Email and Password -->
+                                    <div class="form-section">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="inputEmail" class="text-black">Email</label>
+                                                <input type="email" class="form-control" id="inputEmail" name="Email" placeholder="Email" required>
+                                                    @if (ViewBag.EmailError != null)
+                                                    {
+                                                        <span class="text-danger">@ViewBag.EmailError</span>
+                                                    }
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="inputPassword" class="text-black">Password</label>
+                                                <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password" required>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="next-btn btn btn-primary">Next</button>
                                     </div>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Last Name..." autocomplete="name" required>
+                                    <!-- Step 2: First Name, Last Name, CIN, Phone Number -->
+                                    <div class="form-section" style="display:none">
+                                        <div class="form-group">
+                                            <label for="inputFirstName" class="text-black">First Name</label>
+                                            <input type="text" class="form-control" id="inputFirstName" name="FirstName" placeholder="First Name..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputLastName" class="text-black">Last Name</label>
+                                            <input type="text" class="form-control" id="inputLastName" name="LastName" placeholder="Last Name..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputCIN" class="text-black">CIN</label>
+                                            <input type="text" class="form-control" id="inputCIN" name="Cin" placeholder="CIN..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPhoneNumber" class="text-black">Phone Number</label>
+                                            <input type="tel" class="form-control" id="inputPhoneNumber" name="PhoneNumber" placeholder="Your Phone Number..." required>
+                                        </div>
+                                        <button type="button" class="next-btn btn btn-primary">Next</button>
                                     </div>
-                                    <div class="input-group">
-                                        <input type="email" class="form-control" placeholder="Your Email..." autocomplete="email" required>
+                                    <!-- Step 3: Birth Date, Nationality, Civility, and Gender -->
+                                    <div class="form-section" style="display:none">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="inputBirthDate" class="text-black">Birth Date</label>
+                                                <input type="date" class="form-control" id="inputBirthDate" name="BirthDate" placeholder="Birth Date..." required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputNationality" class="text-black">Nationality</label>
+                                                <input type="text" class="form-control" id="inputNationality" name="Nationality" placeholder="Nationality..." required>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="inputCivility" class="text-black">Civility</label>
+                                                <select id="inputCivility" class="form-control" name="Civility" required>
+                                                    <option value="">Select Civility...</option>
+                                                    @if (ViewBag.CivilityOptions != null)
+                                                    {
+                                                        foreach (var option in ViewBag.CivilityOptions)
+                                                        {
+                                                            <option value="@option.Value">@option.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inputGender" class="text-black">Gender</label>
+                                                <select id="inputGender" class="form-control" name="Gender" required>
+                                                    <option value="">Select Gender...</option>
+                                                    @if (ViewBag.GenderOptions != null)
+                                                    {
+                                                        foreach (var option in ViewBag.GenderOptions)
+                                                        {
+                                                            <option value="@option.Value">@option.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Register</button>
                                     </div>
-                                    <button type="button" class="next-btn btn btn-primary">Next</button>
-                                </div>
-                                <!-- Section 2 -->
-                                <div class="form-section" style="display:none">
-                                    <div class="input-group">
-                                        <input type="password" class="form-control" placeholder="Password..." autocomplete="new-password" required>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="CIN..." autocomplete="off" required>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="tel" class="form-control" placeholder="Your Phone Number..." autocomplete="tel" required>
-                                    </div>
-                                    <button type="button" class="next-btn btn btn-primary">Next</button>
-                                </div>
-                                <!-- Section 3 -->
-                                <div class="form-section" style="display:none">
-                                    <div class="input-group">
-                                        <input type="date" class="form-control" placeholder="Birth Date..." autocomplete="bday" required>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Nationality..." autocomplete="off" required>
-                                    </div>
-                                    <div class="input-group">
-                                        <select class="form-control" required>
-                                            <option value="">Select Civility...</option>
-                                            <!-- Populate options here -->
-                                        </select>
-                                    </div>
-                                    <div class="input-group">
-                                        <select class="form-control" required>
-                                            <option value="">Select Gender...</option>
-                                            <!-- Populate options here -->
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
-                            </form>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -75,48 +120,110 @@
     </div>
 </div>
 
+
+<style>
+.step-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 20px auto;
+}
+
+.connector {
+    width: 40px; /* Adjust if you want longer or shorter lines between images */
+    height: 2px;
+    background-color: #ccc; /* Line color */
+    display: inline-block;
+}
+
+.step-img {
+    width: 50px; /* Image width */
+    height: 50px; /* Image height */
+    margin: 0 30px; /* Increased margin for more space */
+    z-index: 1;
+    transition: filter 0.3s ease-in-out;
+}
+</style>
+
+
+
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registrationForm');
+    form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    }, false);
+});
+
 document.addEventListener('DOMContentLoaded', function() {
-    var form = document.getElementById('registrationForm');
     var sections = document.querySelectorAll('.form-section');
+    var nextButtons = document.querySelectorAll('.next-btn');
     var currentSectionIndex = 0;
+
+    function updateStepIndicators(currentIndex) {
+        var stepImages = document.querySelectorAll('.step-img');
+        stepImages.forEach((img, index) => {
+            img.style.filter = index <= currentIndex ? '' : 'grayscale(100%)';
+        });
+    }
 
     function showSection(index) {
         sections.forEach((section, i) => {
             section.style.display = i === index ? 'block' : 'none';
         });
-        currentSectionIndex = index;
+        updateStepIndicators(index);
     }
 
-    form.addEventListener('click', function(e) {
-        if (!e.target.classList.contains('next-btn') && e.target.type !== 'submit') return;
+    function elementExistsAndValueMatches(elementId, regex) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+            console.error(`Element with ID ${elementId} not found.`);
+            return false;
+        }
+        return regex.test(element.value);
+    }
 
-        var inputs = sections[currentSectionIndex].querySelectorAll('input, select');
-        var isValid = Array.from(inputs).every(input => input.checkValidity());
+    function validateCurrentSection(index) {
+        let isValid = true;
 
-        if (!isValid) {
-            e.preventDefault(); // Prevent moving to the next section or submitting
-            // Optionally, display error messages or highlight invalid fields
-            inputs.forEach(input => {
-                if (!input.checkValidity()) {
-                    input.classList.add('is-invalid'); // Add error class for styling
+        if (index === 0) {
+            const email = document.getElementById('inputEmail');
+            const password = document.getElementById('inputPassword');
+             if (!password || password.value.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                isValid = false;
+            }
+        } else if (index === 1) {
+            if (!elementExistsAndValueMatches('inputCIN', /^\d{8}$/) ||
+                !elementExistsAndValueMatches('inputPhoneNumber', /^\d{8,9}$/)) {
+                alert('CIN must be exactly 8 digits and Phone Number must be 8 or 9 digits.');
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
+    nextButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (validateCurrentSection(currentSectionIndex)) {
+                let nextIndex = currentSectionIndex + 1;
+                if (nextIndex < sections.length) {
+                    currentSectionIndex = nextIndex;
+                    showSection(currentSectionIndex);
                 }
-            });
-            return;
-        }
-
-        // Optionally, remove error styling if present
-        inputs.forEach(input => input.classList.remove('is-invalid'));
-
-        if (e.target.classList.contains('next-btn')) {
-            e.preventDefault(); // Prevent default button action
-            showSection(currentSectionIndex + 1);
-        }
-
-        // No need to handle submit button here; form will submit if all fields are valid
+            }
+        });
     });
 
-    // Initially show the first section
     showSection(0);
 });
+
+
 </script>
