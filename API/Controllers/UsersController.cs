@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    // [Authorize]
+     [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly AstreeDbContext _context;

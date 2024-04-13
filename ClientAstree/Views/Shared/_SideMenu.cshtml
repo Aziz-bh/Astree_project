@@ -1,37 +1,115 @@
-@* Check if the user is authenticated to show the menu *@
-@if (User.Identity.IsAuthenticated)
-{
-    <div id="sideMenu" class="side-menu">
-        <ul class="menu-list">
-            <li><a href="/home">Home</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/settings">Settings</a></li>
-            <li><a href="/help">Help</a></li>
-            @* Add more menu items as needed *@
-        </ul>
-    </div>
 
-    <style>
-        .side-menu {
-            width: 200px;
-            background-color: #f8f9fa;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-        }
-        .menu-list {
-            list-style: none;
-            padding: 0;
-        }
-        .menu-list li {
-            padding: 10px 0;
-        }
-        .menu-list li a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-        .menu-list li a:hover {
-            text-decoration: underline;
-        }
-    </style>
+<div id="side-menu" class="side-menu">
+    <div class="user-info">
+        @if (User.Identity.IsAuthenticated)
+        {
+          
+            <img src="/img/nav/user.png" alt="User Image" class="user-image" />
+            <span class="user-name">@User.Identity.Name</span>
+            @foreach (var claim in User.Claims)
+{
+    @if(claim.Type=="role"){
+        
+    <div>
+        <span>@claim.Type: </span>
+        <span>@claim.Value</span>
+    </div>
+    
+    }
 }
+            
+        }
+        else
+        {
+            <img src="path_to_default_image.png" alt="Default Image" class="user-image" />
+            <span class="user-name">Guest</span>
+        }
+    </div>
+    <ul class="nav nav-pills nav-pills-info flex-column">
+                    @foreach (var claim in User.Claims)
+{
+    @if(claim.Type=="role"){
+         @if(claim.Value=="Member"){
+                 
+        <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">My Dues</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">My Contracts</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Quotes</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Simulators</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">My Claims</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#">Agencies</a></li>
+        
+
+    }
+            else
+        {
+              <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Contracts</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#">Claims</a></li>
+        }
+    }
+}
+ 
+    </ul>
+</div>
+
+<style>
+
+.side-menu {
+    position: sticky;
+    top: 0;  /* Ensures it sticks to the top of the viewport */
+    left: 0; /* Position on the left */
+    width: 200px;
+    height: 100vh; /* Full height of the viewport */
+    background-color: #fff;
+    box-shadow: none; /* Removes the shadow */
+    overflow-y: auto; /* Allows scrolling within the side menu */
+}
+
+.side-menu .user-image {
+    width: 50px; /* Adjusts the width of the image */
+    height: 50px; /* Adjusts the height of the image */
+    border-radius: 50%; /* Optional: makes the image circular */
+    display: block; /* Centers the image in its container */
+    margin: 0 auto 10px; /* Centers the image horizontally and adds space below */
+}
+
+
+.side-menu .user-info {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center; /* Centers the user information */
+}
+
+.side-menu .nav {
+    display: block;
+    flex-grow: 1; /* Allows the navigation to fill available space */
+    overflow-y: auto; /* Adds scroll to nav if items exceed the available space */
+}
+
+.side-menu .nav-item {
+    padding: 10px 15px;
+}
+
+.side-menu .nav-link {
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.side-menu .nav-link:hover {
+    background-color: #f5f5f5;
+}
+
+
+.side-menu .footer-link {
+    color: #333;
+    transition: color 0.3s ease;
+    padding: 0 5px; /* Adds padding around the links for better touch targets */
+}
+
+.side-menu .footer-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+</style>

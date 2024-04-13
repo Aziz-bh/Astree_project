@@ -39,6 +39,14 @@ namespace ClientAstree.Services
                     var tokenContent = _tokenHandler.ReadJwtToken(authenticationResponse.Token);
                     var claims = ParseClaims(tokenContent);
                     var user = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
+                    Console.WriteLine($"authenticationResponse: {user}");
+                     Console.WriteLine($"authenticationResponse: {user}");
+                      Console.WriteLine($"authenticationResponse: {user}");
+                       Console.WriteLine($"authenticationResponse: {user}");
+                               foreach (var claim in user.Claims)
+            {
+                Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            }
 
                     if (_httpContextAccessor.HttpContext != null)
                     {
