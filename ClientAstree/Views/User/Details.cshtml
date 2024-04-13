@@ -1,4 +1,4 @@
-@model ClientAstree.Models.UserVM
+@model ClientAstree.Models.UserDetailsViewModel
 
 @{
     ViewData["Title"] = "User Details";
@@ -26,45 +26,67 @@
     <h4>User Information</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Id)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Id)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Id)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Id)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Email)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Email)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.FirstName)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.FirstName)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.FirstName)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.FirstName)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.LastName)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.LastName)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.LastName)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.LastName)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.PhoneNumber)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.PhoneNumber)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Roles)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Roles)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Roles)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Roles)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CIN)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.CIN)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.CIN)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.CIN)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.BirthDate)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.BirthDate)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.BirthDate)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.BirthDate)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Nationality)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Nationality)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Nationality)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Nationality)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Gender)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Gender)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Gender)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Gender)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Civility)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.Civility)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Civility)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Civility)</dd>
     </dl>
 </div>
 
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.User.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>
+<h3>Automobile Contracts</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Contract ID</th>
+            <th>Vehicle Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var auto in Model.AutomobileContracts)
+        {
+            <tr>
+                <td>@auto.Id</td>
+                <td>@auto.VehicleType</td>
+                <td>@auto.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@auto.EndDate.ToString("yyyy-MM-dd")</td>
+            </tr>
+        }
+    </tbody>
+</table>
 </div>
 </div>
 </div>

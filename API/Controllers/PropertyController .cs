@@ -31,14 +31,14 @@ namespace API.Controllers
 
         // Example: Get all properties
         [HttpGet]
-        public async Task<IActionResult> GetAllProperties()
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllProperties()
         {
             var properties = await _propertyService.GetAllPropertiesAsync();
             return Ok(properties);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPropertyById(long id)
+        public async Task<ActionResult<PropertyDto>> GetPropertyById(long id)
         {
             var property = await _propertyService.GetPropertyByIdAsync(id);
             if (property == null)
@@ -67,7 +67,7 @@ namespace API.Controllers
 
         // Example: Create a new property
         [HttpPost]
-        public async Task<IActionResult>
+        public async Task<ActionResult<PropertyDto>>
         CreateProperty([FromBody] PropertyDto propertyDto)
         {
             if (!ModelState.IsValid)
@@ -179,7 +179,7 @@ namespace API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetPropertiesByUserId(int userId)
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetPropertiesByUserId(int userId)
         {
             var properties =
                 await _propertyService.GetPropertiesByUserIdAsync(userId);
@@ -211,7 +211,7 @@ namespace API.Controllers
         }
 
         [HttpGet("mycontracts")]
-        public async Task<IActionResult> mycontracts()
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> mycontracts()
         {
             var userEmail =
                 HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

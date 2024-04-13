@@ -28,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAutomobiles()
+        public async Task<ActionResult<IEnumerable<AutomobileDto>>> GetAllAutomobiles()
         {
             var automobiles = await _automobileService.GetAllAutomobilesAsync();
 
@@ -60,7 +60,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAutomobileById(long id)
+        public async Task<ActionResult<AutomobileDto>> GetAutomobileById(long id)
         {
             var automobile =
                 await _automobileService.GetAutomobileByIdAsync(id);
@@ -94,7 +94,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult>
+        public async Task<ActionResult<AutomobileDto>>
         CreateAutomobile([FromBody] AutomobileDto automobileDto)
         {
             if (!ModelState.IsValid)
@@ -220,7 +220,7 @@ namespace API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetAutomobilesByUserId(int userId)
+        public async Task<ActionResult<IEnumerable<AutomobileDto>>> GetAutomobilesByUserId(int userId)
         {
             var automobiles =
                 await _automobileService.GetAutomobilesByUserIdAsync(userId);
@@ -256,7 +256,7 @@ namespace API.Controllers
         }
 
         [HttpGet("mycontracts")]
-        public async Task<IActionResult> mycontracts()
+        public async Task<ActionResult<IEnumerable<AutomobileDto>>> mycontracts()
         {
             var userEmail =
                 HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

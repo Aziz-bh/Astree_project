@@ -1,5 +1,6 @@
 using ClientAstree.Contracts;
 using ClientAstree.Models;
+using ClientAstree.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientAstree.Controllers
@@ -8,11 +9,13 @@ namespace ClientAstree.Controllers
     {
         private readonly IUserService _userService;
           private readonly IAuthenticationService _authService;
+            private readonly IAutomobileService _automobileService;
 
-        public UserController(IUserService leaveTypeService,IAuthenticationService authService)
+        public UserController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService)
         {
             this._userService = leaveTypeService;
             this._authService = authService;
+            this._automobileService=automobileService;
         }
 
         // GET: /User
@@ -26,6 +29,8 @@ namespace ClientAstree.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var user = await _userService.GetUserAsync(id); // Implement GetUserById in your service
+           var automobileContracts=await _automobileService.GetUserAutomobiles(id);
+           
             if (user == null)
             {
                 return NotFound();
@@ -47,8 +52,13 @@ namespace ClientAstree.Controllers
                     Civility = user.Civility
                     // Continue mapping other fields
                 };
+                    var viewModel = new UserDetailsViewModel
+    {
+        User = model,
+        AutomobileContracts = automobileContracts
+    };
 
-            return View(model);
+            return View(viewModel);
         }
               //  GET: /User/Delete/{id}
         public async Task<IActionResult> Delete(int id)
