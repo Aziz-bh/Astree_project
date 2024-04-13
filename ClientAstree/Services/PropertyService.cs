@@ -1,5 +1,6 @@
 using AutoMapper;
 using ClientAstree.Contracts;
+using ClientAstree.Models;
 using ClientAstree.Services.Base;
 
 namespace ClientAstree.Services
@@ -15,5 +16,12 @@ namespace ClientAstree.Services
             this._mapper = mapper;
             this._httpclient = httpclient;
         }
+
+        public Task<List<PropertyVM>> GetMyPropertyContractsAsync()
+        {
+             AddBearerToken();
+            throw new NotImplementedException();
+        }
+
     }
 }

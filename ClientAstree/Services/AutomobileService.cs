@@ -1,5 +1,6 @@
 using AutoMapper;
 using ClientAstree.Contracts;
+using ClientAstree.Models;
 using ClientAstree.Services.Base;
 
 namespace ClientAstree.Services
@@ -15,6 +16,15 @@ namespace ClientAstree.Services
             this._mapper = mapper;
             this._httpclient = httpclient;
         }
-        
+
+        public async Task<List<AutomobileVM>> GetMyAutomobileContractsAsync()
+        { 
+            AddBearerToken();
+               var Automobiles = await _client.MycontractsAsync();
+            
+            return _mapper.Map<List<AutomobileVM>>(Automobiles);
+            throw new NotImplementedException();
+        }
+
     }
 }
