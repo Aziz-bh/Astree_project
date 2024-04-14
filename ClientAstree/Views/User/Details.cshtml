@@ -65,28 +65,187 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.User.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>
-<h3>Automobile Contracts</h3>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Contract ID</th>
-            <th>Vehicle Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var auto in Model.AutomobileContracts)
+   <h3>Automobile Contracts</h3>
+@if (Model.AutomobileContracts.Any())
+{
+    <div class="form-group">
+        <input type="text" class="form-control" id="searchInputAuto" placeholder="Search Automobiles">
+    </div>
+    <div class="form-group">
+        <label for="startAutoDate">Start Date:</label>
+        <input type="date" id="startAutoDate" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="endAutoDate">End Date:</label>
+        <input type="date" id="endAutoDate" class="form-control">
+    </div>
+    <button id="filterBtnAuto" class="btn btn-primary">Filter Auto</button>
+    <div class="row" id="automobileCards">
+        @foreach (var auto in Model.AutomobileContracts)
         {
-            <tr>
-                <td>@auto.Id</td>
-                <td>@auto.VehicleType</td>
-                <td>@auto.StartDate.ToString("yyyy-MM-dd")</td>
-                <td>@auto.EndDate.ToString("yyyy-MM-dd")</td>
-            </tr>
+            <div class="col-md-4 automobile-card" 
+            data-startdate="@auto.StartDate.ToString("yyyy-MM-dd")"
+            data-enddate="@auto.EndDate.ToString("yyyy-MM-dd")">
+            
+            <div class="card" style="width: 20rem;">
+<img class="card-img-top" src="@(auto.VehicleType == "Business" ? "/img/contract/auto/businessCar.jpg" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
+                <div class="card-body">
+                    <h4 class="card-title">@auto.VehicleMake @auto.Model</h4>
+                    <p class="card-text">
+                        Type: @auto.VehicleType <br>
+                        Start Date: @auto.StartDate.ToString("yyyy-MM-dd") <br>
+                        End Date: @auto.EndDate.ToString("yyyy-MM-dd") <br>
+                        Quota: @auto.Quota<br>
+                        guarantees:     @foreach (var guarantee in auto.GuaranteesList)
+                                            {
+                                                <span class="badge badge-success">@guarantee</span>
+
+                                            }
+                    </p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+    <nav aria-label="Automobiles Page navigation">
+        <ul class="pagination" id="autoPagination"></ul>
+    </nav>
+}
+else{
+     <p>No contracts available.</p>
+}
+
+
+<h3>Property Contracts</h3>
+@if (Model.PropertyContracts.Any())
+{
+    <div class="form-group">
+        <input type="text" class="form-control" id="searchInputProp" placeholder="Search Properties">
+    </div>
+    <div class="form-group">
+        <label for="startPropDate">Start Date:</label>
+        <input type="date" id="startPropDate" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="endPropDate">End Date:</label>
+        <input type="date" id="endPropDate" class="form-control">
+    </div>
+    <button id="filterBtnProp" class="btn btn-primary">Filter Property</button>
+    <div class="row" id="propertyCards">
+        @foreach (var prop in Model.PropertyContracts)
+        {
+            <div class="col-md-4 property-card" 
+            data-startdate="@prop.StartDate.ToString("yyyy-MM-dd")"
+            data-enddate="@prop.EndDate.ToString("yyyy-MM-dd")">
+                            <div class="card" style="width: 20rem;">
+                                <img class="card-img-top" src="@(prop.Type == "Commercial" ? "/img/commercial.png" : "/img/residential.png")" alt="Property Image">
+                                <div class="card-body">
+                                    <h4 class="card-title">@prop.Location</h4>
+                                    <p class="card-text">
+                                        Type: @prop.Type <br>
+                                        Start Date: @prop.StartDate.ToString("yyyy-MM-dd") <br>
+                                        End Date: @prop.EndDate.ToString("yyyy-MM-dd") <br>
+                                        Value: @prop.PropertyValue <br>
+                                        Coverages: @String.Join(", ", prop.CoveragesList)
+                                    </p>
+                                    <a href="#" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                    <nav aria-label="Properties Page navigation">
+        <ul class="pagination" id="propPagination"></ul>
+    </nav>
+            }
+            else
+            {
+                <p>No property contracts available.</p>
+            }
+</div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const autoCards = Array.from(document.querySelectorAll('.automobile-card'));
+    const propCards = Array.from(document.querySelectorAll('.property-card'));
+
+    setupSearchAndFilter(autoCards, 'Auto', 3);
+    setupSearchAndFilter(propCards, 'Prop', 3);
+
+    function setupSearchAndFilter(cards, type, itemsPerPage) {
+        const searchInput = document.getElementById(`searchInput${type}`);
+        const filterBtn = document.getElementById(`filterBtn${type}`);
+        const paginationElement = document.getElementById(`${type.toLowerCase()}Pagination`);
+
+        if (searchInput && filterBtn && cards.length > 0) {
+            searchInput.addEventListener('keyup', () => {
+                filterAndPaginate(cards, type, itemsPerPage);
+            });
+
+            filterBtn.addEventListener('click', () => {
+                filterAndPaginate(cards, type, itemsPerPage);
+            });
+
+            // Initialize pagination on page load
+            filterAndPaginate(cards, type, itemsPerPage);
         }
-    </tbody>
-</table>
-</div>
-</div>
-</div>
+    }
+
+    function filterAndPaginate(cards, type, itemsPerPage) {
+        const startDateInput = document.getElementById(`start${type}Date`);
+        const endDateInput = document.getElementById(`end${type}Date`);
+        const searchTerm = document.getElementById(`searchInput${type}`).value.toLowerCase();
+        const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+        const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+
+        // Filter cards
+        const filteredCards = cards.filter(card => {
+            const cardStartDate = new Date(card.dataset.startdate);
+            const cardEndDate = new Date(card.dataset.enddate);
+            const text = card.textContent.toLowerCase();
+            return text.includes(searchTerm) &&
+                   (!startDate || cardStartDate >= startDate) &&
+                   (!endDate || cardEndDate <= endDate);
+        });
+
+        // Setup Pagination
+        setupPagination(filteredCards, document.getElementById(`${type.toLowerCase()}Pagination`), itemsPerPage);
+    }
+
+    function setupPagination(cards, paginationElement, itemsPerPage) {
+        paginationElement.innerHTML = ''; // Clear existing pagination links
+        const pageCount = Math.ceil(cards.length / itemsPerPage);
+
+        for (let i = 1; i <= pageCount; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.classList.add('page-item');
+            const pageLink = document.createElement('a');
+            pageLink.classList.add('page-link');
+            pageLink.href = '#';
+            pageLink.innerText = i;
+            pageLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                showPage(cards, i, itemsPerPage);
+            });
+            pageItem.appendChild(pageLink);
+            paginationElement.appendChild(pageItem);
+        }
+
+        // Initially display the first page
+        showPage(cards, 1, itemsPerPage);
+    }
+
+    function showPage(cards, pageNumber, itemsPerPage) {
+        const start = (pageNumber - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        cards.forEach((card, index) => {
+            card.style.display = (index >= start && index < end) ? 'block' : 'none';
+        });
+    }
+});
+</script>
+
+
+

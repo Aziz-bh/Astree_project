@@ -4,5 +4,6 @@ namespace ClientAstree.Models
     {
             public UserVM User { get; set; }
     public List<AutomobileVM> AutomobileContracts { get; set; }
+    public List<PropertyVM> PropertyContracts { get; set; }
     }
 }

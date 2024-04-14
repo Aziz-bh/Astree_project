@@ -10,12 +10,14 @@ namespace ClientAstree.Controllers
         private readonly IUserService _userService;
           private readonly IAuthenticationService _authService;
             private readonly IAutomobileService _automobileService;
+            private readonly IPropertyService _propertyService;
 
-        public UserController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService)
+        public UserController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService)
         {
             this._userService = leaveTypeService;
             this._authService = authService;
             this._automobileService=automobileService;
+            this._propertyService=propertyService;
         }
 
         // GET: /User
@@ -30,6 +32,9 @@ namespace ClientAstree.Controllers
         {
             var user = await _userService.GetUserAsync(id); // Implement GetUserById in your service
            var automobileContracts=await _automobileService.GetUserAutomobiles(id);
+           var propertyContracts=await _propertyService.GetUserPropertys(id);
+
+           
            
             if (user == null)
             {
@@ -55,7 +60,8 @@ namespace ClientAstree.Controllers
                     var viewModel = new UserDetailsViewModel
     {
         User = model,
-        AutomobileContracts = automobileContracts
+        AutomobileContracts = automobileContracts,
+        PropertyContracts = propertyContracts
     };
 
             return View(viewModel);

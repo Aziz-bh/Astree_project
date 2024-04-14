@@ -66,5 +66,18 @@ public async Task UpdatePropertyAsync(PropertyVM property)
         await _httpclient.PropertyDELETEAsync(id);
     }
 
+        public async Task<List<PropertyVM>> GetUserPropertys(int id)
+        {
+                       AddBearerToken();
+            var Propertys = await _client.User2Async(id);
+                        if (Propertys != null)
+    {
+            foreach (var Property in Propertys)
+            {
+                Console.WriteLine($"Property: ID={Property.Id}, Type={Property.Type}, Make={Property.Location}, Model={Property.YearOfConstruction}, Quota={Property.Quota}");
+            }}
+
+            return _mapper.Map<List<PropertyVM>>(Propertys);
+        }
     }
 }
