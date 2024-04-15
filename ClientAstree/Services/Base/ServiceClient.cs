@@ -504,6 +504,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -586,6 +589,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -1046,6 +1052,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             if(status_ == 404 ){
@@ -1131,6 +1140,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -1213,6 +1225,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             if(status_ == 404 ){
@@ -1454,6 +1469,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             if(status_ == 404 ){
@@ -1535,6 +1553,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             if(status_ == 404 ){
@@ -1773,6 +1794,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -1931,6 +1955,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2009,6 +2036,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2116,6 +2146,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2194,6 +2227,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2352,6 +2388,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2434,6 +2473,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2769,6 +2811,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2851,6 +2896,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -2933,6 +2981,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3171,6 +3222,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3249,6 +3303,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3404,6 +3461,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3486,6 +3546,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3568,6 +3631,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -3878,6 +3944,9 @@ namespace ClientAstree.Services.Base
                             }
                             return objectResponse_.Object;
                         }
+                         if(status_ == 404 ){
+                                return null;
+                            }
                         else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
