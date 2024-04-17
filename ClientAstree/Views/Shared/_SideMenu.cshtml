@@ -1,74 +1,72 @@
 
-<div id="side-menu" class="side-menu">
-    <div class="user-info">
+<div id="side-menu" class="sidebar side-menu" data-color="blue">
+    <div class="logo user-info">
         @if (User.Identity.IsAuthenticated)
         {
           
-            <img src="/img/nav/user.png" alt="User Image" class="user-image" />
-            <span class="user-name">@User.Identity.Name</span>
+      
+            <span class="simple-text logo-mini">@User.Identity.Name</span>
             @foreach (var claim in User.Claims)
 {
     @if(claim.Type=="role"){
         
-    <div>
+    <div class="simple-text logo-normal">
         <span>@claim.Type: </span>
         <span>@claim.Value</span>
     </div>
-    
+
     }
 }
             
         }
         else
         {
-            <img src="path_to_default_image.png" alt="Default Image" class="user-image" />
+            
             <span class="user-name">Guest</span>
         }
     </div>
-    <ul class="nav nav-pills nav-pills-info flex-column">
+
+<div class="sidebar-wrapper" id="sidebar-wrapper">
+
+    <ul class="nav  nav-pills-info flex-column">
                     @foreach (var claim in User.Claims)
 {
     @if(claim.Type=="role"){
          @if(claim.Value=="Member"){
                  
-        <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">My Dues</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">My Contracts</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Quotes</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Simulators</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">My Claims</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Agencies</a></li>
+        <li class=""><a class="nav-link " href="#"><p>Dashboard</p></a></li>
+        <li class=""><a class="nav-link " href="#"><p>My Dues</p></a></li>
+        <li class=""><a class="nav-link " href="#"><p>My Contracts</p></a></li>
+        <li class=""><a class="nav-link " href="#"><p>Quotes</p></a></li>
+        <li class=""><a class="nav-link " href="#"><p>Simulators</p></a></li>
+        <li class=""><a class="nav-link " href="#"><p>My Claims</p></a></li>
+        <li class=""><a class="nav-link " href="#"><p>Agencies</p></a></li>
         
 
     }
             else
         {
-              <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#">Contracts</a></li>
-            <li class="nav-item"><a class="nav-link active" href="#">Claims</a></li>
+              <li class=""><a class="nav-link " href="#"><p>Dashboard</p></a></li>
+            <li class=""><a class="nav-link " href="#"><p>Contracts</p></a></li>
+            <li class=""><a class="nav-link " href="#"><p>Claims</p></a></li>
         }
     }
 }
  
     </ul>
 </div>
+</div>
 
 <style>
 
 .side-menu {
     position: sticky;
-    top: 0;  /* Ensures it sticks to the top of the viewport */
-    left: 0; /* Position on the left */
-    width: 200px;
-    height: 100vh; /* Full height of the viewport */
-    background-color: #fff;
-    box-shadow: none; /* Removes the shadow */
-    overflow-y: auto; /* Allows scrolling within the side menu */
+
 }
 
 .side-menu .user-image {
-    width: 50px; /* Adjusts the width of the image */
-    height: 50px; /* Adjusts the height of the image */
+    width: 50px !important; /* Adjusts the width of the image */
+    height: 50px !important; /* Adjusts the height of the image */
     border-radius: 50%; /* Optional: makes the image circular */
     display: block; /* Centers the image in its container */
     margin: 0 auto 10px; /* Centers the image horizontally and adds space below */

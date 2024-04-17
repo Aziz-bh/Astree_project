@@ -1,0 +1,38 @@
+@model IEnumerable<ClientAstree.Models.AutomobileVM>
+
+@{
+    ViewData["Title"] = "Automobile Contracts";
+}
+
+<h2>Automobile Contracts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Vehicle Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Quota</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VehicleMake</td>
+                <td>@item.Model</td>
+                <td>@item.VehicleType</td>
+                <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.Quota</td>
+                <td>
+                    <a href="#" class="btn btn-primary">Edit</a> |
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

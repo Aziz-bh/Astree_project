@@ -234,11 +234,17 @@ namespace API.Controllers
                     .Select(property =>
                         new PropertyDto {
                             // Assign all other necessary fields from the property to the DTO
-                            Location = property.Location,
-                            Type = property.Type,
-                            YearOfConstruction = property.YearOfConstruction,
-                            PropertyValue = property.PropertyValue,
-                            Coverage = property.Coverage
+                              Id = property.Id,
+                        ContractType = property.ContractType,
+                        StartDate = property.StartDate,
+                        EndDate = property.EndDate,
+                        Quota = property.Quota,
+                        Location = property.Location,
+                        Type = property.Type,
+                        YearOfConstruction = property.YearOfConstruction,
+                        PropertyValue = property.PropertyValue,
+                        Coverage = property.Coverage,
+                        UserId = property.UserId 
                             // Make sure to include any additional fields that PropertyDto expects
                             // and are available in the Property entity
                         })

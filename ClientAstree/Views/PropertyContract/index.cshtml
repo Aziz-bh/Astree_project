@@ -1,0 +1,36 @@
+@model IEnumerable<ClientAstree.Models.PropertyVM>
+
+@{
+    ViewData["Title"] = "Property Contracts";
+}
+
+<h2>Property Contracts</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Location</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Location</td>
+                <td>@item.Type</td>
+                <td>@item.PropertyValue</td>
+                <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+                <td>
+                    <a href="#" class="btn btn-primary">Edit</a> |
+                    <a href="#" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
