@@ -34,7 +34,17 @@ namespace ClientAstree.Services
     public async Task<PropertyVM> CreatePropertyAsync(PropertyVM property)
     {
         AddBearerToken();
-        var dto = _mapper.Map<PropertyDto>(property);
+        // var dto = _mapper.Map<PropertyDto>(property);
+               var dto = new PropertyDto
+        {
+            StartDate = property.StartDate,
+            EndDate = property.EndDate,
+            Location = property.Location,
+            Type = Enum.Parse<PropertyType>(property.Type), // Convert string to enum; ensure this matches the enum definition
+            YearOfConstruction = property.YearOfConstruction,
+            PropertyValue = property.PropertyValue,
+            Coverage = Enum.Parse<Coverage>(property.Coverage), // Convert string to enum; adjust if Coverage is not an enum
+        };
         var createdDto = await _httpclient.PropertyPOSTAsync(dto);
         return _mapper.Map<PropertyVM>(createdDto);
     }

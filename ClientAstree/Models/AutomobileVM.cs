@@ -5,7 +5,7 @@ namespace ClientAstree.Models
     public class AutomobileVM
     {
     public long Id { get; set; }
-    public string ContractType { get; set; } // Changed from Enum to String
+    public string ContractType { get; set; }= "0";  // Changed from Enum to String
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }
     public float Quota { get; set; }
@@ -20,6 +20,6 @@ namespace ClientAstree.Models
     public float VehicleValue { get; set; }
     public float TrueVehicleValue { get; set; }
     public string Guarantees { get; set; } // Changed from Enum to String
-    public ICollection<string> GuaranteesList { get; set; }
+    public ICollection<string> GuaranteesList { get; set; }= new List<string>(); 
     }
 }

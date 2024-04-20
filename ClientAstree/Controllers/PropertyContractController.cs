@@ -30,21 +30,34 @@ public async Task<IActionResult> Index()
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new PropertyVM()); // Pass a new ViewModel to ensure the form is clean.
+            return View(new PropertyVM());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PropertyVM model)
         {
+            Console.WriteLine($"Creating Property: Location={model.Location}, Value={model.PropertyValue}, Start={model.StartDate}, End={model.EndDate}, Type={model.Type}, Coverage={model.Coverage}");
+
             if (ModelState.IsValid)
             {
                 var createdProperty = await _propertyService.CreatePropertyAsync(model);
                 if (createdProperty != null)
                 {
-                    return RedirectToAction("Index"); // Assuming there is an Index view to list properties
+                    return RedirectToAction(nameof(Index)); // Navigate to the listing page upon successful creation
                 }
                 ModelState.AddModelError("", "Failed to create property contract");
+            }
+            else
+            {
+                Console.WriteLine("ModelState is invalid");
+                foreach (var error in ModelState.Values)
+                {
+                    foreach (var subError in error.Errors)
+                    {
+                        Console.WriteLine(subError.ErrorMessage);
+                    }
+                }
             }
             return View(model);
         }

@@ -51,6 +51,7 @@ namespace API.Controllers
                             SeatsNumber = auto.SeatsNumber,
                             VehicleValue = auto.VehicleValue,
                             TrueVehicleValue = auto.TrueVehicleValue,
+                            Model = auto.Model ,
                             Guarantees = auto.Guarantees // This sets the integer value (not shown in output if not desired)
                             // GuaranteesList is dynamically generated based on the Guarantees property
                         })
@@ -86,6 +87,7 @@ namespace API.Controllers
                     SeatsNumber = automobile.SeatsNumber,
                     VehicleValue = automobile.VehicleValue,
                     TrueVehicleValue = automobile.TrueVehicleValue,
+                    Model=automobile.Model,
                     Guarantees = automobile.Guarantees // This sets the integer value (not directly shown if you choose to hide it in your DTO definition)
                     // GuaranteesList is dynamically generated based on the Guarantees property
                 };
@@ -130,9 +132,11 @@ namespace API.Controllers
                     SeatsNumber = automobileDto.SeatsNumber,
                     VehicleValue = automobileDto.VehicleValue,
                     TrueVehicleValue = automobileDto.TrueVehicleValue,
+                    Model=automobileDto.Model,
                     Guarantees = automobileDto.Guarantees
                 };
 
+   
             try
             {
                 var createdAutomobile =
@@ -157,6 +161,7 @@ namespace API.Controllers
                         SeatsNumber = createdAutomobile.SeatsNumber,
                         VehicleValue = createdAutomobile.VehicleValue,
                         TrueVehicleValue = createdAutomobile.TrueVehicleValue,
+                        Model=createdAutomobile.Model,
                         Guarantees = createdAutomobile.Guarantees
                     };
 
@@ -246,7 +251,9 @@ namespace API.Controllers
                             SeatsNumber = automobile.SeatsNumber,
                             VehicleValue = automobile.VehicleValue,
                             TrueVehicleValue = automobile.TrueVehicleValue,
-                            Guarantees = automobile.Guarantees
+                            Guarantees = automobile.Guarantees,
+                        Model = automobile.Model
+
                             // Ensure to map any additional fields if present
                         })
                     .ToList();
@@ -292,7 +299,9 @@ namespace API.Controllers
                             SeatsNumber = automobile.SeatsNumber,
                             VehicleValue = automobile.VehicleValue,
                             TrueVehicleValue = automobile.TrueVehicleValue,
-                            Guarantees = automobile.Guarantees
+                            Guarantees = automobile.Guarantees,
+                            Model = automobile.Model
+
                             // Ensure to map any additional fields if present
                         })
                     .ToList();

@@ -92,10 +92,9 @@ namespace API.Controllers
                 new Property {
                     // Manual mapping from propertyDto to property
                     UserId = user.Id,
-                    ContractType = propertyDto.ContractType,
                     StartDate = propertyDto.StartDate,
                     EndDate = propertyDto.EndDate,
-                    Quota = propertyDto.Quota,
+                    Quota = 0,
                     Location = propertyDto.Location,
                     Type = propertyDto.Type,
                     YearOfConstruction = propertyDto.YearOfConstruction,

@@ -495,7 +495,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -580,7 +580,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -666,7 +666,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -742,7 +742,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -818,7 +818,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -890,7 +890,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -970,7 +970,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -1043,7 +1043,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AutomobileDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1131,7 +1131,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AutomobileDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1216,7 +1216,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<AutomobileDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1307,7 +1307,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -1383,7 +1383,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -1460,7 +1460,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AutomobileDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1544,7 +1544,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<AutomobileDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1632,7 +1632,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -1708,7 +1708,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -1785,7 +1785,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<ChatMessageDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1873,7 +1873,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -1946,7 +1946,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<ChatRoomDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2027,7 +2027,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ChatRoomWithMessagesDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2137,7 +2137,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ComplaintDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2218,7 +2218,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<ComplaintDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2306,7 +2306,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -2379,7 +2379,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<ComplaintDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2464,7 +2464,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ComplaintDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2548,7 +2548,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -2653,7 +2653,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -2729,7 +2729,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -2802,7 +2802,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<PropertyDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2887,7 +2887,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PropertyDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2972,7 +2972,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<PropertyDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3060,7 +3060,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -3136,7 +3136,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -3213,7 +3213,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<PropertyDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3294,7 +3294,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<PropertyDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3379,7 +3379,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -3452,7 +3452,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<UserDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3537,7 +3537,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3622,7 +3622,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<UserDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -3710,7 +3710,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -3786,7 +3786,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -3862,7 +3862,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             return;
                         }
@@ -3935,7 +3935,7 @@ namespace ClientAstree.Services.Base
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 204)
+                        if (status_ == 200 || status_ == 204 || status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<WeatherForecast>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -4417,21 +4417,15 @@ namespace ClientAstree.Services.Base
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    [Flags]
     public enum Guarantees
     {
-
-        _0 = 0,
-
-        _1 = 1,
-
-        _2 = 2,
-
-        _4 = 4,
-
-        _8 = 8,
-
-        _16 = 16,
-
+        None = 0,
+        RC = 1 << 0, // 1
+        INC = 1 << 1, // 2
+        VOL = 1 << 2, // 4
+        ASST = 1 << 3, // 8
+        TR = 1 << 4, // 16
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]

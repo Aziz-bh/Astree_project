@@ -44,7 +44,27 @@ namespace ClientAstree.Services
     public async Task<AutomobileVM> CreateAutomobileAsync(AutomobileVM automobile)
     {
         AddBearerToken();
-        var dto = _mapper.Map<AutomobileDto>(automobile);
+            Console.WriteLine($"Received Model: VehicleMake={automobile.VehicleMake}, Model={automobile.Model}, VehicleType={automobile.VehicleType}, " +
+        $"RegistrationNumber={automobile.RegistrationNumber}, RegistrationDate={automobile.RegistrationDate}, StartDate={automobile.StartDate}, " +
+        $"EndDate={automobile.EndDate}, EnginePower={automobile.EnginePower}, SeatsNumber={automobile.SeatsNumber}, " +
+        $"VehicleValue={automobile.VehicleValue}, TrueVehicleValue={automobile.TrueVehicleValue}, Guarantees={automobile.Guarantees}");
+       // var dto = _mapper.Map<AutomobileDto>(automobile);
+
+            var dto = new AutomobileDto
+    {
+        Model = automobile.Model,
+        StartDate = automobile.StartDate,
+        EndDate = automobile.EndDate,
+        VehicleType = Enum.Parse<VehicleType>(automobile.VehicleType),
+        RegistrationNumber = automobile.RegistrationNumber,
+        RegistrationDate = automobile.RegistrationDate,
+        EnginePower = automobile.EnginePower,
+        VehicleMake = automobile.VehicleMake,
+        SeatsNumber = automobile.SeatsNumber,
+        VehicleValue = automobile.VehicleValue,
+        TrueVehicleValue = automobile.TrueVehicleValue,
+        Guarantees = Enum.Parse<Base.Guarantees>(automobile.Guarantees)
+    };
         var createdDto = await _httpclient.AutomobilePOSTAsync(dto);
         return _mapper.Map<AutomobileVM>(createdDto);
     }
