@@ -61,5 +61,37 @@ public async Task<IActionResult> Index()
             }
             return View(model);
         }
+
+                [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
+            {
+                return NotFound();
+            }
+            return View(property);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(PropertyVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _propertyService.UpdatePropertyAsync(model);
+
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Delete(long id)
+{
+    await _propertyService.DeletePropertyAsync(id);
+    return RedirectToAction("Index"); // Redirect to the listing page after deletion
+}
+
     }
 }

@@ -1263,6 +1263,14 @@ namespace ClientAstree.Services.Base
         /// <exception cref="ApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task AutomobilePUTAsync(long id, AutomobileUpdateDto body, System.Threading.CancellationToken cancellationToken)
         {
+                  Console.WriteLine($"Attempting to update Automobile ID: {id}");
+                        Console.WriteLine($"Attempting to update body ID: {id}");
+                              Console.WriteLine($"Attempting to update body ID: {id}");
+                                    Console.WriteLine($"Attempting to update body ID: {id}");
+                                          Console.WriteLine($"Attempting to update body ID: {id}");
+                                                Console.WriteLine($"Attempting to update body ID: {id}");
+                                                      Console.WriteLine($"Attempting to update body ID: {id}");
+                                                            Console.WriteLine($"Attempting to update body ID: {id}");
             if (id == null)
                 throw new System.ArgumentNullException("id");
 

@@ -72,7 +72,22 @@ namespace ClientAstree.Services
     public async Task UpdateAutomobileAsync(AutomobileVM automobile)
     {
         AddBearerToken();
-        var dto = _mapper.Map<AutomobileUpdateDto>(automobile);
+           var dto = new AutomobileUpdateDto
+    {
+        StartDate = automobile.StartDate,
+        EndDate = automobile.EndDate,
+        VehicleValue = automobile.VehicleValue,
+        Guarantees = Enum.TryParse<Base.Guarantees>(automobile.Guarantees, out var guarantees) ? guarantees : default, // Assuming Guarantees is an enum
+        VehicleMake = automobile.VehicleMake,
+        Model = automobile.Model,
+        TrueVehicleValue = automobile.TrueVehicleValue,
+        RegistrationNumber = automobile.RegistrationNumber,
+        RegistrationDate = automobile.RegistrationDate,
+        EnginePower = automobile.EnginePower,
+        SeatsNumber = automobile.SeatsNumber
+    };
+
+        
         await _httpclient.AutomobilePUTAsync(automobile.Id, dto);
     }
 

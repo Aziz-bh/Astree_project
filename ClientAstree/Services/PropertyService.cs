@@ -53,16 +53,18 @@ public async Task UpdatePropertyAsync(PropertyVM property)
 {
     AddBearerToken();
 
-    // Map the ViewModel to the UpdateDto instead of the full DTO
+    bool typeParsed = int.TryParse(property.Type, out int type);
+    bool coverageParsed = int.TryParse(property.Coverage, out int coverage);
+
     var updateDto = new PropertyUpdateDto
     {
         StartDate = property.StartDate,
         EndDate = property.EndDate,
         Location = property.Location,
-        Type = int.Parse(property.Type),
+            Type = (int)Enum.Parse<PropertyType>(property.Type), // Convert string to enum; ensure this matches the enum definition
         YearOfConstruction = property.YearOfConstruction,
         PropertyValue = property.PropertyValue,
-        Coverage = int.Parse(property.Coverage)
+Coverage = (int)Enum.Parse<Coverage>(property.Coverage), 
     };
 
     // Make the PUT request using the mapped UpdateDto

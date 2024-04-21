@@ -1,0 +1,104 @@
+@model ClientAstree.Models.AutomobileVM
+
+@{
+    ViewData["Title"] = "Update Automobile Contract";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Update" asp-controller="AutomobileContract" method="post">
+    @Html.AntiForgeryToken()
+    
+    <!-- Hidden field for ID to ensure it is passed during the form submission -->
+<input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="VehicleMake">Vehicle Make</label>
+        <input asp-for="VehicleMake" class="form-control" />
+        <span asp-validation-for="VehicleMake" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Model">Model</label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VehicleType">Vehicle Type</label>
+<select asp-for="VehicleType" class="form-control">
+    <option value="">Select a type</option>
+    @foreach (var type in Enum.GetValues(typeof(ClientAstree.Services.Base.VehicleType)))
+    {
+        <option value="@((int)type)" 
+                selected="@((Model.VehicleType != null && Model.VehicleType.ToString() == type.ToString()) ? "selected" : null)">
+            @type.ToString()
+        </option>
+    }
+</select>
+
+        <span asp-validation-for="VehicleType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RegistrationNumber">Registration Number</label>
+        <input asp-for="RegistrationNumber" class="form-control" />
+        <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RegistrationDate">Registration Date</label>
+        <input asp-for="RegistrationDate" type="date" class="form-control" />
+        <span asp-validation-for="RegistrationDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate">Start Date</label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate">End Date</label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EnginePower">Engine Power (HP)</label>
+        <input asp-for="EnginePower" type="number" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SeatsNumber">Seats Number</label>
+        <input asp-for="SeatsNumber" type="number" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VehicleValue">Vehicle Value ($)</label>
+        <input asp-for="VehicleValue" type="number" step="0.01" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TrueVehicleValue">True Vehicle Value ($)</label>
+        <input asp-for="TrueVehicleValue" type="number" step="0.01" class="form-control" />
+    </div>
+<div class="form-group">
+    <label>Guarantees</label>
+    <div>
+        @foreach (var guarantee in Enum.GetValues(typeof(ClientAstree.Models.Guarantees)))
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       value="@((int)guarantee)" id="@guarantee" name="Guarantees">
+                <label class="form-check-label" for="@guarantee">
+                    @guarantee
+                </label>
+            </div>
+        }
+    </div>
+    <span asp-validation-for="Guarantees" class="text-danger"></span>
+</div>
+
+
+
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>

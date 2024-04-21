@@ -1,13 +1,15 @@
 @model ClientAstree.Models.PropertyVM
 
 @{
-    ViewData["Title"] = "Create Property Contract";
+    ViewData["Title"] = "Update Property Contract";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Create" asp-controller="PropertyContract" method="post">
+<form asp-action="Update" asp-controller="PropertyContract" method="post">
     @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
         <label asp-for="Location">Location</label>
@@ -16,9 +18,15 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="PropertyValue">Property Value ($)</label>
+        <label asp-for="PropertyValue">Property Value</label>
         <input asp-for="PropertyValue" type="number" class="form-control" />
         <span asp-validation-for="PropertyValue" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="YearOfConstruction">Year of Construction</label>
+        <input asp-for="YearOfConstruction" type="date" class="form-control" />
+        <span asp-validation-for="YearOfConstruction" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -26,16 +34,10 @@
         <select asp-for="Type" class="form-control">
             <option value="">Select a type</option>
             <option value="House">House</option>
-            <option value="Apartment">Apartment</option>
+            <option value="Apartment">Apartment</option> 
             <option value="Commercial">Commercial</option>
         </select>
         <span asp-validation-for="Type" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="YearOfConstruction">Year of Construction</label>
-        <input asp-for="YearOfConstruction" type="date" class="form-control" />
-        <span asp-validation-for="YearOfConstruction" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -57,7 +59,9 @@
                 <option value="@coverage" selected="@(Model.Coverage == coverage ? "selected" : null)">@coverage</option>
             }
         </select>
+         <span asp-validation-for="Coverage" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
+
+    <button type="submit" class="btn btn-primary">Update</button>
 </form>
