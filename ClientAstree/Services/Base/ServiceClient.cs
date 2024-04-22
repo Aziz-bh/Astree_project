@@ -4346,11 +4346,9 @@ namespace ClientAstree.Services.Base
     public enum ComplaintState
     {
 
-        _0 = 0,
-
-        _1 = 1,
-
-        _2 = 2,
+   Approved=0,
+    Rejected=1,
+    Waiting=2
 
     }
 
@@ -4358,9 +4356,8 @@ namespace ClientAstree.Services.Base
     public enum ComplaintType
     {
 
-        _0 = 0,
-
-        _1 = 1,
+  Service=0,
+    Technical=1
 
     }
 

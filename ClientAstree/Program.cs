@@ -16,6 +16,7 @@ builder.Services.AddSingleton<ILocalStorageService, LocalStorageService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAutomobileService, AutomobileService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IComplaintService, ComplaintService>();
 builder.Services.AddHttpContextAccessor();
  builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
  builder.Services.Configure<CookiePolicyOptions>(options =>
