@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpPost("submit")]
-        [Authorize(Roles = "Member")]
+        // [Authorize(Roles = "Member")]
         public async Task<ActionResult<ComplaintDto>>
         SubmitComplaint([FromForm] ComplaintDtoSubmit complaintDtoSubmit)
         {
@@ -94,7 +94,7 @@ namespace API.Controllers
         }
 
         [HttpPut("updateState/{id}")]
-         [Authorize(Policy = "RequireAdminRole")]
+        //  [Authorize(Policy = "RequireAdminRole")]
         public async Task<IActionResult>
         UpdateComplaintStatus(long id, [FromBody] ComplaintState state)
         {
@@ -112,7 +112,7 @@ namespace API.Controllers
         }
 
         [HttpGet("mycomplaints")]
-        [Authorize(Roles = "Member")]
+        // [Authorize(Roles = "Member")]
         public async Task<ActionResult<IEnumerable<ComplaintDto>>>
         GetUserComplaints()
         {
@@ -156,7 +156,7 @@ namespace API.Controllers
         }
 
 [HttpDelete("deletecomplaint/{id}")]
-[Authorize(Roles = "Member")]
+// [Authorize(Roles = "Member")]
 public async Task<IActionResult> DeleteComplaint(long id)
 {
     var email = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -184,7 +184,7 @@ public async Task<IActionResult> DeleteComplaint(long id)
 
 
 [HttpPut("updatecomplaint/{id}")]
-[Authorize(Roles = "Member")]
+// [Authorize(Roles = "Member")]
 public async Task<IActionResult> UpdateComplaint(long id, [FromForm] ComplaintUpdateDto complaintUpdateDto)
 {
     var email = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);

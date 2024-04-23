@@ -1,0 +1,28 @@
+@model ClientAstree.Services.Base.ComplaintDto
+
+<h2>@(Model.Id == 0 ? "Create Complaint" : "Edit Complaint")</h2>
+<form asp-action="@(Model.Id == 0 ? "Submit" : "Edit")" asp-controller="Complaints" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="ComplaintsSubject">Subject</label>
+        <input asp-for="ComplaintsSubject" class="form-control" />
+        <span asp-validation-for="ComplaintsSubject" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Attachment">Attachment (if applicable)</label>
+        <input type="file" asp-for="Attachment" class="form-control-file" />
+        <span asp-validation-for="Attachment" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">@Model.Id == 0 ? "Create" : "Update"</button>
+</form>

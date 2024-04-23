@@ -1,0 +1,39 @@
+@model IEnumerable<ClientAstree.Models.ComplaintVM>
+
+@{
+    ViewData["Title"] = "Manage Complaints";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ComplaintsSubject</td>
+            <td>@item.Description</td>
+            <td>@item.ComplaintState</td>
+            <td>
+                <!-- Form for Approve -->
+                <form method="post" action="@Url.Action("UpdateComplaintStatus", "Complaints", new { id = item.Id, state = ClientAstree.Services.Base.ComplaintState.Approved })" onsubmit="return confirm('Are you sure you want to approve this complaint?');">
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
+                
+                <!-- Form for Reject -->
+                <form method="post" action="@Url.Action("UpdateComplaintStatus", "Complaints", new { id = item.Id, state = ClientAstree.Services.Base.ComplaintState.Rejected })" onsubmit="return confirm('Are you sure you want to reject this complaint?');">
+                    <button type="submit" class="btn btn-danger">Reject</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
