@@ -1,0 +1,37 @@
+@model IEnumerable<ClientAstree.Services.Base.ChatMessageDto>
+
+@{
+    ViewData["Title"] = "Chat Room";
+}
+
+<h1>Chat Room</h1>
+
+<div>
+    <h4>Messages</h4>
+    <ul>
+        @if (Model.Any())
+        {
+            foreach (var message in Model)
+            {
+                <li>
+                    <strong>@message.UserName</strong>: @message.Content (@message.Timestamp.LocalDateTime.ToString("g"))
+                </li>
+            }
+        }
+        else
+        {
+            <li>No messages to display.</li>
+        }
+    </ul>
+</div>
+
+
+<!-- Form for admin to reply in chat -->
+<form asp-action="ReplyAsAdmin" asp-controller="Chat" method="post">
+    <input type="hidden" name="ChatRoomId" value="@ViewBag.ChatRoomId" />
+    <div class="form-group">
+        <label for="Content">Reply as Admin</label>
+        <textarea name="Content" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-secondary">Reply</button>
+</form>

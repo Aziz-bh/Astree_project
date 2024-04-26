@@ -31,6 +31,7 @@ namespace API.Controllers
 
         [HttpPost("send")]
         [Authorize(Roles = "Member,Admin")]
+        // [Authorize(Roles = "Member,Admin")]
         public async Task<IActionResult>
         SendMessage([FromBody] SendMessageDto messageDto)
         {
@@ -59,6 +60,7 @@ namespace API.Controllers
 
         [HttpGet("{chatRoomId}")]
         [Authorize(Roles = "Member,Admin")]
+        // [Authorize(Roles = "Member,Admin")]
         public async Task<ActionResult<IEnumerable<ChatMessageDto>>>
         GetMessages(int chatRoomId)
         {
@@ -79,7 +81,8 @@ namespace API.Controllers
         }
 
         [HttpPost("send/admin/{chatRoomId}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Member,Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult>
         SendAdminMessage(int chatRoomId, [FromBody] SendMessageDto messageDto)
         {
@@ -112,15 +115,16 @@ namespace API.Controllers
         }
 
         [HttpGet("chatrooms")]
-        [Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Member,Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<ChatRoomDto>>>
         GetAllChatRooms()
         {
             // This ensures that only admins can access this method
-            if (!User.IsInRole("Admin"))
-            {
-                return Unauthorized("Only admins can access chat room details.");
-            }
+            // if (!User.IsInRole("Admin"))
+            // {
+            //     return Unauthorized("Only admins can access chat room details.");
+            // }
 
             var chatRooms =
                 await _context
@@ -133,7 +137,8 @@ namespace API.Controllers
         }
 
         [HttpGet("userchatroom")]
-        [Authorize(Roles = "Member")]
+        
+        // [Authorize(Roles = "Member")]
         public async Task<ActionResult<ChatRoomWithMessagesDto>> GetMyChatRoom()
         {
             var email = User.FindFirstValue(ClaimTypes.NameIdentifier);

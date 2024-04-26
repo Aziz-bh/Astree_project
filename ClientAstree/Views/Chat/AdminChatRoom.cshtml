@@ -1,0 +1,28 @@
+@model ClientAstree.Services.Base.ChatRoomWithMessagesDto
+
+@{
+    ViewData["Title"] = "Chat with Admin";
+}
+
+<h1>@ViewData["Title"]: @Model.Name</h1>
+
+<div>
+    <h4>Messages</h4>
+    <ul>
+        @foreach (var message in Model.Messages)
+        {
+            <li>
+                <strong>@message.UserName</strong>: @message.Content (@message.Timestamp.LocalDateTime.ToString("g"))
+            </li>
+        }
+    </ul>
+</div>
+
+<form asp-action="SendMessage" asp-controller="Chat" method="post">
+    <input type="hidden" name="ChatRoomId" value="@Model.Id" />
+    <div class="form-group">
+        <label for="Content">Message:</label>
+        <textarea name="Content" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send</button>
+</form>

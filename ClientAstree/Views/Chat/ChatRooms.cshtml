@@ -1,0 +1,16 @@
+@model IEnumerable<ClientAstree.Services.Base.ChatRoomDto>
+
+@{
+    ViewData["Title"] = "Chat Rooms";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<ul class="list-group">
+    @foreach (var room in Model)
+    {
+        <li class="list-group-item">
+            <a asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
+        </li>
+    }
+</ul>
