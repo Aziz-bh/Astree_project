@@ -9,8 +9,11 @@ namespace ClientAstree.Services
         private readonly ILocalStorageService _localStorageService;
         private readonly IMapper _mapper;
         private readonly IClient _httpclient;
-                 public ChatService(IMapper mapper, IClient httpclient, ILocalStorageService localStorageService) : base(httpclient, localStorageService)
+            private readonly IHttpContextAccessor _httpContextAccessor;
+
+                 public ChatService(IHttpContextAccessor httpContextAccessor,IMapper mapper, IClient httpclient, ILocalStorageService localStorageService) : base(httpclient, localStorageService)
         {
+            _httpContextAccessor = httpContextAccessor;
             this._localStorageService = localStorageService;
             this._mapper = mapper;
             this._httpclient = httpclient;
@@ -19,7 +22,22 @@ namespace ClientAstree.Services
         public async Task SendAsync(SendMessageDto message)
         {
              AddBearerToken();
-            await _client.SendAsync(message);
+                     var username = _httpContextAccessor.HttpContext.User.Identity.Name;
+                         for (int i = 0; i < 5; i++)
+    {
+        Console.WriteLine(username);
+    }
+        var claims = _httpContextAccessor.HttpContext.User.Claims;
+    foreach (var claim in claims)
+    {
+        if(claim.Type=="role")
+         if(claim.Value=="Admin")
+          await _client.Admin2Async(message.ChatRoomId,username,message);
+        else
+        await _client.Send2Async(username,message);
+    }
+
+            
         }
 
         public async Task<ICollection<ChatMessageDto>> GetMessagesAsync(int chatRoomId)

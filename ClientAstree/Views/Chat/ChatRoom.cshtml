@@ -4,11 +4,11 @@
     ViewData["Title"] = "Chat Room";
 }
 
-<h1>Chat Room</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
     <h4>Messages</h4>
-    <ul>
+    <ul id="messagesList">  <!-- Add an id here -->
         @if (Model.Any())
         {
             foreach (var message in Model)
@@ -23,15 +23,54 @@
             <li>No messages to display.</li>
         }
     </ul>
+
+    <!-- Form for admin to reply in chat -->
+    <form asp-action="ReplyAsAdmin" asp-controller="Chat" method="post">
+        <input type="hidden" name="ChatRoomId" value="@ViewBag.ChatRoomId" />
+        <div class="form-group">
+            <label for="Content">Reply as Admin</label>
+            <textarea id="messageInput" name="Content" class="form-control"></textarea>
+        </div>
+        <button type="submit" id="sendButton" class="btn btn-secondary">Reply</button>
+    </form>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.9/signalr.min.js"></script>
+<script>
+    const chatRoomId = @ViewBag.ChatRoomId;
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl(`/chatHub?chatRoomId=${chatRoomId}`)
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
 
-<!-- Form for admin to reply in chat -->
-<form asp-action="ReplyAsAdmin" asp-controller="Chat" method="post">
-    <input type="hidden" name="ChatRoomId" value="@ViewBag.ChatRoomId" />
-    <div class="form-group">
-        <label for="Content">Reply as Admin</label>
-        <textarea name="Content" class="form-control"></textarea>
-    </div>
-    <button type="submit" class="btn btn-secondary">Reply</button>
-</form>
+    connection.start().then(function () {
+        console.log("SignalR connection established.");
+    }).catch(function (err) {
+        console.error('Error while starting SignalR connection: ' + err.toString());
+    });
+
+    connection.on("ReceiveMessage", function (user, message) {
+        console.log("Received message:", user, message);
+
+        const msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const encodedMsg = `<strong>${user}</strong>: ${msg}`;
+        const li = document.createElement("li");
+        li.innerHTML = encodedMsg;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        const message = document.querySelector('[name="Content"]').value;
+        console.log("Sending message:", chatRoomId, '@User.Identity.Name', message);
+
+        connection.invoke("SendMessage", chatRoomId, '@User.Identity.Name', message)
+            .then(() => {
+                document.querySelector('[name="Content"]').value = ''; // Clear the textarea after sending
+                console.log("Message sent successfully.");
+            })
+            .catch(function (err) {
+                console.error("Error sending message:", err.toString());
+            });
+    });
+</script>

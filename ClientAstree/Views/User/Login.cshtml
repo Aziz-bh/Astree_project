@@ -14,12 +14,13 @@
     <div class="content">
       <div class="container d-flex justify-content-center align-items-center ">
         <div class="col-md-5 ml-auto mr-auto">
-          <div class="card card-login card-plain">
+          <div class="card card-pricing " style="background-color: #ffffffdc;">
+            <div class="card-body">
             <form class="form"  asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReturnUrl" />
               <div class="card-header text-center">
-                <div class="logo-container">
+                <div class="logo-container icon icon-primary">
                   <img src="/img/logo.png" alt="">
                 </div>
               </div>
@@ -50,11 +51,10 @@
                 </h6>
               </div>
               <div class="pull-right">
-                <h6>
-                  <a href="#pablo" class="link footer-link">Need Help?</a>
-                </h6>
               </div>
             </form>
+
+          </div>
           </div>
         </div>
       </div>

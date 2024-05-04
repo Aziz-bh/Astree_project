@@ -2,59 +2,334 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<div class="text-center">
-  <div class="page-header header-filter my-0" filter-color="blue">
-    <div class="page-header-image" style="background-image:url(/img/fam1.png)"></div>
-    <div class="content">
-      <div class="container d-flex justify-content-center align-items-center ">
-        <div class="col-md-5 ml-auto mr-auto">
-          <div class="card card-login card-plain">
-            <form class="form"  asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ReturnUrl" />
-              <div class="card-header text-center">
-                <div class="logo-container">
-                  <img src="/img/logo.png" alt="">
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="input-group no-border input-lg">
-                  <div class="input-group-prepend">
-                    @* <span class="input-group-text"><i class="now-ui-icons users_circle-08"></i></span> *@
-                  </div>
-                                  @* <label asp-for="Email" class="control-label"></label> *@
-               
-                  <input type="email" asp-for="Email" class="form-control" placeholder="Email..." />
-                </div>
-                <div class="input-group no-border input-lg">
-                  <div class="input-group-prepend">
-                    @* <span class="input-group-text"><i class="now-ui-icons text_caps-small"></i></span> *@
-                  </div>
-                  <input asp-for="Password" type="password" class="form-control" placeholder="Password..."/>
-                </div>
-              </div>
-              <span asp-validation-for="Email" class="text-danger"></span>
-              <span asp-validation-for="Password" class="text-danger"></span>
-              <div class="card-footer text-center">
-                <a href="#pablo" class="btn btn-primary btn-round btn-lg btn-block" type="submit" value="Login">Get Started</a>
-              </div>
-              <div class="pull-left">
-                <h6>
-                  <a href="#pablo" class="link footer-link">Create Account</a>
-                </h6>
-              </div>
-              <div class="pull-right">
-                <h6>
-                  <a href="#pablo" class="link footer-link">Need Help?</a>
-                </h6>
-              </div>
-            </form>
+  <div class="wrapper">
+    <div class="page-header page-header-small">
+      <div class="page-header-image" data-parallax="true" style="background-image:url(/img/fam1.png)" >
+      </div>
+      <div class="content-center">
+        <div class="container">
+          <h1 class="title">This is our great company.</h1>
+          <div class="text-center">
+            <a href="#pablo" class="btn btn-primary btn-icon btn-round">
+              <i class="fab fa-facebook-square"></i>
+            </a>
+            <a href="#pablo" class="btn btn-primary btn-icon btn-round">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#pablo" class="btn btn-primary btn-icon btn-round">
+              <i class="fab fa-google-plus"></i>
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </div>
+      <div class="testimonials-3">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 ml-auto mr-auto text-center">
+              <h2 class="title">What Clients Say</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="card card-testimonial card-plain">
+                <div class="card-avatar">
+                  <a href="#pablo">
+                    <img class="img img-raised rounded" src="/img/client/client.png" />
+                  </a>
+                </div>
+                <div class="card-body">
+                  <h3 class="card-title">Afet Guella</h3>
+                  <div class="star-rating">
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
 </div>
+                  <p class="card-description">"Good welcome, good location in front of parking place of expertise, fast."
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-testimonial card-plain">
+                <div class="card-avatar">
+                  <a href="#pablo">
+                    <img class="img img-raised rounded" src="/img/client/client2.png" />
+                  </a>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">Imed Belaid</h4>
+                  <div class="star-rating">
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+</div>
+
+                  <p class="card-description">"Fast and efficient service Listening to their customers"
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-testimonial card-plain">
+                <div class="card-avatar">
+                  <a href="#pablo">
+                    <img class="img img-raised rounded" src="/img/client/client3.png" />
+                  </a>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">salma ben yedder</h4>
+                 <div class="star-rating">
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+</div>
+
+                  <p class="card-description">"Kind agents and very helpful 😊😊Thanks."
+                  </p>
+                </div>
+              </div>
+            </div>
+                        <div class="col-md-3">
+              <div class="card card-testimonial card-plain">
+                <div class="card-avatar">
+                  <a href="#pablo">
+                    <img class="img img-raised rounded" src="/img/client/client4.png" />
+                  </a>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">Mortadha Bennour</h4>
+                  <div class="star-rating">
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+  <span class="fa fa-star checked"></span>
+</div>
+
+                  <p class="card-description">"Service excellent."
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+            <div class="features-5" filter-color="blue">
+        <div class="container">
+          <div class="row">
+
+            <div class="col-md-7">
+              <div class="tablet-container" filter-color="blue">
+                <img src="/img/img.png" />
+              </div>
+            </div>
+                        <div class="col-md-5">
+              <h2 class="title">Working is a pleasure</h2>
+              <div class="info info-horizontal">
+                <div class="icon icon-primary icon-circle">
+                  <i class="now-ui-icons location_world"></i>
+                </div>
+                <div class="description">
+                  <h3 class="info-title">Auto insurance ›</h3>
+                  <p>Buckle up with protection you can rely on. </p>
+                </div>
+              </div>
+              <div class="info info-horizontal">
+                <div class="icon icon-primary icon-circle">
+                  <i class="now-ui-icons sport_user-run"></i>
+                </div>
+                <div class="description">
+                  <h4 class="info-title">Property insurance ›</h4>
+                  <p>Bundle with Progressive and save more — it's that easy!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <footer class="footer footer-big" data-background-color="black">
+            <div class="container">
+              <div class="content">
+                <div class="row">
+                  <div class="col-md-4">
+           
+                    <div class="social-feed">
+                                            <div class="feed-line">
+                        <img src="/img/logo-white.png" alt="">
+                      </div>
+                               <br>
+                      <div class="feed-line">
+                    
+                        <p>Vous voulez fractionner le paiement de votre prime d’assurance Auto chez ASTREE sur une année et sans intérêts ?
+Oui c’est possible...</p>
+                      </div>
+                      <div class="feed-line">
+                     
+<p>En savoir plus</p>                      </div>
+
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <h5>Côté Pratique</h5>
+                    <ul class="links-vertical">
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/remplir-un-constat/" class="text-muted">
+                          Remplir un constat ?
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/foires-aux-questions/" class="text-muted">
+                          Foires aux Questions 
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/glossaire/" class="text-muted">
+                          Glossaire
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/liens-utiles/" class="text-muted">
+                          Liens utiles
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-2">
+                    <h5>Siège Social</h5>
+                    <ul class="links-vertical">
+                      <li>
+                        <a href="#pablo" class="text-muted">
+                          45, Avenue Kheireddine Pacha,
+B.P. 780 TUNIS Cedex
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="text-muted">
+                         (+216) 71 90 42 11
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="text-muted">
+                          courrier@astree.com.tn
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <ul class="social-buttons">
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-twitter btn-round">
+                          <i class="fab fa-twitter"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-facebook btn-round">
+                          <i class="fab fa-facebook-square"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-dribbble btn-round">
+                          <i class="fab fa-dribbble"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-google btn-round">
+                          <i class="fab fa-google-plus"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-instagram btn-round">
+                          <i class="fab fa-instagram"></i>
+                        </a>
+                      </li>
+                    </ul>
+                    <h5>
+                      <small>Numbers Don't Lie</small>
+                    </h5>
+                    <h5>14.521
+                      <small class="text-muted">Freelancers</small>
+                    </h5>
+                    <h5>1.423.183
+                      <small class="text-muted">Transactions</small>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="copyright">
+                Copyright ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>2024 Creative Tim All Rights Reserved.
+              </div>
+            </div>
+          </footer>
+
+    <footer class="footer footer-default">
+      <div class=" container ">
+        <nav>
+          <ul>
+            <li>
+              <a href="https://www.creative-tim.com">
+                Creative Tim
+              </a>
+            </li>
+            <li>
+              <a href="http://presentation.creative-tim.com">
+                About Us
+              </a>
+            </li>
+            <li>
+              <a href="http://blog.creative-tim.com">
+                Blog
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="copyright" id="copyright">
+          &copy;
+          <script>
+            document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+          </script>, Designed by
+          <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
+          <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+        </div>
+      </div>
+    </footer>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
+  <script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
+  <script src="../assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+  <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+  <script src="../assets/js/plugins/bootstrap-switch.js"></script>
+  <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+  <script src="../assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+  <!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
+  <script src="../assets/js/plugins/moment.min.js"></script>
+  <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+  <script src="../assets/js/plugins/bootstrap-tagsinput.js"></script>
+  <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+  <script src="../assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+  <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+  <script src="../assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
+  <script src="../assets/js/now-ui-kit.js?v=1.3.1" type="text/javascript"></script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

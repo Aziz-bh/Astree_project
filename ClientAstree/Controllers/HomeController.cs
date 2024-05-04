@@ -62,7 +62,7 @@ public async Task<IActionResult> Register(RegisterVM model)
     {
         return View(model); // Return the view with current model to show validation errors
     }
-
+    var cont=model.Nationality+","+model.ConcatenatedNationality;
     RegisterDto registrationRequest = new RegisterDto
     {
         Email = model.Email,
@@ -72,11 +72,10 @@ public async Task<IActionResult> Register(RegisterVM model)
         Cin = model.Cin,
         PhoneNumber = model.PhoneNumber,
         BirthDate = model.BirthDate,
-        Nationality = model.Nationality,
+        Nationality = cont,
         Civility = model.Civility,
         Gender = model.Gender
     };
-
     try
     {
         bool isSuccess = await _authService.Register(registrationRequest);

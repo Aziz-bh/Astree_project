@@ -28,6 +28,8 @@ namespace ClientAstree.Models
         [Required]
         public string Nationality { get; set; }
 
+          public string ConcatenatedNationality { get; set; }
+
         [Required]
         public string Civility { get; set; }
 

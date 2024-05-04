@@ -35,10 +35,17 @@ public async Task<IActionResult> ChatRoom(int id)
 [HttpPost]
 public async Task<IActionResult> SendMessage(SendMessageDto message)
 {
+    if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+    {
+        await _chatService.SendAsync(message);
+        return Json(new { success = true, message = "Message sent successfully" });
+    }
+
     await _chatService.SendAsync(message);
     // Redirecting back to the AdminChatRoom to refresh the messages
     return RedirectToAction("AdminChatRoom");
 }
+
 
         [HttpPost]
         public async Task<IActionResult> AdminSendMessage(int chatRoomId, SendMessageDto message)

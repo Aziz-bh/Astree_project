@@ -58,6 +58,33 @@ namespace API.Controllers
             return Ok();
         }
 
+
+[HttpPost("send/{email}")]
+[Authorize(Roles = "Member,Admin")]
+public async Task<IActionResult> SendMessage2([FromBody] SendMessageDto messageDto, [FromRoute] string email)
+{
+    var chatRoomId = await _chatService.FindOrCreateChatRoomForUserAsync(email);
+
+    if (chatRoomId <= 0)
+    {
+        return BadRequest("Unable to find or create a chat room.");
+    }
+
+    messageDto.ChatRoomId = chatRoomId;
+
+    var user = await _userManager.FindByEmailAsync(email);
+    if (user == null)
+    {
+        return Unauthorized("User not found.");
+    }
+
+    await _chatService.AddMessageAsync(user.Id, messageDto);
+
+    return Ok();
+}
+
+
+
         [HttpGet("{chatRoomId}")]
         [Authorize(Roles = "Member,Admin")]
         // [Authorize(Roles = "Member,Admin")]
@@ -113,6 +140,40 @@ namespace API.Controllers
 
             return Ok();
         }
+
+
+
+[HttpPost("admin/{chatRoomId}")]
+// [Authorize(Roles = "Member,Admin")]
+public async Task<IActionResult> SendAdminMessage2(int chatRoomId, [FromBody] SendMessageDto messageDto, [FromQuery] string userEmail)
+{
+    // Ensure only admins can access this method
+    // if (!User.IsInRole("Admin"))
+    // {
+    //     return Unauthorized("Only admins can send messages to any chat room.");
+    // }
+
+    // Check if the chat room exists
+    var chatRoomExists = await _chatService.ChatRoomExists(chatRoomId);
+    if (!chatRoomExists)
+    {
+        return NotFound($"ChatRoom with Id {chatRoomId} not found.");
+    }
+
+    var user = await _userManager.FindByEmailAsync(userEmail);
+    if (user == null)
+    {
+        return Unauthorized("User not found.");
+    }
+
+    // Setting the chatRoomId from the method parameter
+    messageDto.ChatRoomId = chatRoomId;
+
+    await _chatService.AddMessageAsync(user.Id, messageDto);
+
+    return Ok();
+}
+
 
         [HttpGet("chatrooms")]
        // [Authorize(Roles = "Member,Admin")]

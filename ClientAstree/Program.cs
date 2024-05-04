@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using ClientAstree.Contracts;
+using ClientAstree.Hubs;
 using ClientAstree.Services;
 using ClientAstree.Services.Base;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,6 +19,7 @@ builder.Services.AddScoped<IAutomobileService, AutomobileService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
  builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
  builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -50,5 +52,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

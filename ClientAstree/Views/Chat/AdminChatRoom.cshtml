@@ -8,7 +8,7 @@
 
 <div>
     <h4>Messages</h4>
-    <ul>
+    <ul id="messagesList">
         @foreach (var message in Model.Messages)
         {
             <li>
@@ -16,13 +16,54 @@
             </li>
         }
     </ul>
+
+    <form asp-action="SendMessage" asp-controller="Chat" method="post">
+        <input type="hidden" name="ChatRoomId" value="@Model.Id" />
+        <div class="form-group">
+            <label for="Content">Message:</label>
+            <textarea id="messageInput" name="Content" class="form-control" required></textarea>
+        </div>
+        <button type="submit" id="sendButton" class="btn btn-primary">Send</button>
+    </form>
 </div>
 
-<form asp-action="SendMessage" asp-controller="Chat" method="post">
-    <input type="hidden" name="ChatRoomId" value="@Model.Id" />
-    <div class="form-group">
-        <label for="Content">Message:</label>
-        <textarea name="Content" class="form-control" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Send</button>
-</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.9/signalr.min.js"></script>
+<script>
+    const chatRoomId = @Model.Id;
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl(`/chatHub?chatRoomId=${chatRoomId}`)  // Ensure chatRoomId is passed as query string
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    connection.start().then(function () {
+        console.log("SignalR connection established.");
+    }).catch(function (err) {
+        console.error('Error while starting SignalR connection: ' + err.toString());
+    });
+
+    connection.on("ReceiveMessage", function (user, message) {
+        console.log("Received message:", user, message);
+        const msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const encodedMsg = `<strong>${user}</strong>: ${msg}`;
+        const li = document.createElement("li");
+        li.innerHTML = encodedMsg;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        event.preventDefault();
+        const chatRoomId = @Model.Id; // Use @ViewBag.ChatRoomId in ChatRoom if using ViewBag to pass the ID
+        const message = document.getElementById("messageInput").value;
+        console.log("Sending message:", chatRoomId, '@User.Identity.Name', message); // Log the message being sent
+
+        connection.invoke("SendMessage", chatRoomId, '@User.Identity.Name', message)
+            .then(() => {
+                document.getElementById("messageInput").value = ''; // Clear the input after sending
+                console.log("Message sent successfully.");
+            })
+            .catch(function (err) {
+                console.error("Error sending message:", err.toString());
+            });
+    });
+</script>
