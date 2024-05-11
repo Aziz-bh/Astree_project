@@ -148,22 +148,7 @@ public IActionResult Login(string message = "")
 [HttpPost]
 public async Task<IActionResult> UpdateProfile(UserUpdateDTO model)
 {
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-    Console.WriteLine("entering");
-     Console.WriteLine(model.Gender);
-     Console.WriteLine(model.Civility);
-    Console.WriteLine(model);
-    Console.WriteLine(model);
-    Console.WriteLine("entering");
+ await _userService.UpdateAsync(model);
     if (!ModelState.IsValid)
     {
           Console.WriteLine("ModelState");
