@@ -52,7 +52,37 @@ namespace ClientAstree.Services
             
             return _mapper.Map<List<UserVM>>(users);
         }
-        
+
+        public async Task<UserVM> ProfileAsync()
+        {
+              AddBearerToken();
+              var user = await _client.ProfileAsync();
+                                          var model =
+                new UserVM {
+                    // Map your user data to the UserVM model
+                    Id = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    Roles = user.Roles,
+                    CIN = user.Cin.ToString(),
+                    BirthDate = user.BirthDate,
+                    Nationality = user.Nationality,
+                    Gender = user.Gender.ToString(),
+                    Civility = user.Civility.ToString()
+                    // Continue mapping other fields
+                };
+
+            return model;
+        }
+
+        public async Task UpdateAsync(UserUpdateDTO body)
+        {
+             AddBearerToken();
+            await _client.UpdateAsync(body);
+        }
+
         public async Task UsersDELETEAsync(int id)
         {
             AddBearerToken();

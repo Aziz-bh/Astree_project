@@ -1,7 +1,9 @@
 using ClientAstree.Contracts;
 using ClientAstree.Models;
 using ClientAstree.Services;
+using ClientAstree.Services.Base;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClientAstree.Controllers
 {
@@ -118,6 +120,74 @@ public IActionResult Login(string message = "")
             return LocalRedirect(returnUrl);
         }
     
+
+
+    // GET: /User/Profile
+    public async Task<IActionResult> Profile()
+    {
+                ViewBag.CivilityOptions = Enum.GetValues(typeof(CivilStatus))
+            .Cast<CivilStatus>()
+            .Select(c => new SelectListItem { Text = c.ToString(), Value = c.ToString() })
+            .ToList();
+
+        ViewBag.GenderOptions = Enum.GetValues(typeof(UserGender))
+            .Cast<UserGender>()
+            .Select(g => new SelectListItem { Text = g.ToString(), Value = g.ToString() })
+            .ToList();
+
+        var userProfile = await _userService.ProfileAsync();
+        if (userProfile == null)
+        {
+            return NotFound("User profile is not available.");
+        }
+        return View(userProfile);
+    }
+
+
+// POST: /User/UpdateProfile
+[HttpPost]
+public async Task<IActionResult> UpdateProfile(UserUpdateDTO model)
+{
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+    Console.WriteLine("entering");
+     Console.WriteLine(model.Gender);
+     Console.WriteLine(model.Civility);
+    Console.WriteLine(model);
+    Console.WriteLine(model);
+    Console.WriteLine("entering");
+    if (!ModelState.IsValid)
+    {
+          Console.WriteLine("ModelState");
+        return View(model); // or return to an error view or reload the profile page with error messages
+    }
+Console.WriteLine("try");
+    try
+    {
+        Console.WriteLine("await");
+        await _userService.UpdateAsync(model);
+        TempData["SuccessMessage"] = "Profile updated successfully!";
+         Console.WriteLine("Profile");
+    }
+    catch (Exception ex)
+    {
+         Console.WriteLine("catch");
+        // Log the exception details
+        TempData["ErrorMessage"] = "Error updating profile: " + ex.Message;
+        return View("Profile", model); // Return to the profile page with the filled model and error message
+    }
+
+    return RedirectToAction("Profile"); // Redirect back to the profile page or another relevant page
+}
+
 
         // // GET: /User/Create
         // public IActionResult Create()

@@ -1,4 +1,5 @@
 using ClientAstree.Models;
+using ClientAstree.Services.Base;
 
 namespace ClientAstree.Contracts
 {
@@ -8,5 +9,8 @@ namespace ClientAstree.Contracts
 
         Task<UserVM> GetUserAsync(int id);
         Task UsersDELETEAsync(int id);
+        Task<UserVM> ProfileAsync();
+
+        Task UpdateAsync(UserUpdateDTO body);
     }
 }

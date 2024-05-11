@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-     [Authorize]
+    // [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly AstreeDbContext _context;
@@ -102,6 +102,59 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
 
             return Ok(userDto);
         }
+
+
+                [HttpGet("profile")]
+        public async Task<ActionResult<UserDto>> GetProfile()
+        {
+            // Retrieve user email from the token
+            var email =
+                HttpContext
+                    .User?
+                    .Claims?
+                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
+                    .Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return Unauthorized("Invalid token information");
+            }
+
+   
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound($"User with email {email} not found.");
+            }
+
+            if (user == null || (bool)user.IsDeleted)
+            {
+                return NotFound();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var userDto = new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Picture = user.Picture,
+                CIN = user.CIN,
+                Gender = user.Gender.HasValue ? user.Gender.Value.ToString() : null,
+                BirthDate = user.BirthDate,
+                Nationality = user.Nationality,
+                Civility = user.Civility.HasValue ? user.Civility.Value.ToString() : null,
+                Roles = roles.ToList()
+            };
+
+            return Ok(userDto);
+        }
+
+
+
 
         // [Authorize(Roles = "Admin")]
         [HttpPost]
