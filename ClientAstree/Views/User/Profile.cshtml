@@ -1,12 +1,12 @@
 @model ClientAstree.Models.UserVM
-<div class="wrapper">
-    <div class="page-header page-header-small">
-        <div class="page-header-image" data-parallax="true" style="background-image:url('/img/fam1.png'); ">
-        </div>
-           <div class="container mt-3">
-                <h2>User Profile</h2>
-                            <div class="container overflow-auto" style="max-height: 60vh; padding-bottom: 0; margin-bottom: 0;"> <!-- Scrollable container -->
 
+<div class="">
+    <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image:url('/img/fam1.png');">
+        </div>
+        <div class="container mt-3">
+            <h2>User Profile</h2>
+            <div class="container overflow-auto" style="max-height: 50vh; padding-bottom: 0; margin-bottom: 0;"> <!-- Scrollable container -->
                 <div class="row">
                     <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-envelope"></i> Email:</label>
                     <div class="col-sm-12 col-md-9">
@@ -55,7 +55,7 @@
                         <p class="form-control-plaintext text-white">@Model.Gender</p>
                     </div>
                 </div>
-                <div class="row  mb-5 pb-5 ">
+                <div class="row mb-5 pb-5">
                     <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person-lines-fill"></i> Civility:</label>
                     <div class="col-sm-12 col-md-9">
                         <p class="form-control-plaintext text-white">@Model.Civility</p>
@@ -64,15 +64,41 @@
             </div>
         </div>
     </div>
-        <div class="section">
-      <div class="container text-center">
-        <div class="button-container">
-          <button type="button" class="btn btn-primary btn-round btn-lg" data-toggle="modal" data-target="#editProfileModal">Update Profile</button>
 
+    <div class="section mb-5 pb-5">
+        <div class="container text-center mb-5 pb-5">
+            <div class="button-container">
+                <button type="button" class="btn btn-primary btn-round btn-lg" data-toggle="modal" data-target="#editProfileModal">Update Profile</button>
+            </div>
+
+            <!-- Cards container with flexbox for centering -->
+            <div class="d-flex justify-content-center mt-4">
+                <div class="row">
+                    <!-- Automobile Contracts Card -->
+                    <div class="card" style="width: 20rem; margin-right: 10px;"> <!-- Adjust margin as necessary -->
+                        <img class="card-img-top" src="/img/contract/auto/personalCar.png" alt="Automobile Contracts">
+                        <div class="card-body">
+                            <h5 class="card-title">Automobile Contracts</h5>
+                            <p class="card-text">You currently have <strong class="text-danger">@ViewBag.AutomobileContractCount</strong> automobile contracts.</p>
+                            <a href="/AutomobileContract" class="btn btn-primary btn-round btn-lg">View Details</a>
+                        </div>
+                    </div>
+
+                    <!-- Property Contracts Card -->
+                    <div class="card" style="width: 20rem;">
+                        <img class="card-img-top" src="/img/contract/property/house.png" alt="Property Contracts">
+                        <div class="card-body">
+                            <h5 class="card-title">Property Contracts</h5>
+                            <p class="card-text">You currently have <strong class="text-danger">@ViewBag.PropertyContractCount</strong> property contracts.</p>
+                            <a href="/PropertyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-           </div>
     </div>
 </div>
+
 <!-- Edit Profile Modal -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -105,50 +131,48 @@
                         <label>CIN</label>
                         <input type="text" class="form-control" id="cin" name="cin" value="@Model.CIN">
                     </div>
-  <div class="form-group">
-        <label>Birth Date</label>
-        <input type="date" class="form-control" id="birthDate" name="birthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
-    </div>
+                    <div class="form-group">
+                        <label>Birth Date</label>
+                        <input type="date" class="form-control" id="birthDate" name="birthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
+                    </div>
                     <div class="form-group">
                         <label>Nationality</label>
                         <input type="text" class="form-control" id="nationality" name="nationality" value="@Model.Nationality">
                     </div>
-<div class="form-group">
-    <label>Gender</label>
-    <select class="form-control" id="gender" name="gender">
-        <option value="">Select Gender</option>
-        @foreach (var option in ViewBag.GenderOptions)
-        {
-            if (Model.Gender == option.Value)
-            {
-                <option value="@option.Value" selected>@option.Text</option>
-            }
-            else
-            {
-                <option value="@option.Value">@option.Text</option>
-            }
-        }
-    </select>
-</div>
-
-<div class="form-group">
-    <label>Civility</label>
-    <select class="form-control" id="civility" name="civility">
-        <option value="">Select Civility</option>
-        @foreach (var option in ViewBag.CivilityOptions)
-        {
-            if (Model.Civility == option.Value)
-            {
-                <option value="@option.Value" selected>@option.Text</option>
-            }
-            else
-            {
-                <option value="@option.Value">@option.Text</option>
-            }
-        }
-    </select>
-</div>
-
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="">Select Gender</option>
+                            @foreach (var option in ViewBag.GenderOptions)
+                            {
+                                if (Model.Gender == option.Value)
+                                {
+                                    <option value="@option.Value" selected>@option.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@option.Value">@option.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Civility</label>
+                        <select class="form-control" id="civility" name="civility">
+                            <option value="">Select Civility</option>
+                            @foreach (var option in ViewBag.CivilityOptions)
+                            {
+                                if (Model.Civility == option.Value)
+                                {
+                                    <option value="@option.Value" selected>@option.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@option.Value">@option.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -157,7 +181,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
 <script>
 $(document).ready(function() {
@@ -182,3 +206,34 @@ $(document).ready(function() {
     });
 });
 </script>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="container text-center">
+        <!-- Add your footer content here -->
+        <p>Footer content goes here.</p>
+    </div>
+</footer>
+
+<!-- Custom CSS -->
+<style>
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .page-header {
+        flex: 1;
+    }
+    .section {
+        flex: 1;
+    }
+    .footer {
+        flex-shrink: 0;
+        background-color: #f8f9fa;
+        padding: 10px 0;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+</style>

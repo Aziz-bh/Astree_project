@@ -79,7 +79,7 @@
             data-enddate="@auto.EndDate.ToString("yyyy-MM-dd")">
             
             <div class="card" style="width: 20rem;">
-<img class="card-img-top" src="@(auto.VehicleType == "Business" ? "/img/contract/auto/businessCar.jpg" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
+<img class="card-img-top" src="@(auto.VehicleType == "Business" ? "/img/contract/auto/businessCar.png" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
                 <div class="card-body">
                     <h4 class="card-title">@auto.VehicleMake @auto.Model</h4>
                     <p class="card-text">
@@ -121,7 +121,7 @@ else{
             data-startdate="@prop.StartDate.ToString("yyyy-MM-dd")"
             data-enddate="@prop.EndDate.ToString("yyyy-MM-dd")">
                             <div class="card" style="width: 20rem;">
-                                <img class="card-img-top" src="@(prop.Type == "Commercial" ? "/img/commercial.png" : "/img/residential.png")" alt="Property Image">
+                                <img class="card-img-top" src="@(prop.Type == "Commercial" ? "/img/contract/property/house.png" : "/img/contract/property/house.png")" alt="Property Image">
                                 <div class="card-body">
                                     <h4 class="card-title">@prop.Location</h4>
                                     <p class="card-text">

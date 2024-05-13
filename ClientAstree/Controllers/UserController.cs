@@ -23,11 +23,36 @@ namespace ClientAstree.Controllers
         }
 
         // GET: /User
-        public async Task<ActionResult> Index()
-        {
-            var model = await _userService.GetUsersAsync();
-            return View(model);
-        }
+public async Task<ActionResult> Index(string searchEmail = null, string searchCIN = null, string searchRole = null, int pageNumber = 1, int pageSize = 6)
+{
+    var users = await _userService.GetUsersAsync();
+    
+    // Apply search and filter
+    if (!string.IsNullOrEmpty(searchEmail))
+    {
+        users = users.Where(u => u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    if (!string.IsNullOrEmpty(searchCIN))
+    {
+        users = users.Where(u => u.CIN.Contains(searchCIN, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    if (!string.IsNullOrEmpty(searchRole))
+    {
+        users = users.Where(u => u.Roles.Any(r => r.Contains(searchRole, StringComparison.OrdinalIgnoreCase))).ToList();
+    }
+
+    // Apply pagination
+    var pagedUsers = users.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+    ViewBag.PageNumber = pageNumber;
+    ViewBag.PageSize = pageSize;
+    ViewBag.TotalPages = (int)Math.Ceiling(users.Count / (double)pageSize);
+
+    return View(pagedUsers);
+}
+
 
         // GET: /User/Details/{id}
         public async Task<IActionResult> Details(int id)
@@ -140,6 +165,16 @@ public IActionResult Login(string message = "")
         {
             return NotFound("User profile is not available.");
         }
+
+        int userId = userProfile.Id ?? 0; // Convert nullable integer to non-nullable integer
+
+        var automobileContracts = await _automobileService.GetUserAutomobiles(userId);
+           var propertyContracts=await _propertyService.GetUserPropertys(userId);
+
+               ViewBag.AutomobileContractCount = automobileContracts?.Count ?? 0;
+    ViewBag.PropertyContractCount = propertyContracts?.Count ?? 0;
+
+           
         return View(userProfile);
     }
 

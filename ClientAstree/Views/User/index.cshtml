@@ -14,17 +14,29 @@
         <!-- Main Content Area -->
         <div class="col-md-10">
             <div class="title">
-<nav aria-label="breadcrumb" role="navigation">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">Admin</li>
-    <li class="breadcrumb-item active" aria-current="page">Users</li>
-  </ol>
-</nav>
+                <nav aria-label="breadcrumb" role="navigation">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Admin</li>
+                        <li class="breadcrumb-item active" aria-current="page">Users</li>
+                    </ol>
+                </nav>
             </div>
 
             <div class="card card-plain">
                 <div class="card-body">
                     <div class="table-responsive">
+                        <form method="get" asp-action="Index">
+                            <div class="form-group">
+                                <input type="text" name="searchEmail" value="@ViewContext.HttpContext.Request.Query["searchEmail"]" placeholder="Search by Email" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="searchCIN" value="@ViewContext.HttpContext.Request.Query["searchCIN"]" placeholder="Search by CIN" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="searchRole" value="@ViewContext.HttpContext.Request.Query["searchRole"]" placeholder="Search by Role" class="form-control" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
                         <p><a asp-action="Create">Create New</a></p>
                         <table class="table">
                             <thead>
@@ -66,6 +78,30 @@
                                 }
                             </tbody>
                         </table>
+
+                        <!-- Pagination controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                @if (ViewBag.PageNumber > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
+                                    </li>
+                                }
+                                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                {
+                                    <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
+                                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                                    </li>
+                                }
+                                @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
