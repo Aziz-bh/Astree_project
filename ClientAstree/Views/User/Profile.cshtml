@@ -1,31 +1,77 @@
 @model ClientAstree.Models.UserVM
- <div class="wrapper">
-        <div class="page-header page-header-small" >
-      <div class="page-header-image" data-parallax="true" style="background-image:url(/img/fam1.png)" >
-      </div>
-       <div class="content-center">
-      <div class="container"></div>
-<h2>User Profile</h2>
-<div>
-    <p>Email: @Model.Email</p>
-    <p>First Name: @Model.FirstName</p>
-    <p>Last Name: @Model.LastName</p>
-    <p>Phone Number: @Model.PhoneNumber</p>
-    <p>Roles: @string.Join(", ", Model.Roles)</p>
-    <p>CIN: @Model.CIN</p>
-    <p>Birth Date: @Model.BirthDate</p>
-    <p>Nationality: @Model.Nationality</p>
-    <p>Gender: @Model.Gender</p>
-    <p>Civility: @Model.Civility</p>
-    <!-- Add more fields as needed -->
-</div>
-<!-- Profile View -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">
-    Update Profile
-</button>
+<div class="wrapper">
+    <div class="page-header page-header-small">
+        <div class="page-header-image" data-parallax="true" style="background-image:url('/img/fam1.png'); ">
+        </div>
+           <div class="container mt-3">
+                <h2>User Profile</h2>
+                            <div class="container overflow-auto" style="max-height: 60vh; padding-bottom: 0; margin-bottom: 0;"> <!-- Scrollable container -->
 
-</div>
-</div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-envelope"></i> Email:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.Email</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person"></i> First Name:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.FirstName</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person-fill"></i> Last Name:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.LastName</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-telephone"></i> Phone Number:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.PhoneNumber</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-card-text"></i> CIN:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.CIN</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-calendar3"></i> Birth Date:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.BirthDate</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-globe"></i> Nationality:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.Nationality</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-gender-ambiguous"></i> Gender:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.Gender</p>
+                    </div>
+                </div>
+                <div class="row  mb-5 pb-5 ">
+                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person-lines-fill"></i> Civility:</label>
+                    <div class="col-sm-12 col-md-9">
+                        <p class="form-control-plaintext text-white">@Model.Civility</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="section">
+      <div class="container text-center">
+        <div class="button-container">
+          <button type="button" class="btn btn-primary btn-round btn-lg" data-toggle="modal" data-target="#editProfileModal">Update Profile</button>
+
+        </div>
+           </div>
+    </div>
 </div>
 <!-- Edit Profile Modal -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
@@ -126,7 +172,7 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 $('#editProfileModal').modal('hide');
-                alert('Profile updated successfully!');
+                window.location.reload(true); 
                 // Optionally refresh the page or part of it
             },
             error: function() {

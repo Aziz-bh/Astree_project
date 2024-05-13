@@ -281,6 +281,10 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
             {
                 user.LastName = userUpdateDTO.LastName;
             }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.CIN))
+            {
+                user.CIN = userUpdateDTO.CIN;
+            }
             if (!string.IsNullOrWhiteSpace(userUpdateDTO.PhoneNumber))
             {
                 user.PhoneNumber = userUpdateDTO.PhoneNumber;
@@ -288,6 +292,22 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
             if (!string.IsNullOrWhiteSpace(userUpdateDTO.Picture))
             {
                 user.Picture = userUpdateDTO.Picture;
+            }
+            if (userUpdateDTO.Gender.HasValue)
+            {
+                user.Gender = userUpdateDTO.Gender.Value;
+            }
+            if (userUpdateDTO.BirthDate.HasValue)
+            {
+                user.BirthDate = userUpdateDTO.BirthDate.Value;
+            }
+            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Nationality))
+            {
+                user.Nationality = userUpdateDTO.Nationality;
+            }
+            if (userUpdateDTO.Civility.HasValue)
+            {
+                user.Civility = userUpdateDTO.Civility.Value;
             }
 
 

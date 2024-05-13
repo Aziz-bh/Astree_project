@@ -80,6 +80,13 @@ namespace ClientAstree.Services
         public async Task UpdateAsync(UserUpdateDTO body)
         {
              AddBearerToken();
+              Console.WriteLine(body.Cin);
+               Console.WriteLine(body.Gender);
+                Console.WriteLine(body.PhoneNumber);
+                 Console.WriteLine(body.Civility);
+                  Console.WriteLine(body.BirthDate);
+                  Console.WriteLine(body.FirstName);
+                  
             await _client.UpdateAsync(body);
         }
 
