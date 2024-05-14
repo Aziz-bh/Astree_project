@@ -2,38 +2,125 @@
 
 @{
     ViewData["Title"] = "Manage Complaints";
+
+    Func<string, string> GetStatusClass = status =>
+    {
+        switch (status.ToLower())
+        {
+            case "approved":
+                return "text-success"; // dark green
+            case "waiting":
+                return "text-primary"; // primary color
+            case "rejected":
+                return "text-danger"; // red
+            default:
+                return "text-secondary"; // default color
+        }
+    };
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="title">
+                <h2>@ViewData["Title"]</h2>
+            </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.ComplaintsSubject</td>
-            <td>@item.Description</td>
-            <td>@item.ComplaintState</td>
-            <td>
-                <!-- Form for Approve -->
-                <form method="post" action="@Url.Action("UpdateComplaintStatus", "Complaints", new { id = item.Id, state = ClientAstree.Services.Base.ComplaintState.Approved })" onsubmit="return confirm('Are you sure you want to approve this complaint?');">
-                    <button type="submit" class="btn btn-success">Approve</button>
-                </form>
-                
-                <!-- Form for Reject -->
-                <form method="post" action="@Url.Action("UpdateComplaintStatus", "Complaints", new { id = item.Id, state = ClientAstree.Services.Base.ComplaintState.Rejected })" onsubmit="return confirm('Are you sure you want to reject this complaint?');">
-                    <button type="submit" class="btn btn-danger">Reject</button>
-                </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+            <div class="card card-plain">
+                <div class="card-body">
+                    <form method="get" action="@Url.Action("Admin")" class="mb-4">
+                        <div class="form-group">
+                            <label for="searchSubject" class="form-label">Search by Subject</label>
+                            <input type="text" id="searchSubject" name="searchSubject" value="@ViewContext.HttpContext.Request.Query["searchSubject"]" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchStatus" class="form-label">Search by Status</label>
+                            <div>
+                                <input type="radio" id="statusNull" name="searchStatus" value="" @(string.IsNullOrEmpty(ViewContext.HttpContext.Request.Query["searchStatus"]) ? "checked" : "")>
+                                <label for="statusNull">All</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="statusWaiting" name="searchStatus" value="waiting" @(ViewContext.HttpContext.Request.Query["searchStatus"] == "waiting" ? "checked" : "")>
+                                <label for="statusWaiting">Waiting</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="statusRejected" name="searchStatus" value="rejected" @(ViewContext.HttpContext.Request.Query["searchStatus"] == "rejected" ? "checked" : "")>
+                                <label for="statusRejected">Rejected</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="statusApproved" name="searchStatus" value="approved" @(ViewContext.HttpContext.Request.Query["searchStatus"] == "approved" ? "checked" : "")>
+                                <label for="statusApproved">Approved</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchUserEmail" class="form-label">Search by User Email</label>
+                            <input type="text" id="searchUserEmail" name="searchUserEmail" value="@ViewContext.HttpContext.Request.Query["searchUserEmail"]" class="form-control" placeholder="User Email">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class=" card card-pricing col-lg-12 col-md-12 mb-4">
+                                 <div class="card card-blog card-plain mb-3">
+                                    <div class="card-image text-center">
+                                        <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })">
+                                            <img class="img-fluid rounded img-raised" style="width: 30%; height: auto;" src="https://localhost:7166/api/Complaints/image/@item.Attachment" alt="Complaint Image">
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <h6 class="category @GetStatusClass(item.ComplaintState)">@item.ComplaintState</h6>
+                                        <h5 class="card-title">
+                                            <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })">@item.ComplaintsSubject</a>
+                                        </h5>
+                                        <p class="card-description">
+                                            @item.Description
+                                        </p>
+                                        <div class="card-footer d-flex justify-content-between align-items-center">
+                                            <div class="author">
+                                                <span>@item.UserName (@item.UserEmail)</span>
+                                            </div>
+                                            <div class="stats">
+                                                <form method="post" action="@Url.Action("UpdateComplaintStatus", "Complaints", new { id = item.Id, state = ClientAstree.Services.Base.ComplaintState.Approved })" onsubmit="return confirm('Are you sure you want to approve this complaint?');" style="display:inline;">
+                                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                                </form>
+                                                <form method="post" action="@Url.Action("UpdateComplaintStatus", "Complaints", new { id = item.Id, state = ClientAstree.Services.Base.ComplaintState.Rejected })" onsubmit="return confirm('Are you sure you want to reject this complaint?');" style="display:inline;">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Pagination controls -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            @if (ViewBag.PageNumber > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
+                                </li>
+                            }
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
+                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                                </li>
+                            }
+                            @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

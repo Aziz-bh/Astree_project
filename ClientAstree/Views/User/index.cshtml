@@ -25,19 +25,35 @@
             <div class="card card-plain">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form method="get" asp-action="Index">
-                            <div class="form-group">
-                                <input type="text" name="searchEmail" value="@ViewContext.HttpContext.Request.Query["searchEmail"]" placeholder="Search by Email" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="searchCIN" value="@ViewContext.HttpContext.Request.Query["searchCIN"]" placeholder="Search by CIN" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="searchRole" value="@ViewContext.HttpContext.Request.Query["searchRole"]" placeholder="Search by Role" class="form-control" />
-                            </div>
-                            <button type="submit" class="btn btn-primary">Search</button>
-                        </form>
-                        <p><a asp-action="Create">Create New</a></p>
+<form method="get" asp-action="Index" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="searchEmail" class="form-label">Search by Email</label>
+                <input type="text" id="searchEmail" name="searchEmail" value="@ViewContext.HttpContext.Request.Query["searchEmail"]" class="form-control" placeholder="Email">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="searchCIN" class="form-label">Search by CIN</label>
+                <input type="text" id="searchCIN" name="searchCIN" value="@ViewContext.HttpContext.Request.Query["searchCIN"]" class="form-control" placeholder="CIN">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="searchRole" class="form-label">Search by Role</label>
+                <input type="text" id="searchRole" name="searchRole" value="@ViewContext.HttpContext.Request.Query["searchRole"]" class="form-control" placeholder="Role">
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+
                         <table class="table">
                             <thead>
                                 <tr>

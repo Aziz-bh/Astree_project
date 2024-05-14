@@ -15,23 +15,46 @@ namespace ClientAstree.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchSubject = null, string searchStatus = null, string searchUserEmail = null, int pageNumber = 1, int pageSize = 10)
         {
-            var complaintDtos  = await _complaintService.GetAllComplaintsAsync();
-              var complaintVms = complaintDtos.Select(dto => new ComplaintVM
-    {
-        // Map properties from dto to vm
-        Id = dto.Id,
-        Attachment = dto.Attachment,
-        Description = dto.Description,
-        ComplaintsSubject = dto.ComplaintsSubject,
-        ComplaintState = dto.ComplaintState,
-        ComplaintType = dto.ComplaintType,
-        UserId = dto.UserId,
-        UserName = dto.UserName,
-        UserEmail = dto.UserEmail
-    }).ToList();
-            return View(complaintVms);
+            var complaintDtos = await _complaintService.GetAllComplaintsAsync();
+            var complaintVms = complaintDtos.Select(dto => new ComplaintVM
+            {
+                Id = dto.Id,
+                Attachment = dto.Attachment,
+                Description = dto.Description,
+                ComplaintsSubject = dto.ComplaintsSubject,
+                ComplaintState = dto.ComplaintState,
+                ComplaintType = dto.ComplaintType,
+                UserId = dto.UserId,
+                UserName = dto.UserName,
+                UserEmail = dto.UserEmail
+            }).ToList() ?? new List<ComplaintVM>();
+
+            // Apply search and filter
+            if (!string.IsNullOrEmpty(searchSubject))
+            {
+                complaintVms = complaintVms.Where(c => c.ComplaintsSubject?.Contains(searchSubject, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchStatus))
+            {
+                complaintVms = complaintVms.Where(c => c.ComplaintState?.Contains(searchStatus, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchUserEmail))
+            {
+                complaintVms = complaintVms.Where(c => c.UserEmail?.Contains(searchUserEmail, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            // Apply pagination
+            var pagedComplaints = complaintVms.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(complaintVms.Count / (double)pageSize);
+
+            return View(pagedComplaints);
         }
 
         [HttpGet]
@@ -54,26 +77,48 @@ namespace ClientAstree.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-[HttpGet]
-public async Task<IActionResult> MyComplaints()
-{
-    var complaintDtos = await _complaintService.GetUserComplaintsAsync();
-    var complaintVms = complaintDtos.Select(dto => new ComplaintVM
-    {
-        Id = dto.Id,
-        Attachment = dto.Attachment,
-        Description = dto.Description,
-        ComplaintsSubject = dto.ComplaintsSubject,
-        ComplaintState = dto.ComplaintState,
-        ComplaintType = dto.ComplaintType,
-        UserId = dto.UserId,
-        UserName = dto.UserName,
-        UserEmail = dto.UserEmail
-    }).ToList();
-    
-    return View("MyComplaints", complaintVms);
-}
+        [HttpGet]
+        public async Task<IActionResult> MyComplaints(string searchSubject = null, string searchStatus = null, string searchUserEmail = null, int pageNumber = 1, int pageSize = 10)
+        {
+            var complaintDtos = await _complaintService.GetUserComplaintsAsync();
+            var complaintVms = complaintDtos.Select(dto => new ComplaintVM
+            {
+                Id = dto.Id,
+                Attachment = dto.Attachment,
+                Description = dto.Description,
+                ComplaintsSubject = dto.ComplaintsSubject,
+                ComplaintState = dto.ComplaintState,
+                ComplaintType = dto.ComplaintType,
+                UserId = dto.UserId,
+                UserName = dto.UserName,
+                UserEmail = dto.UserEmail
+            }).ToList() ?? new List<ComplaintVM>();
 
+            // Apply search and filter
+            if (!string.IsNullOrEmpty(searchSubject))
+            {
+                complaintVms = complaintVms.Where(c => c.ComplaintsSubject?.Contains(searchSubject, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchStatus))
+            {
+                complaintVms = complaintVms.Where(c => c.ComplaintState?.Contains(searchStatus, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchUserEmail))
+            {
+                complaintVms = complaintVms.Where(c => c.UserEmail?.Contains(searchUserEmail, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            // Apply pagination
+            var pagedComplaints = complaintVms.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(complaintVms.Count / (double)pageSize);
+
+            return View("MyComplaints", pagedComplaints);
+        }
 
 [HttpGet]
 public async Task<IActionResult> EditComplaint(long id)
@@ -127,23 +172,47 @@ public async Task<IActionResult> Delete(long id)
 
 
 [HttpGet]
-public async Task<IActionResult> Admin()
-{
-    var complaintDtos = await _complaintService.GetAllComplaintsAsync();
-    var complaintVms = complaintDtos.Select(dto => new ComplaintVM
-    {
-        Id = dto.Id,
-        Attachment = dto.Attachment,
-        Description = dto.Description,
-        ComplaintsSubject = dto.ComplaintsSubject,
-        ComplaintState = dto.ComplaintState,
-        ComplaintType = dto.ComplaintType,
-        UserId = dto.UserId,
-        UserName = dto.UserName,
-        UserEmail = dto.UserEmail
-    }).ToList();
-    return View(complaintVms);
-}
+public async Task<IActionResult> Admin(string searchSubject = null, string searchStatus = null, string searchUserEmail = null, int pageNumber = 1, int pageSize = 10)
+        {
+            var complaintDtos = await _complaintService.GetAllComplaintsAsync();
+            var complaintVms = complaintDtos.Select(dto => new ComplaintVM
+            {
+                Id = dto.Id,
+                Attachment = dto.Attachment,
+                Description = dto.Description,
+                ComplaintsSubject = dto.ComplaintsSubject,
+                ComplaintState = dto.ComplaintState,
+                ComplaintType = dto.ComplaintType,
+                UserId = dto.UserId,
+                UserName = dto.UserName,
+                UserEmail = dto.UserEmail
+            }).ToList() ?? new List<ComplaintVM>();
+
+            // Apply search and filter
+            if (!string.IsNullOrEmpty(searchSubject))
+            {
+                complaintVms = complaintVms.Where(c => c.ComplaintsSubject?.Contains(searchSubject, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchStatus))
+            {
+                complaintVms = complaintVms.Where(c => c.ComplaintState?.Contains(searchStatus, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchUserEmail))
+            {
+                complaintVms = complaintVms.Where(c => c.UserEmail?.Contains(searchUserEmail, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            // Apply pagination
+            var pagedComplaints = complaintVms.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(complaintVms.Count / (double)pageSize);
+
+            return View(pagedComplaints);
+        }
 
 [HttpPost]
 public async Task<IActionResult> UpdateComplaintStatus(long id, ComplaintState state)
