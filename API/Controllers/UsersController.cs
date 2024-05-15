@@ -43,6 +43,8 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
 
     foreach (var user in users)
     {
+         
+
         var roles = await _userManager.GetRolesAsync(user); 
 
         var userDto = new UserDto

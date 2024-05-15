@@ -4,20 +4,52 @@
     ViewData["Title"] = "Property Contracts";
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="title">
-                <nav aria-label="breadcrumb" role="navigation">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">Admin</li>
-                        <li class="breadcrumb-item active" aria-current="page">Property Contracts</li>
-                    </ol>
-                </nav>
-            </div>
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
 
-            <div class="card card-plain">
-                <div class="card-body">
+    .form-container, .table-container, .pagination-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .table-container {
+        padding: 20px;
+    }
+
+    .pagination-container {
+        padding: 10px;
+ margin-bottom: 50px;
+     }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <div class="title">
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item active" aria-current="page">Property Contracts</li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <div class="form-container">
                     <form method="get" asp-action="Index" class="mb-4">
                         <div class="row">
                             <div class="col-md-4">
@@ -45,7 +77,9 @@
                             </div>
                         </div>
                     </form>
+                </div>
 
+                <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
@@ -78,31 +112,31 @@
                             }
                         </tbody>
                     </table>
-
-                    <!-- Pagination controls -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            @if (ViewBag.PageNumber > 1)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
-                                </li>
-                            }
-                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                            {
-                                <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
-                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
-                                </li>
-                            }
-                            @if (ViewBag.PageNumber < ViewBag.TotalPages)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
-                                </li>
-                            }
-                        </ul>
-                    </nav>
                 </div>
+
+                <!-- Pagination controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center pagination-container">
+                        @if (ViewBag.PageNumber > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
+                            </li>
+                        }
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                            </li>
+                        }
+                        @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Index" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

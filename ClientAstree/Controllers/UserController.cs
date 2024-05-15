@@ -23,7 +23,7 @@ namespace ClientAstree.Controllers
         }
 
         // GET: /User
-public async Task<ActionResult> Index(string searchEmail = null, string searchCIN = null, string searchRole = null, int pageNumber = 1, int pageSize = 6)
+public async Task<ActionResult> Index(string searchEmail = null, string searchCIN = null, string searchRole = null, int pageNumber = 1, int pageSize = 4)
 {
     var users = await _userService.GetUsersAsync();
     

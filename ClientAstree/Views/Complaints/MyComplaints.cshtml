@@ -17,17 +17,99 @@
                 return "text-secondary"; // default color
         }
     };
+
+    Func<string, bool> IsImageFile = attachment =>
+    {
+        var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
+        return imageExtensions.Any(ext => attachment.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
+    };
 }
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="title">
-                <h2>@ViewData["Title"]</h2>
-            </div>
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
 
-            <div class="card card-plain">
-                <div class="card-body">
+    .form-container, .complaint-card, .pagination-container {
+        background-color: rgba(255, 255, 255, 1); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .complaint-card {
+        padding: 20px;
+    }
+
+    .pagination-container {
+        padding: 10px;
+        margin-bottom: 50px;
+    }
+
+    .file-placeholder {
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    /* Modal styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.9);
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <div class="title">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+
+                <div class="form-container">
                     <form method="get" action="@Url.Action("MyComplaints")" class="mb-4">
                         <div class="form-group">
                             <label for="searchSubject" class="form-label">Search by Subject</label>
@@ -58,69 +140,98 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
+                </div>
 
-                    <div class="row">
-                        @foreach (var item in Model)
-                        {
-                            <div class="card card-pricing col-lg-12 col-md-12 mb-4">
-                                 <div class="card card-blog card-plain mb-3">
-                                    <div class="card-image text-center">
-                                        <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="card card-pricing col-lg-12 col-md-12 mb-4 complaint-card">
+                            <div class="card card-blog card-plain mb-3">
+                                <div class="card-image text-center">
+                                    @if (IsImageFile(item.Attachment))
+                                    {
+                                        <a href="javascript:void(0);" onclick="openModal('https://localhost:7166/api/Complaints/image/@item.Attachment')">
                                             <img class="img-fluid rounded img-raised" style="width: 30%; height: auto;" src="https://localhost:7166/api/Complaints/image/@item.Attachment" alt="Complaint Image">
                                         </a>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="category @GetStatusClass(item.ComplaintState)">@item.ComplaintState</h6>
-                                        <h5 class="card-title">
-                                            <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })">@item.ComplaintsSubject</a>
-                                        </h5>
-                                        <p class="card-description">
-                                            @item.Description
-                                        </p>
-                                        <div class="card-footer d-flex justify-content-between align-items-center">
-                                            <div class="author">
-                                                <span>@item.UserName (@item.UserEmail)</span>
-                                            </div>
-                                            <div class="stats">
-                                                <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
-                                                <form asp-action="Delete" asp-controller="Complaints" method="post" onsubmit="return confirm('Are you sure you want to delete this complaint?');" style="display:inline;">
-                                                    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="id" value="@item.Id" />
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                            </div>
+                                    }
+                                    else
+                                    {
+                                        <a href="https://localhost:7166/api/Complaints/image/@item.Attachment" download>
+                                            <div class="file-placeholder">Download File</div>
+                                        </a>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="category @GetStatusClass(item.ComplaintState)">@item.ComplaintState</h6>
+                                    <h5 class="card-title">
+                                        <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })">@item.ComplaintsSubject</a>
+                                    </h5>
+                                    <p class="card-description">
+                                        @item.Description
+                                    </p>
+                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                        <div class="author">
+                                            <span>@item.UserName (@item.UserEmail)</span>
+                                        </div>
+                                        <div class="stats">
+                                            <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
+                                            <form asp-action="Delete" asp-controller="Complaints" method="post" onsubmit="return confirm('Are you sure you want to delete this complaint?');" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-
-                    <!-- Pagination controls -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            @if (ViewBag.PageNumber > 1)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-action="MyComplaints" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
-                                </li>
-                            }
-                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                            {
-                                <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
-                                    <a class="page-link" asp-action="MyComplaints" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
-                                </li>
-                            }
-                            @if (ViewBag.PageNumber < ViewBag.TotalPages)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" asp-action="MyComplaints" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
-                                </li>
-                            }
-                        </ul>
-                    </nav>
+                        </div>
+                    }
                 </div>
+
+                <!-- Pagination controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center pagination-container">
+                        @if (ViewBag.PageNumber > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="MyComplaints" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
+                            </li>
+                        }
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
+                                <a class="page-link" asp-action="MyComplaints" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                            </li>
+                        }
+                        @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="MyComplaints" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
 </div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="img01">
+</div>
+
+<script>
+    function openModal(src) {
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        modal.style.display = "block";
+        modalImg.src = src;
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+</script>
