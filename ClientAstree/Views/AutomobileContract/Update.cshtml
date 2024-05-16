@@ -88,7 +88,8 @@
         {
             <div class="form-check">
                 <input class="form-check-input" type="checkbox"
-                       value="@((int)guarantee)" id="@guarantee" name="Guarantees">
+                       value="@((int)guarantee)" id="@guarantee" name="Guarantees"
+                       @if(Model.GuaranteesList.Contains(guarantee)) { <text>checked</text> } />
                 <label class="form-check-label" for="@guarantee">
                     @guarantee
                 </label>
@@ -97,6 +98,7 @@
     </div>
     <span asp-validation-for="Guarantees" class="text-danger"></span>
 </div>
+
 
 
 

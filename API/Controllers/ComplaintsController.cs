@@ -184,7 +184,6 @@ public async Task<IActionResult> DeleteComplaint(long id)
 
 
 [HttpPut("updatecomplaint/{id}")]
-// [Authorize(Roles = "Member")]
 public async Task<IActionResult> UpdateComplaint(long id, [FromForm] ComplaintUpdateDto complaintUpdateDto)
 {
     var email = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -205,9 +204,16 @@ public async Task<IActionResult> UpdateComplaint(long id, [FromForm] ComplaintUp
         return Forbid("You do not have permission to update this complaint.");
     }
 
-    // Update the complaint details
-    complaint.Description = complaintUpdateDto.Description;
-    complaint.ComplaintsSubject = complaintUpdateDto.ComplaintsSubject;
+    // Update the complaint details if provided
+    if (!string.IsNullOrWhiteSpace(complaintUpdateDto.Description))
+    {
+        complaint.Description = complaintUpdateDto.Description;
+    }
+
+    if (!string.IsNullOrWhiteSpace(complaintUpdateDto.ComplaintsSubject))
+    {
+        complaint.ComplaintsSubject = complaintUpdateDto.ComplaintsSubject;
+    }
 
     // Handle file update if a new file is provided
     if (complaintUpdateDto.Attachment != null)
@@ -216,7 +222,9 @@ public async Task<IActionResult> UpdateComplaint(long id, [FromForm] ComplaintUp
         complaint.Attachment = filePath; // Update the file path to the new file
     }
 
+    _context.Complaints.Update(complaint);
     await _context.SaveChangesAsync();
+
     return NoContent();
 }
 

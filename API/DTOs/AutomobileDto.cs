@@ -15,7 +15,7 @@ namespace API.DTOs
         public float TrueVehicleValue { get; set; }
          public Guarantees Guarantees { get; set; }
         
-        // Add a new property to hold the list of guarantee names
+     
         public List<string> GuaranteesList => GetGuaranteesList(Guarantees);
 
         private List<string> GetGuaranteesList(Guarantees guarantees)

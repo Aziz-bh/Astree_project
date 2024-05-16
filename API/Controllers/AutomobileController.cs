@@ -175,47 +175,71 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult>
-        UpdateAutomobile(long id, [FromBody] AutomobileUpdateDto updateDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+[HttpPut("{id}")]
+public async Task<IActionResult> UpdateAutomobile(long id, [FromBody] AutomobileUpdateDto updateDto)
+{
 
-            var automobile =
-                await _automobileService.GetAutomobileByIdAsync(id);
-            if (automobile == null)
-            {
-                return NotFound();
-            }
 
-            // Map the updated fields from the DTO to the automobile entity
-            automobile.StartDate = updateDto.StartDate;
-            automobile.EndDate = updateDto.EndDate;
-            automobile.VehicleValue = updateDto.VehicleValue;
-            automobile.Guarantees = updateDto.Guarantees;
-            automobile.VehicleMake = updateDto.VehicleMake;
-            automobile.Model = updateDto.Model;
-            if (
-                updateDto.TrueVehicleValue.HasValue // Check if provided before updating
-            )
-            {
-                automobile.TrueVehicleValue = updateDto.TrueVehicleValue.Value;
-            }
+    if (!ModelState.IsValid)
+    {
+        Console.WriteLine("Model state is invalid");
+        return BadRequest(ModelState);
+    }
+    Console.WriteLine("Model state is valid");
 
-            // Mapping the newly added fields
-            automobile.RegistrationNumber = updateDto.RegistrationNumber;
-            automobile.RegistrationDate = updateDto.RegistrationDate;
-            automobile.EnginePower = updateDto.EnginePower;
-            automobile.SeatsNumber = updateDto.SeatsNumber;
+    var automobile = await _automobileService.GetAutomobileByIdAsync(id);
+    Console.WriteLine(automobile == null ? "Automobile not found" : $"Automobile found with id: {automobile.Id}");
 
-            // Perform the update operation
-            await _automobileService.UpdateAutomobileAsync(automobile);
+    if (automobile == null)
+    {
+        return NotFound();
+    }
 
-            return NoContent(); // or return appropriate response
-        }
+    // Map the updated fields from the DTO to the automobile entity
+    automobile.StartDate = updateDto.StartDate;
+    Console.WriteLine($"Updated StartDate: {automobile.StartDate}");
+
+    automobile.EndDate = updateDto.EndDate;
+    Console.WriteLine($"Updated EndDate: {automobile.EndDate}");
+
+    automobile.VehicleValue = updateDto.VehicleValue;
+    Console.WriteLine($"Updated VehicleValue: {automobile.VehicleValue}");
+
+    automobile.Guarantees = updateDto.Guarantees;
+    Console.WriteLine($"Updated Guarantees: {automobile.Guarantees}");
+
+    automobile.VehicleMake = updateDto.VehicleMake;
+    Console.WriteLine($"Updated VehicleMake: {automobile.VehicleMake}");
+
+    automobile.Model = updateDto.Model;
+    Console.WriteLine($"Updated Model: {automobile.Model}");
+
+    if (updateDto.TrueVehicleValue.HasValue)
+    {
+        automobile.TrueVehicleValue = updateDto.TrueVehicleValue.Value;
+        Console.WriteLine($"Updated TrueVehicleValue: {automobile.TrueVehicleValue}");
+    }
+
+    // Mapping the newly added fields
+    automobile.RegistrationNumber = updateDto.RegistrationNumber;
+    Console.WriteLine($"Updated RegistrationNumber: {automobile.RegistrationNumber}");
+
+    automobile.RegistrationDate = updateDto.RegistrationDate;
+    Console.WriteLine($"Updated RegistrationDate: {automobile.RegistrationDate}");
+
+    automobile.EnginePower = updateDto.EnginePower;
+    Console.WriteLine($"Updated EnginePower: {automobile.EnginePower}");
+
+    automobile.SeatsNumber = updateDto.SeatsNumber;
+    Console.WriteLine($"Updated SeatsNumber: {automobile.SeatsNumber}");
+
+    // Perform the update operation
+    Console.WriteLine("Updating automobile...");
+    await _automobileService.UpdateAutomobileAsync(automobile);
+    Console.WriteLine("Automobile updated");
+
+    return NoContent(); // or return appropriate response
+}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAutomobile(long id)

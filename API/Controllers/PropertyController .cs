@@ -67,8 +67,7 @@ namespace API.Controllers
 
         // Example: Create a new property
         [HttpPost]
-        public async Task<ActionResult<PropertyDto>>
-        CreateProperty([FromBody] PropertyDto propertyDto)
+        public async Task<ActionResult<PropertyDto>> CreateProperty([FromBody] PropertyDto propertyDto)
         {
             if (!ModelState.IsValid)
             {
@@ -76,8 +75,7 @@ namespace API.Controllers
             }
 
             // Get user email from JWT token
-            var userEmail =
-                HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             // Fetch user by email
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -86,46 +84,51 @@ namespace API.Controllers
                 return Unauthorized("User not found.");
             }
 
-            // Set the UserId from the JWT token
-            // propertyDto.UserId = user.Id;
-            var property =
-                new Property {
-                    // Manual mapping from propertyDto to property
-                    UserId = user.Id,
-                    StartDate = propertyDto.StartDate,
-                    EndDate = propertyDto.EndDate,
-                    Quota = 0,
-                    Location = propertyDto.Location,
-                    Type = propertyDto.Type,
-                    YearOfConstruction = propertyDto.YearOfConstruction,
-                    PropertyValue = propertyDto.PropertyValue,
-                    Coverage = propertyDto.Coverage
-                };
+            // Business rule validations
+            if (propertyDto.EndDate <= propertyDto.StartDate)
+            {
+                return BadRequest("End date must be later than start date.");
+            }
+
+            if (propertyDto.PropertyValue <= 0)
+            {
+                return BadRequest("Property value must be a positive number.");
+            }
+
+            // Map from DTO to domain model
+            var property = new Property
+            {
+                UserId = user.Id,
+                StartDate = propertyDto.StartDate,
+                EndDate = propertyDto.EndDate,
+                Quota = 0,
+                Location = propertyDto.Location,
+                Type = propertyDto.Type,
+                YearOfConstruction = propertyDto.YearOfConstruction,
+                PropertyValue = propertyDto.PropertyValue,
+                Coverage = propertyDto.Coverage
+            };
 
             try
             {
-                var createdProperty =
-                    await _propertyService.CreatePropertyAsync(property);
+                var createdProperty = await _propertyService.CreatePropertyAsync(property);
 
-                var returnDto =
-                    new PropertyDto {
-                        // Manual mapping from createdProperty to returnDto
-                        Id = createdProperty.Id,
-                        ContractType = createdProperty.ContractType,
-                        StartDate = createdProperty.StartDate,
-                        EndDate = createdProperty.EndDate,
-                        Quota = createdProperty.Quota,
-                        Location = createdProperty.Location,
-                        Type = createdProperty.Type,
-                        YearOfConstruction = createdProperty.YearOfConstruction,
-                        PropertyValue = createdProperty.PropertyValue,
-                        Coverage = createdProperty.Coverage,
-                        UserId = createdProperty.UserId // Make sure PropertyDto has a UserId property.
-                    };
+                var returnDto = new PropertyDto
+                {
+                    Id = createdProperty.Id,
+                    ContractType = createdProperty.ContractType,
+                    StartDate = createdProperty.StartDate,
+                    EndDate = createdProperty.EndDate,
+                    Quota = createdProperty.Quota,
+                    Location = createdProperty.Location,
+                    Type = createdProperty.Type,
+                    YearOfConstruction = createdProperty.YearOfConstruction,
+                    PropertyValue = createdProperty.PropertyValue,
+                    Coverage = createdProperty.Coverage,
+                    UserId = createdProperty.UserId
+                };
 
-                return CreatedAtAction(nameof(GetPropertyById),
-                new { id = createdProperty.Id },
-                returnDto);
+                return CreatedAtAction(nameof(GetPropertyById), new { id = createdProperty.Id }, returnDto);
             }
             catch (ArgumentException ex)
             {
@@ -133,9 +136,9 @@ namespace API.Controllers
             }
         }
 
+
         [HttpPut("{id}")]
-        public async Task<IActionResult>
-        UpdateProperty(long id, [FromBody] PropertyUpdateDto updateDto)
+        public async Task<IActionResult> UpdateProperty(long id, [FromBody] PropertyUpdateDto updateDto)
         {
             if (!ModelState.IsValid)
             {
@@ -146,6 +149,17 @@ namespace API.Controllers
             if (property == null)
             {
                 return NotFound();
+            }
+
+            // Business rule validations
+            if (updateDto.EndDate <= updateDto.StartDate)
+            {
+                return BadRequest("End date must be later than start date.");
+            }
+
+            if (updateDto.PropertyValue <= 0)
+            {
+                return BadRequest("Property value must be a positive number.");
             }
 
             // Map the updated fields from the DTO to the property entity

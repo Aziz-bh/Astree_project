@@ -50,6 +50,9 @@ namespace ClientAstree.Services
 
         public async Task UpdateComplaintAsync(long id, FileParameter attachment, string description, string complaintsSubject)
         {AddBearerToken();
+            Console.WriteLine("Service : "+ id);
+            
+            Console.WriteLine("Service : "+ id);
             await _httpClient.UpdatecomplaintAsync(id, attachment, description, complaintsSubject);
         }
 

@@ -2779,8 +2779,20 @@ namespace ClientAstree.Services.Base
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdatecomplaintAsync(long id, FileParameter attachment, string description, string complaintsSubject, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdatecomplaintAsync(long id, FileParameter? attachment, string? description, string? complaintsSubject, System.Threading.CancellationToken cancellationToken)
         {
+            Console.WriteLine("we are in the service client");
+
+            Console.WriteLine("id : "+ id);
+            Console.WriteLine("attachment : "+ attachment);
+            
+            Console.WriteLine("description : "+ description);
+            
+            Console.WriteLine("complaintsSubject : "+ complaintsSubject);
+            
+            Console.WriteLine("id : "+ id);
+            
+            Console.WriteLine("id : "+ id);
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
@@ -2788,6 +2800,9 @@ namespace ClientAstree.Services.Base
             var disposeClient_ = false;
             try
             {
+                            Console.WriteLine("trry catch : "+ id);
+            
+            Console.WriteLine("id : "+ id);
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     var boundary_ = System.Guid.NewGuid().ToString();
@@ -2795,15 +2810,13 @@ namespace ClientAstree.Services.Base
                     content_.Headers.Remove("Content-Type");
                     content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
 
-                    if (attachment == null)
-                        throw new System.ArgumentNullException("attachment");
-                    else
-                    {
-                        var content_attachment_ = new System.Net.Http.StreamContent(attachment.Data);
+                    if (attachment != null)
+                      {                        var content_attachment_ = new System.Net.Http.StreamContent(attachment.Data);
                         if (!string.IsNullOrEmpty(attachment.ContentType))
                             content_attachment_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(attachment.ContentType);
                         content_.Add(content_attachment_, "Attachment", attachment.FileName ?? "Attachment");
                     }
+
 
                     if (description == null)
                         throw new System.ArgumentNullException("description");

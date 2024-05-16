@@ -134,27 +134,29 @@ public async Task<IActionResult> EditComplaint(long id)
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Edit(long id, ComplaintDtoSubmit model)
 {
-    if (!ModelState.IsValid)
-    {
-        // Fetch the existing complaint to display in the view if model state is invalid
-        var existingComplaint = await _complaintService.GetComplaintAsync(id);
-        if (existingComplaint == null)
-        {
-            return NotFound();
-        }
-        return View(new ComplaintDto
-        {
-            Id = existingComplaint.Id,
-            Attachment = existingComplaint.Attachment,
-            Description = model.Description ?? existingComplaint.Description,
-            ComplaintsSubject = model.ComplaintsSubject ?? existingComplaint.ComplaintsSubject,
-            ComplaintState = existingComplaint.ComplaintState,
-            ComplaintType = existingComplaint.ComplaintType,
-            UserId = existingComplaint.UserId,
-            UserName = existingComplaint.UserName,
-            UserEmail = existingComplaint.UserEmail
-        });
-    }
+    // if (!ModelState.IsValid)
+    // {
+    //     // Fetch the existing complaint to display in the view if model state is invalid
+    //     var existingComplaint = await _complaintService.GetComplaintAsync(id);
+    //     if (existingComplaint == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return View(new ComplaintDto
+    //     {
+    //         Id = existingComplaint.Id,
+    //         Attachment = existingComplaint.Attachment,
+    //         Description = model.Description ?? existingComplaint.Description,
+    //         ComplaintsSubject = model.ComplaintsSubject ?? existingComplaint.ComplaintsSubject,
+    //         ComplaintState = existingComplaint.ComplaintState,
+    //         ComplaintType = existingComplaint.ComplaintType,
+    //         UserId = existingComplaint.UserId,
+    //         UserName = existingComplaint.UserName,
+    //         UserEmail = existingComplaint.UserEmail
+    //     });
+    // }
+
+    //var attachment2 = new FileParameter(model.Attachment.OpenReadStream(), model.Attachment.FileName, model.Attachment.ContentType);
 
     var attachment = model.Attachment != null ? new FileParameter(model.Attachment.OpenReadStream(), model.Attachment.FileName, model.Attachment.ContentType) : null;
     await _complaintService.UpdateComplaintAsync(id, attachment, model.Description, model.ComplaintsSubject);
