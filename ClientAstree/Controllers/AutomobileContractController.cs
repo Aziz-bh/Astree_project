@@ -63,14 +63,16 @@ namespace ClientAstree.Controllers
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form)
 {
+    var validationErrors = new List<string>();
+
     try
     {
         // Manual extraction as a fallback or to ensure correct binding
-        model.VehicleMake = model.VehicleMake ?? form["VehicleMake"];
-        model.Model = model.Model ?? form["Model"];
+        model.VehicleMake = form["VehicleMake"];
+        model.Model = form["Model"];
         model.VehicleType = form["VehicleType"];
-        model.RegistrationNumber = model.RegistrationNumber ?? form["RegistrationNumber"];
-        model.ContractType = model.ContractType ?? form["ContractType"];
+        model.RegistrationNumber = form["RegistrationNumber"];
+        model.ContractType = form["ContractType"];
 
         if (DateTimeOffset.TryParse(form["RegistrationDate"], out var registrationDate)) {
             model.RegistrationDate = registrationDate;
@@ -90,33 +92,76 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
         var guarantees = form["Guarantees"].Select(int.Parse).ToArray();
         model.Guarantees = guarantees.Sum().ToString();
 
-        // Additional server-side validation
+        // Debugging logs
+        Console.WriteLine("Form Values:");
+        foreach (var key in form.Keys)
+        {
+            Console.WriteLine($"{key}: {form[key]}");
+        }
+
+        // Manual validation
+        if (string.IsNullOrWhiteSpace(model.VehicleMake))
+        {
+            validationErrors.Add("Vehicle Make is required.");
+        }
+        if (string.IsNullOrWhiteSpace(model.Model))
+        {
+            validationErrors.Add("Model is required.");
+        }
+        if (string.IsNullOrWhiteSpace(model.VehicleType))
+        {
+            validationErrors.Add("Vehicle Type is required.");
+        }
+        if (string.IsNullOrWhiteSpace(model.RegistrationNumber))
+        {
+            validationErrors.Add("Registration Number is required.");
+        }
         if (model.EndDate <= model.StartDate)
         {
-            ModelState.AddModelError("", "End date must be later than start date.");
+            validationErrors.Add("End date must be later than start date.");
         }
         if (model.VehicleValue <= 0)
         {
-            ModelState.AddModelError("", "Vehicle value must be greater than zero.");
+            validationErrors.Add("Vehicle value must be greater than zero.");
+        }
+        if (model.EnginePower <= 0)
+        {
+            validationErrors.Add("Engine power must be greater than zero.");
+        }
+        if (model.SeatsNumber <= 0)
+        {
+            validationErrors.Add("Seats number must be greater than zero.");
+        }
+        if (model.TrueVehicleValue <= 0)
+        {
+            validationErrors.Add("True vehicle value must be greater than zero.");
+        }
+        if (string.IsNullOrWhiteSpace(model.Guarantees))
+        {
+            validationErrors.Add("Guarantees are required.");
         }
 
-        if (ModelState.IsValid)
+        // Check if there are any validation errors
+        if (!validationErrors.Any())
         {
             var createdAutomobile = await _automobileService.CreateAutomobileAsync(model);
             if (createdAutomobile != null)
             {
                 return RedirectToAction(nameof(Index));
             }
-            ModelState.AddModelError("", "Failed to create automobile contract");
+            validationErrors.Add("Failed to create automobile contract.");
         }
     }
     catch (Exception ex)
     {
-        ModelState.AddModelError("", $"An error occurred while creating the automobile contract: {ex.Message}");
+        validationErrors.Add($"An error occurred while creating the automobile contract: {ex.Message}");
     }
 
+    // Pass validation errors to the view
+    ViewBag.ValidationErrors = validationErrors;
     return View(model);
 }
+
 
 
 
@@ -179,6 +224,8 @@ public async Task<IActionResult> Update(AutomobileVM model, IFormCollection form
 if(model.Guarantees == "0"){
     model.Guarantees = c.Guarantees;
 }
+
+
 await _automobileService.UpdateAutomobileAsync(model);
             return RedirectToAction(nameof(Index));
         

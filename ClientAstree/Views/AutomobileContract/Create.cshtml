@@ -44,14 +44,14 @@
                 <div class="form-container">
                     <h2>@ViewData["Title"]</h2>
                     
-                    @if (!ViewData.ModelState.IsValid)
+                    @if (ViewBag.ValidationErrors != null && ViewBag.ValidationErrors.Count > 0)
                     {
                         <div class="alert alert-danger">
                             <strong>Error!</strong> Please correct the following errors:
                             <ul>
-                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                @foreach (var error in ViewBag.ValidationErrors)
                                 {
-                                    <li>@error.ErrorMessage</li>
+                                    <li>@error</li>
                                 }
                             </ul>
                         </div>
