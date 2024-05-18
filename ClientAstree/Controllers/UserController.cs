@@ -13,13 +13,15 @@ namespace ClientAstree.Controllers
           private readonly IAuthenticationService _authService;
             private readonly IAutomobileService _automobileService;
             private readonly IPropertyService _propertyService;
+             private readonly IComplaintService _complaintService;
 
-        public UserController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService)
+        public UserController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService ,IComplaintService complaintService)
         {
             this._userService = leaveTypeService;
             this._authService = authService;
             this._automobileService=automobileService;
             this._propertyService=propertyService;
+            this._complaintService = complaintService;
         }
 
         // GET: /User
@@ -208,6 +210,24 @@ Console.WriteLine("try");
     return RedirectToAction("Profile"); // Redirect back to the profile page or another relevant page
 }
 
+
+        public async Task<IActionResult> Dashboard()
+        {
+            var automobileContracts = await _automobileService.GetMyAutomobileContractsAsync();
+            var propertyContracts = await _propertyService.GetMyPropertyContractsAsync();
+            var users = await _userService.GetUsersAsync();
+            var complaints = await _complaintService.GetAllComplaintsAsync();
+
+            var model = new DashboardViewModel
+            {
+                AutomobileContractsCount = automobileContracts?.Count() ?? 0,
+                PropertyContractsCount = propertyContracts?.Count() ?? 0,
+                UsersCount = users?.Count() ?? 0,
+                ComplaintsCount = complaints?.Count() ?? 0
+            };
+
+            return View(model);
+        }
 
         // // GET: /User/Create
         // public IActionResult Create()
