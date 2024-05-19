@@ -5,6 +5,8 @@ namespace ClientAstree.Contracts
     public interface IAutomobileService
     {
         Task<List<AutomobileVM>> GetMyAutomobileContractsAsync();
+
+        Task<List<AutomobileVM>> AutomobileAllAsync();
         Task<List<AutomobileVM>> GetUserAutomobiles(int id);
                 Task<AutomobileVM> GetAutomobileByIdAsync(long id);
         Task<AutomobileVM> CreateAutomobileAsync(AutomobileVM automobile);

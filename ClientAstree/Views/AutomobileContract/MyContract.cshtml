@@ -1,0 +1,162 @@
+@model IEnumerable<ClientAstree.Models.AutomobileVM>
+
+@{
+    ViewData["Title"] = "My Automobile Contracts";
+}
+
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
+
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        width: 25rem; /* Increase the width of the card */
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+    }
+
+    .card-img-top {
+        width: 100px;
+        height: auto;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 10px;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+    }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <div class="title">
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">User</li>
+                            <li class="breadcrumb-item active" aria-current="page">My Automobile Contracts</li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <div class="form-container">
+                    <form method="get" asp-action="MyContract" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="searchMake" class="form-label">Search by Make</label>
+                                    <input type="text" id="searchMake" name="searchMake" value="@ViewContext.HttpContext.Request.Query["searchMake"]" class="form-control" placeholder="Make">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="searchModel" class="form-label">Search by Model</label>
+                                    <input type="text" id="searchModel" name="searchModel" value="@ViewContext.HttpContext.Request.Query["searchModel"]" class="form-control" placeholder="Model">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="searchVehicleType" class="form-label">Search by Vehicle Type</label>
+                                    <input type="text" id="searchVehicleType" name="searchVehicleType" value="@ViewContext.HttpContext.Request.Query["searchVehicleType"]" class="form-control" placeholder="Vehicle Type">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    @foreach (var contract in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img class="card-img-top" src="@(contract.VehicleType == "Business" ? "/img/contract/auto/businessCar.png" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
+                                <div class="card-body">
+                                    <h4 class="card-title">@contract.VehicleMake @contract.Model</h4>
+                                    <p class="card-text">
+                                        Type: @contract.VehicleType <br>
+                                        Start Date: @contract.StartDate.ToString("yyyy-MM-dd") <br>
+                                        End Date: @contract.EndDate.ToString("yyyy-MM-dd") <br>
+                                        Quota: @contract.Quota <br>
+                                        Engine Power: @contract.EnginePower HP <br>
+                                        Seats: @contract.SeatsNumber <br>
+                                        Value: $@contract.VehicleValue <br>
+                                        True Value: $@contract.TrueVehicleValue <br>
+                                        Guarantees: @foreach (var guarantee in contract.GuaranteesList)
+                                        {
+                                            <span class="badge badge-success">@guarantee</span>
+                                        }
+                                    </p>
+                                    <a href="@Url.Action("Details", "AutomobileContract", new { id = contract.Id })" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Pagination controls -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @if (ViewBag.PageNumber > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="MyContract" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
+                            </li>
+                        }
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
+                                <a class="page-link" asp-action="MyContract" asp-route-pageNumber="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                            </li>
+                        }
+                        @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="MyContract" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

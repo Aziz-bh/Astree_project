@@ -4,150 +4,200 @@
     ViewData["Title"] = "User Details";
 }
 
-<div class="container-fluid mb-5 pb-5">
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
+
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+    }
+
+    .card-img-top {
+        width: 100px;
+        height: auto;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 10px;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+    }
+</style>
+
+<div class="container-fluid bg-image">
     <div class="row">
         <!-- Side Menu on the left -->
-        <div class="col-md-2 py-0 my-0 px-0 mx-0">
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
             @Html.Partial("_SideMenu")
         </div>
 
         <!-- Main Content Area -->
-        <div class="col-md-10">
-                        <div class="title">
-<nav aria-label="breadcrumb" role="navigation">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item">Admin</li>
-    <li class="breadcrumb-item" aria-current="page">Users</li>
-       <li class="breadcrumb-item active" aria-current="page">UserDetails</li>
-  </ol>
-</nav>
-            </div>
-<div>
-    <h4>User Information</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Id)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Id)</dd>
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <div class="title">
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item" aria-current="page">Users</li>
+                            <li class="breadcrumb-item active" aria-current="page">User Details</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div>
+                    <h4>User Information</h4>
+                    <hr />
+                    <dl class="row">
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Id)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Id)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Email)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Email)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Email)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Email)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.FirstName)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.FirstName)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.FirstName)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.FirstName)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.LastName)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.LastName)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.LastName)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.LastName)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.PhoneNumber)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.PhoneNumber)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.PhoneNumber)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.PhoneNumber)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Roles)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Roles)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Roles)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Roles)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.CIN)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.CIN)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.CIN)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.CIN)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.BirthDate)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.BirthDate)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.BirthDate)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.BirthDate)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Nationality)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Nationality)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Nationality)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Nationality)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Gender)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Gender)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Gender)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Gender)</dd>
 
-        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Civility)</dt>
-        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Civility)</dd>
-    </dl>
-</div>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Civility)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Civility)</dd>
+                    </dl>
+                </div>
 
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.User.Id }) |
-    <a asp-action="Index">Back to List</a>
-</div>
-   <h3>Automobile Contracts</h3>
-@if (Model.AutomobileContracts.Any())
-{
-    <div class="form-group">
-        <input type="text" class="form-control" id="searchInputAuto" placeholder="Search Automobiles">
-    </div>
-    <div class="row" id="automobileCards">
-        @foreach (var auto in Model.AutomobileContracts)
-        {
-            <div class="col-md-4 automobile-card" 
-            data-startdate="@auto.StartDate.ToString("yyyy-MM-dd")"
-            data-enddate="@auto.EndDate.ToString("yyyy-MM-dd")">
-            
-            <div class="card" style="width: 20rem;">
-<img class="card-img-top" src="@(auto.VehicleType == "Business" ? "/img/contract/auto/businessCar.png" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
-                <div class="card-body">
-                    <h4 class="card-title">@auto.VehicleMake @auto.Model</h4>
-                    <p class="card-text">
-                        Type: @auto.VehicleType <br>
-                        Start Date: @auto.StartDate.ToString("yyyy-MM-dd") <br>
-                        End Date: @auto.EndDate.ToString("yyyy-MM-dd") <br>
-                        Quota: @auto.Quota<br>
-                        guarantees:     @foreach (var guarantee in auto.GuaranteesList)
+                <div>
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.User.Id }) |
+                    <a asp-action="Index">Back to List</a>
+                </div>
+
+                <h3>Automobile Contracts</h3>
+                @if (Model.AutomobileContracts.Any())
+                {
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchInputAuto" placeholder="Search Automobiles">
+                    </div>
+                    <div class="row" id="automobileCards">
+                        @foreach (var auto in Model.AutomobileContracts)
+                        {
+                            <div class="col-md-4 automobile-card" 
+                                 data-startdate="@auto.StartDate.ToString("yyyy-MM-dd")"
+                                 data-enddate="@auto.EndDate.ToString("yyyy-MM-dd")">
+                                <div class="card" style="width: 20rem;">
+                                    <img class="card-img-top" src="@(auto.VehicleType == "Business" ? "/img/contract/auto/businessCar.png" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
+                                    <div class="card-body">
+                                        <h4 class="card-title">@auto.VehicleMake @auto.Model</h4>
+                                        <p class="card-text">
+                                            Type: @auto.VehicleType <br>
+                                            Start Date: @auto.StartDate.ToString("yyyy-MM-dd") <br>
+                                            End Date: @auto.EndDate.ToString("yyyy-MM-dd") <br>
+                                            Quota: @auto.Quota<br>
+                                            Guarantees: @foreach (var guarantee in auto.GuaranteesList)
                                             {
                                                 <span class="badge badge-success">@guarantee</span>
-
                                             }
-                    </p>
-                    <a href="#" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-<nav aria-label="Automobiles Page navigation">
-    <ul class="pagination" id="autoPagination"></ul>
-</nav>
-}
-else{
-     <p>No contracts available.</p>
-}
-
-
-<h3>Property Contracts</h3>
-@if (Model.PropertyContracts.Any())
-{
-    <div class="form-group">
-        <input type="text" class="form-control" id="searchInputProp" placeholder="Search Properties">
-    </div>
-    <div class="row" id="propertyCards">
-        @foreach (var prop in Model.PropertyContracts)
-        {
-            <div class="col-md-4 property-card" 
-            data-startdate="@prop.StartDate.ToString("yyyy-MM-dd")"
-            data-enddate="@prop.EndDate.ToString("yyyy-MM-dd")">
-                            <div class="card" style="width: 20rem;">
-                                <img class="card-img-top" src="@(prop.Type == "Commercial" ? "/img/contract/property/house.png" : "/img/contract/property/house.png")" alt="Property Image">
-                                <div class="card-body">
-                                    <h4 class="card-title">@prop.Location</h4>
-                                    <p class="card-text">
-                                        Type: @prop.Type <br>
-                                        Start Date: @prop.StartDate.ToString("yyyy-MM-dd") <br>
-                                        End Date: @prop.EndDate.ToString("yyyy-MM-dd") <br>
-                                        Value: @prop.PropertyValue <br>
-                                        Coverages: @String.Join(", ", prop.CoveragesList)
-                                    </p>
-                                    <a href="#" class="btn btn-primary">View Details</a>
+                                        </p>
+                                        <a href="#" class="btn btn-primary">View Details</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                </div>
- <nav aria-label="Properties Page navigation">
-    <ul class="pagination" id="propPagination"></ul>
-</nav>
-            }
-            else
-            {
-                <p>No property contracts available.</p>
-            }
+                        }
+                    </div>
+                    <nav aria-label="Automobiles Page navigation">
+                        <ul class="pagination" id="autoPagination"></ul>
+                    </nav>
+                }
+                else
+                {
+                    <p>No contracts available.</p>
+                }
+
+                <h3>Property Contracts</h3>
+                @if (Model.PropertyContracts.Any())
+                {
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="searchInputProp" placeholder="Search Properties">
+                    </div>
+                    <div class="row" id="propertyCards">
+                        @foreach (var prop in Model.PropertyContracts)
+                        {
+                            <div class="col-md-4 property-card" 
+                                 data-startdate="@prop.StartDate.ToString("yyyy-MM-dd")"
+                                 data-enddate="@prop.EndDate.ToString("yyyy-MM-dd")">
+                                <div class="card" style="width: 20rem;">
+                                    <img class="card-img-top" src="@(prop.Type == "Commercial" ? "/img/contract/property/house.png" : "/img/contract/property/house.png")" alt="Property Image">
+                                    <div class="card-body">
+                                        <h4 class="card-title">@prop.Location</h4>
+                                        <p class="card-text">
+                                            Type: @prop.Type <br>
+                                            Start Date: @prop.StartDate.ToString("yyyy-MM-dd") <br>
+                                            End Date: @prop.EndDate.ToString("yyyy-MM-dd") <br>
+                                            Value: @prop.PropertyValue <br>
+                                            Coverages: @String.Join(", ", prop.CoveragesList)
+                                        </p>
+                                        <a href="#" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <nav aria-label="Properties Page navigation">
+                        <ul class="pagination" id="propPagination"></ul>
+                    </nav>
+                }
+                else
+                {
+                    <p>No property contracts available.</p>
+                }
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
+
 <!-- Load jQuery first -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

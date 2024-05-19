@@ -23,7 +23,7 @@ namespace ClientAstree.Controllers
        [HttpGet]
         public async Task<IActionResult> Index(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)
         {
-            var contracts = await _automobileService.GetMyAutomobileContractsAsync() ?? new List<AutomobileVM>();
+            var contracts = await _automobileService.AutomobileAllAsync() ?? new List<AutomobileVM>();
 
             // Apply search and filter
             if (!string.IsNullOrEmpty(searchMake))
@@ -50,6 +50,40 @@ namespace ClientAstree.Controllers
 
             return View(pagedContracts);
         }
+
+
+
+[HttpGet]
+public async Task<IActionResult> MyContract(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)
+{
+    var contracts = await _automobileService.GetMyAutomobileContractsAsync() ?? new List<AutomobileVM>();
+
+    // Apply search and filter
+    if (!string.IsNullOrEmpty(searchMake))
+    {
+        contracts = contracts.Where(c => c.VehicleMake?.Contains(searchMake, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+    }
+
+    if (!string.IsNullOrEmpty(searchModel))
+    {
+        contracts = contracts.Where(c => c.Model?.Contains(searchModel, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+    }
+
+    if (!string.IsNullOrEmpty(searchVehicleType))
+    {
+        contracts = contracts.Where(c => c.VehicleType?.Contains(searchVehicleType, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+    }
+
+    // Apply pagination
+    var pagedContracts = contracts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+    ViewBag.PageNumber = pageNumber;
+    ViewBag.PageSize = pageSize;
+    ViewBag.TotalPages = (int)Math.Ceiling(contracts.Count / (double)pageSize);
+
+    return View(pagedContracts);
+}
+
 
 
 

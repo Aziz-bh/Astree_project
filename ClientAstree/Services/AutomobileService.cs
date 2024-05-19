@@ -110,5 +110,14 @@ namespace ClientAstree.Services
 
             return _mapper.Map<List<AutomobileVM>>(automobiles);
         }
+
+        public async Task<List<AutomobileVM>> AutomobileAllAsync()
+        {
+                AddBearerToken();
+               var Automobiles = await _client.AutomobileAllAsync();
+            
+            return _mapper.Map<List<AutomobileVM>>(Automobiles);
+        }
+
     }
 }

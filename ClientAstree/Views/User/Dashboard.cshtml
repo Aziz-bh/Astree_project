@@ -23,15 +23,19 @@
 
     .card {
         margin-bottom: 20px;
+        background-color: #1E3A7A; /* Set the background color of the card */
+        color: white; /* Set the text color to white */
     }
 
     .card-title {
         font-size: 1.25rem;
         font-weight: bold;
+        color: white; /* Ensure the card title text is white */
     }
 
     .card-text {
         font-size: 1rem;
+        color: white; /* Ensure the card text is white */
     }
 
     .card-img-top {
@@ -45,6 +49,17 @@
 
     .card-body {
         text-align: center;
+    }
+
+    .btn-primary {
+        background-color: white; 
+        color: #1E3A7A; /* Set the button text color to match the card background */
+        border: none; /* Remove the button border */
+    }
+
+    .btn-primary:hover {
+        background-color: #f8f9fa; /* Lighten the button background on hover */
+        color: #1E3A7A; /* Keep the button text color the same */
     }
 </style>
 
@@ -60,10 +75,10 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/car-logo.png" alt="Car Logo">
+                            <img class="card-img-top" src="/img/dashboard/cardash.png" alt="Car Logo">
                             <div class="card-body">
                                 <h4 class="card-title">Automobile Contracts</h4>
-                                <p class="card-text">You have @Model.AutomobileContractsCount automobile contracts.</p>
+                                <p class="card-text">@Model.AutomobileContractsCount automobile contracts.</p>
                                 <a href="/AutomobileContract/Index" class="btn btn-primary">View Contracts</a>
                             </div>
                         </div>
@@ -71,10 +86,10 @@
 
                     <div class="col-md-3">
                         <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/house-logo.png" alt="House Logo">
+                            <img class="card-img-top" src="/img/dashboard/houseDash.png" alt="House Logo">
                             <div class="card-body">
                                 <h4 class="card-title">Property Contracts</h4>
-                                <p class="card-text">You have @Model.PropertyContractsCount property contracts.</p>
+                                <p class="card-text">@Model.PropertyContractsCount property contracts.</p>
                                 <a href="/PropertyContract/Index" class="btn btn-primary">View Contracts</a>
                             </div>
                         </div>
@@ -82,21 +97,21 @@
 
                     <div class="col-md-3">
                         <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/user-logo.png" alt="User Logo">
+                            <img class="card-img-top" src="/img/dashboard/userDash.png" alt="User Logo">
                             <div class="card-body">
                                 <h4 class="card-title">Users</h4>
-                                <p class="card-text">You have @Model.UsersCount users.</p>
-                                <a href="/Users/Index" class="btn btn-primary">View Users</a>
+                                <p class="card-text">@Model.UsersCount users.</p>
+                                <a href="/User" class="btn btn-primary">View Users</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3">
                         <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/complaint-logo.png" alt="Complaint Logo">
+                            <img class="card-img-top" src="/img/dashboard/complaintDash.png" alt="Complaint Logo">
                             <div class="card-body">
                                 <h4 class="card-title">Complaints</h4>
-                                <p class="card-text">You have @Model.ComplaintsCount complaints.</p>
+                                <p class="card-text">@Model.ComplaintsCount complaints.</p>
                                 <a href="/Complaints/Index" class="btn btn-primary">View Complaints</a>
                             </div>
                         </div>
