@@ -5,6 +5,8 @@ namespace ClientAstree.Contracts
     public interface IPropertyService
     {
         Task<List<PropertyVM>> GetMyPropertyContractsAsync();
+
+        Task<List<PropertyVM>> PropertyAllAsync();
                 Task<PropertyVM> GetPropertyByIdAsync(long id);
                  Task<List<PropertyVM>> GetUserPropertys(int id);
         Task<PropertyVM> CreatePropertyAsync(PropertyVM property);

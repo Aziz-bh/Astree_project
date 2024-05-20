@@ -229,6 +229,14 @@ Console.WriteLine("try");
             return View(model);
         }
 
+                [HttpGet]
+        public IActionResult UserContract()
+        {
+
+            // Prepare any necessary data for the view, if needed
+            return View();
+        }
+
         // // GET: /User/Create
         // public IActionResult Create()
         // {

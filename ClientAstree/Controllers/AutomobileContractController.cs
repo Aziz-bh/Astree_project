@@ -54,7 +54,7 @@ namespace ClientAstree.Controllers
 
 
 [HttpGet]
-public async Task<IActionResult> MyContract(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)
+public async Task<IActionResult> MyContract(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 9)
 {
     var contracts = await _automobileService.GetMyAutomobileContractsAsync() ?? new List<AutomobileVM>();
 

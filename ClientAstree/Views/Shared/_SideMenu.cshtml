@@ -33,13 +33,14 @@
 {
     @if(claim.Type=="role"){
          @if(claim.Value=="Member"){
-                 
-        <li class=""><a class="nav-link " href="#"><p>Dashboard</p></a></li>
-        <li class=""><a class="nav-link " href="#"><p>My Dues</p></a></li>
+                
+        <li class=""><a class="nav-link" asp-controller="User" asp-action="Dashboard"><p>Dashboard</p></a></li>
+        <li class=""><a class="nav-link" asp-controller="User" asp-action="UserContract"><p>My Contracts</p></a></li>
         <li class=""><a class="nav-link " href="#"><p>My Contracts</p></a></li>
         <li class=""><a class="nav-link " href="#"><p>Quotes</p></a></li>
         <li class=""><a class="nav-link " href="#"><p>Simulators</p></a></li>
-        <li class=""><a class="nav-link " href="#"><p>My Claims</p></a></li>
+        
+        <li class=""><a class="nav-link" asp-controller="Complaints" asp-action="MyComplaints"><p>My Claims</p></a></li>
         <li class=""><a class="nav-link " href="#"><p>Agencies</p></a></li>
         
 

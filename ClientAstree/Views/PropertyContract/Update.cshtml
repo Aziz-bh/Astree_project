@@ -4,64 +4,109 @@
     ViewData["Title"] = "Update Property Contract";
 }
 
-<h2>@ViewData["Title"]</h2>
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
 
-<form asp-action="Update" asp-controller="PropertyContract" method="post">
-    @Html.AntiForgeryToken()
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+    }
 
-    <input type="hidden" asp-for="Id" />
+    .breadcrumb {
+        background-color: transparent;
+    }
+</style>
 
-    <div class="form-group">
-        <label asp-for="Location">Location</label>
-        <input asp-for="Location" class="form-control" />
-        <span asp-validation-for="Location" class="text-danger"></span>
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <div class="title">
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">Admin</li>
+                            <li class="breadcrumb-item" aria-current="page">Property Contracts</li>
+                            <li class="breadcrumb-item active" aria-current="page">Update Property Contract</li>
+                        </ol>
+                    </nav>
+                </div>
+
+                <h2>@ViewData["Title"]</h2>
+
+                <form asp-action="Update" asp-controller="PropertyContract" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group">
+                        <label asp-for="Location">Location</label>
+                        <input asp-for="Location" class="form-control" />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="PropertyValue">Property Value</label>
+                        <input asp-for="PropertyValue" type="number" class="form-control" />
+                        <span asp-validation-for="PropertyValue" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="YearOfConstruction">Year of Construction</label>
+                        <input asp-for="YearOfConstruction" type="date" class="form-control" />
+                        <span asp-validation-for="YearOfConstruction" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Type">Property Type</label>
+                        <select asp-for="Type" class="form-control">
+                            <option value="">Select a type</option>
+                            <option value="House">House</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="Commercial">Commercial</option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="StartDate">Start Date</label>
+                        <input asp-for="StartDate" type="date" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="EndDate">End Date</label>
+                        <input asp-for="EndDate" type="date" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Coverage">Coverage</label>
+                        <select asp-for="Coverage" class="form-control">
+                            <option value="">Select Coverage</option>
+                            @foreach (var coverage in Enum.GetValues(typeof(ClientAstree.Services.Base.Coverage)))
+                            {
+                                <option value="@coverage" selected="@(Model.Coverage == coverage ? "selected" : null)">@coverage</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Coverage" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label asp-for="PropertyValue">Property Value</label>
-        <input asp-for="PropertyValue" type="number" class="form-control" />
-        <span asp-validation-for="PropertyValue" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="YearOfConstruction">Year of Construction</label>
-        <input asp-for="YearOfConstruction" type="date" class="form-control" />
-        <span asp-validation-for="YearOfConstruction" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Type">Property Type</label>
-        <select asp-for="Type" class="form-control">
-            <option value="">Select a type</option>
-            <option value="House">House</option>
-            <option value="Apartment">Apartment</option> 
-            <option value="Commercial">Commercial</option>
-        </select>
-        <span asp-validation-for="Type" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="StartDate">Start Date</label>
-        <input asp-for="StartDate" type="date" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="EndDate">End Date</label>
-        <input asp-for="EndDate" type="date" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Coverage">Coverage</label>
-        <select asp-for="Coverage" class="form-control">
-            <option value="">Select Coverage</option>
-            @foreach (var coverage in Enum.GetValues(typeof(ClientAstree.Services.Base.Coverage)))
-            {
-                <option value="@coverage" selected="@(Model.Coverage == coverage ? "selected" : null)">@coverage</option>
-            }
-        </select>
-         <span asp-validation-for="Coverage" class="text-danger"></span>
-    </div>
-
-
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
+</div>

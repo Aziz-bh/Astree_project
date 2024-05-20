@@ -91,5 +91,14 @@ Coverage = (int)Enum.Parse<Coverage>(property.Coverage),
 
             return _mapper.Map<List<PropertyVM>>(Propertys);
         }
+
+        public async Task<List<PropertyVM>> PropertyAllAsync()
+        {
+                         AddBearerToken();
+               var Propertys = await _client.PropertyAllAsync();
+            
+            return _mapper.Map<List<PropertyVM>>(Propertys);
+        }
+
     }
 }
