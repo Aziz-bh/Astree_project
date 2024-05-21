@@ -1,7 +1,13 @@
 using ClientAstree.Contracts;
 using ClientAstree.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.Kernel.Colors;
+using iText.Layout.Borders;
+using iText.IO.Image;
 namespace ClientAstree.Controllers
 {
     public class PropertyContractController: Controller
@@ -91,34 +97,178 @@ namespace ClientAstree.Controllers
             return View(new PropertyVM());
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PropertyVM model)
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(PropertyVM model)
+{
+    if (ModelState.IsValid)
+    {
+        var createdProperty = await _propertyService.CreatePropertyAsync(model);
+        if (createdProperty != null)
         {
-            Console.WriteLine($"Creating Property: Location={model.Location}, Value={model.PropertyValue}, Start={model.StartDate}, End={model.EndDate}, Type={model.Type}, Coverage={model.Coverage}");
-
-            if (ModelState.IsValid)
-            {
-                var createdProperty = await _propertyService.CreatePropertyAsync(model);
-                if (createdProperty != null)
-                {
-                    return RedirectToAction(nameof(Index)); // Navigate to the listing page upon successful creation
-                }
-                ModelState.AddModelError("", "Failed to create property contract");
-            }
-            else
-            {
-                Console.WriteLine("ModelState is invalid");
-                foreach (var error in ModelState.Values)
-                {
-                    foreach (var subError in error.Errors)
-                    {
-                        Console.WriteLine(subError.ErrorMessage);
-                    }
-                }
-            }
-            return View(model);
+            return RedirectToAction(nameof(Details), new { id = createdProperty.Id });
         }
+        ModelState.AddModelError("", "Failed to create property contract");
+    }
+    return View(model);
+}
+
+[HttpGet]
+public async Task<IActionResult> Details(long id)
+{
+    var property = await _propertyService.GetPropertyByIdAsync(id);
+    if (property == null)
+    {
+        return NotFound("Property not found.");
+    }
+    return View(property);
+}
+
+
+
+[HttpGet]
+public async Task<IActionResult> DownloadPdf(long id)
+{
+    var property = await _propertyService.GetPropertyByIdAsync(id);
+    if (property == null)
+    {
+        return NotFound("Property not found.");
+    }
+
+    var userProfile = await _userService.ProfileAsync();
+    using (var stream = new MemoryStream())
+    {
+        var writer = new PdfWriter(stream);
+        var pdf = new PdfDocument(writer);
+        var document = new Document(pdf);
+        document.SetMargins(20, 20, 20, 20);
+
+        // Add header with company logo and title
+        var headerTable = new Table(new float[] { 1, 1, 1 }).UseAllAvailableWidth();
+        var logo = ImageDataFactory.Create("wwwroot/img/logo1.png");
+        var logoImage = new Image(logo).ScaleAbsolute(100, 120);
+
+        // Fetch the QR code image from the URL
+        using (var client = new HttpClient())
+        {
+            var qrImageBytes = await client.GetByteArrayAsync($"https://localhost:7166/api/Property/{id}/qr");
+            var qrImageData = ImageDataFactory.Create(qrImageBytes);
+            var qrImage = new Image(qrImageData).ScaleAbsolute(100, 100);
+
+            headerTable.AddCell(new Cell().Add(logoImage)
+                .SetTextAlignment(TextAlignment.LEFT)
+                .SetBorder(Border.NO_BORDER));
+            headerTable.AddCell(new Cell().Add(new Paragraph("Devis Propriété"))
+                .SetFontSize(18)
+                .SetBold()
+                .SetTextAlignment(TextAlignment.CENTER)
+                .SetBorder(Border.NO_BORDER));
+            headerTable.AddCell(new Cell().Add(qrImage)
+                .SetTextAlignment(TextAlignment.RIGHT)
+                .SetBorder(Border.NO_BORDER));
+            document.Add(headerTable);
+        }
+
+        document.Add(new Paragraph("\n"));
+
+        // Add user details
+        var userDetailsTable = new Table(new float[] { 1, 1 }).UseAllAvailableWidth();
+        userDetailsTable.SetMarginBottom(10);
+        userDetailsTable.AddCell(CreateHeaderCell("L'assuré(e)", 2));
+
+        userDetailsTable.AddCell(CreateDetailCell("Nom"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.LastName));
+
+        userDetailsTable.AddCell(CreateDetailCell("Prénom"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.FirstName));
+
+        userDetailsTable.AddCell(CreateDetailCell("CIN"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.CIN));
+
+        userDetailsTable.AddCell(CreateDetailCell("Mobile"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.PhoneNumber));
+
+        userDetailsTable.AddCell(CreateDetailCell("Email"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.Email));
+
+        userDetailsTable.AddCell(CreateDetailCell("Adresse"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.Nationality));
+
+        userDetailsTable.AddCell(CreateDetailCell("Date de naissance"));
+        userDetailsTable.AddCell(CreateDetailCell(userProfile.BirthDate?.ToString("dd-MM-yyyy")));
+
+        document.Add(userDetailsTable);
+
+        // Add property details
+        var propertyDetailsTable = new Table(new float[] { 1, 1 }).UseAllAvailableWidth();
+        propertyDetailsTable.SetMarginBottom(10);
+        propertyDetailsTable.AddCell(CreateHeaderCell("Données de la propriété", 2));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Location"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.Location));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Valeur de la propriété (DT)"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.PropertyValue.ToString()));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Type"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.Type));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Année de construction"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.YearOfConstruction.ToString("dd-MM-yyyy")));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Date de début"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.StartDate.ToString("dd-MM-yyyy")));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Date de fin"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.EndDate.ToString("dd-MM-yyyy")));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Couverture"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.Coverage));
+
+        propertyDetailsTable.AddCell(CreateDetailCell("Quota"));
+        propertyDetailsTable.AddCell(CreateDetailCell(property.Quota.ToString("F3") + " Dinars"));
+
+        document.Add(propertyDetailsTable);
+
+        // Add footer
+        var footer = new Paragraph("Cette offre n’est donnée qu’à titre indicatif et n’engage nullement la compagnie. La garantie ne peut être considérée comme acquise qu’après la souscription du contrat d’assurance et le paiement de la prime y afférente.")
+            .SetFontSize(10)
+            .SetTextAlignment(TextAlignment.CENTER);
+        document.Add(footer);
+
+        // Close the document to finish writing the PDF content
+        document.Close();
+
+        // Convert the MemoryStream to a byte array
+        var pdfBytes = stream.ToArray();
+
+        // Return the PDF as a file result
+        var fileName = $"Property_Contract_{property.Id}.pdf";
+        return File(pdfBytes, "application/pdf", fileName);
+    }
+}
+
+private Cell CreateHeaderCell(string content, int colspan = 1)
+{
+    return new Cell(1, colspan).Add(new Paragraph(content))
+        .SetBold()
+        .SetBackgroundColor(new DeviceRgb(0, 46, 95)) // Set the background color to blue
+        .SetFontColor(ColorConstants.WHITE) // Set the font color to white
+        .SetBorderRadius(new BorderRadius(5)) // Set the border radius to soften the edges
+        .SetTextAlignment(TextAlignment.LEFT)
+        .SetFontSize(12)
+        .SetPadding(5)
+        .SetBorder(Border.NO_BORDER);
+}
+
+private Cell CreateDetailCell(string content)
+{
+    return new Cell().Add(new Paragraph(content))
+        .SetBorder(Border.NO_BORDER)
+        .SetFontSize(10)
+        .SetPadding(5);
+}
+
 
                 [HttpGet]
         public async Task<IActionResult> Update(int id)

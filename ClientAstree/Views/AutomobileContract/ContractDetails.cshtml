@@ -80,10 +80,10 @@
                     <dd class="col-sm-9">@Model.SeatsNumber</dd>
 
                     <dt class="col-sm-3">Vehicle Value</dt>
-                    <dd class="col-sm-9">@Model.VehicleValue $</dd>
+                    <dd class="col-sm-9">@Model.VehicleValue DT</dd>
 
                     <dt class="col-sm-3">True Vehicle Value</dt>
-                    <dd class="col-sm-9">@Model.TrueVehicleValue $</dd>
+                    <dd class="col-sm-9">@Model.TrueVehicleValue DT</dd>
 
                     <dt class="col-sm-3">Quota</dt>
                     <dd class="col-sm-9">@Model.Quota</dd>
@@ -92,7 +92,7 @@
                     <dd class="col-sm-9">@String.Join(", ", Model.GuaranteesList)</dd>
                 </dl>
 
-                <button type="button" class="btn btn-sign" data-toggle="modal" data-target="#signContractModal">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
                     Sign Contract
                 </button>
 
@@ -118,8 +118,8 @@
                                 </ol>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                <button type="button" class="btn btn-primary">Télécharger ce devis en pdf</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <a href="/AutomobileContract/DownloadPdf?id=@Model.Id" class="btn btn-primary">Download PDF</a>
                             </div>
                         </div>
                     </div>
