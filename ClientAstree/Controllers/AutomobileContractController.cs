@@ -126,13 +126,6 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
         var guarantees = form["Guarantees"].Select(int.Parse).ToArray();
         model.Guarantees = guarantees.Sum().ToString();
 
-        // Debugging logs
-        Console.WriteLine("Form Values:");
-        foreach (var key in form.Keys)
-        {
-            Console.WriteLine($"{key}: {form[key]}");
-        }
-
         // Manual validation
         if (string.IsNullOrWhiteSpace(model.VehicleMake))
         {
@@ -181,7 +174,7 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
             var createdAutomobile = await _automobileService.CreateAutomobileAsync(model);
             if (createdAutomobile != null)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ContractDetails), new { id = createdAutomobile.Id });
             }
             validationErrors.Add("Failed to create automobile contract.");
         }
@@ -195,6 +188,18 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
     ViewBag.ValidationErrors = validationErrors;
     return View(model);
 }
+
+[HttpGet]
+public async Task<IActionResult> ContractDetails(long id)
+{
+    var contract = await _automobileService.GetAutomobileByIdAsync(id);
+    if (contract == null)
+    {
+        return NotFound("Automobile contract not found.");
+    }
+    return View(contract);
+}
+
 
 
 
