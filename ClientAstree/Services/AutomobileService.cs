@@ -119,5 +119,41 @@ namespace ClientAstree.Services
             return _mapper.Map<List<AutomobileVM>>(Automobiles);
         }
 
+        public async Task<List<AutomobileVM>> GetAllValidatedAutomobilesAsync()
+        {
+                        AddBearerToken();
+               var Automobiles = await _client.ValidatedAsync();
+            
+            return _mapper.Map<List<AutomobileVM>>(Automobiles);
+        }
+
+        public async Task<List<AutomobileVM>> GetAllUnvalidatedAutomobilesAsync()
+        {
+                                    AddBearerToken();
+               var Automobiles = await _client.UnvalidatedAsync();
+            
+            return _mapper.Map<List<AutomobileVM>>(Automobiles);
+        }
+
+        public async Task<List<AutomobileVM>> GetUserValidatedAutomobilesAsync()
+        {
+                AddBearerToken();
+               var Automobiles = await _client.Validated2Async();
+            
+            return _mapper.Map<List<AutomobileVM>>(Automobiles);
+        }
+
+        public async Task ValidateAsync(long id)
+        {
+                  AddBearerToken();
+                    await _client.ValidateAsync(id);
+        }
+
+        public async Task UnvalidateAsync(long id)
+        {
+            AddBearerToken();
+                  await _client.UnvalidateAsync(id);
+        }
+
     }
 }

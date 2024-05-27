@@ -100,5 +100,41 @@ Coverage = (int)Enum.Parse<Coverage>(property.Coverage),
             return _mapper.Map<List<PropertyVM>>(Propertys);
         }
 
+        public async Task<List<PropertyVM>> GetAllValidatedPropertiesAsync()
+        {
+                         AddBearerToken();
+               var Propertys = await _client.Validated3Async();
+            
+            return _mapper.Map<List<PropertyVM>>(Propertys);
+        }
+
+        public async Task<List<PropertyVM>> GetAllUnvalidatedPropertiesAsync()
+        {
+                         AddBearerToken();
+               var Propertys = await _client.Unvalidated2Async();
+            
+            return _mapper.Map<List<PropertyVM>>(Propertys);
+        }
+
+        public async Task<List<PropertyVM>> GetUserValidatedPropertiesAsync()
+        {
+                         AddBearerToken();
+               var Propertys = await _client.Validated4Async();
+            
+            return _mapper.Map<List<PropertyVM>>(Propertys);
+        }
+
+        public async Task Validate2Async(long id)
+        {
+                    AddBearerToken();
+        await _httpclient.Validate2Async(id);
+        }
+
+        public async Task Unvalidate2Async(long id)
+        {
+                    AddBearerToken();
+        await _httpclient.Unvalidate2Async(id);
+        }
+
     }
 }

@@ -32,6 +32,8 @@ namespace API.Models
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
+        public bool Validated { get; set; } 
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (StartDate < DateTime.UtcNow.Date)

@@ -280,5 +280,108 @@ namespace API.Controllers
                 _propertyService.GeneratePropertyContractQRCode(property);
             return File(qrCodeBytes, "image/png");
         }
+
+            [HttpPost("{id}/validate")]
+            public async Task<IActionResult> ValidatePropertyContract(long id)
+            {
+                try
+                {
+                    await _propertyService.ValidateContractAsync(id);
+                    return NoContent();
+                }
+                catch (KeyNotFoundException ex)
+                {
+                    return NotFound(ex.Message);
+                }
+            }
+
+[HttpGet("validated")]
+public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllValidatedProperties()
+{
+    var properties = await _propertyService.GetAllValidatedPropertiesAsync();
+    var propertyDtos = properties.Select(property => new PropertyDto
+    {
+        Id = property.Id,
+        ContractType = property.ContractType,
+        StartDate = property.StartDate,
+        EndDate = property.EndDate,
+        Quota = property.Quota,
+        Location = property.Location,
+        Type = property.Type,
+        YearOfConstruction = property.YearOfConstruction,
+        PropertyValue = property.PropertyValue,
+        Coverage = property.Coverage,
+        UserId = property.UserId
+    }).ToList();
+
+    return Ok(propertyDtos);
+}
+
+[HttpGet("unvalidated")]
+public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllUnvalidatedProperties()
+{
+    var properties = await _propertyService.GetAllUnvalidatedPropertiesAsync();
+    var propertyDtos = properties.Select(property => new PropertyDto
+    {
+        Id = property.Id,
+        ContractType = property.ContractType,
+        StartDate = property.StartDate,
+        EndDate = property.EndDate,
+        Quota = property.Quota,
+        Location = property.Location,
+        Type = property.Type,
+        YearOfConstruction = property.YearOfConstruction,
+        PropertyValue = property.PropertyValue,
+        Coverage = property.Coverage,
+        UserId = property.UserId
+    }).ToList();
+
+    return Ok(propertyDtos);
+}
+
+[HttpGet("mycontracts/validated")]
+public async Task<ActionResult<IEnumerable<PropertyDto>>> GetUserValidatedProperties()
+{
+    var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await _userManager.FindByEmailAsync(userEmail);
+    if (user == null)
+    {
+        return Unauthorized("User not found.");
+    }
+
+    var properties = await _propertyService.GetUserValidatedPropertiesAsync(user.Id);
+    var propertyDtos = properties.Select(property => new PropertyDto
+    {
+        Id = property.Id,
+        ContractType = property.ContractType,
+        StartDate = property.StartDate,
+        EndDate = property.EndDate,
+        Quota = property.Quota,
+        Location = property.Location,
+        Type = property.Type,
+        YearOfConstruction = property.YearOfConstruction,
+        PropertyValue = property.PropertyValue,
+        Coverage = property.Coverage,
+        UserId = property.UserId
+    }).ToList();
+
+    return Ok(propertyDtos);
+}
+
+[HttpPost("{id}/unvalidate")]
+public async Task<IActionResult> UnvalidatePropertyContract(long id)
+{
+    try
+    {
+        await _propertyService.UnvalidateContractAsync(id);
+        return NoContent();
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(ex.Message);
+    }
+}
+
+
     }
 }

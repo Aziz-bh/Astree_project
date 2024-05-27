@@ -456,15 +456,123 @@ await _automobileService.UpdateAutomobileAsync(model);
 }
 
 
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Delete(long id)
-{
-    await _automobileService.DeleteAutomobileAsync(id);
-    return RedirectToAction("Index"); // Redirect to the listing page after deletion
-}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(long id)
+        {
+            await _automobileService.DeleteAutomobileAsync(id);
+            return RedirectToAction("Index"); // Redirect to the listing page after deletion
+        }
 
 
 
+        [HttpPost]
+        [Route("AutomobileContract/ValidateAutomobileContract/{id}")]
+        public async Task<IActionResult> ValidateAutomobileContract(long id)
+        {
+            await _automobileService.ValidateAsync(id);
+            return RedirectToAction(nameof(Unvalidated)); // Redirect to the unvalidated contracts page after validation
+        }
+
+        [HttpPost]
+        [Route("AutomobileContract/UnvalidateAutomobileContract/{id}")]
+        public async Task<IActionResult> UnvalidateAutomobileContract(long id)
+        {
+            await _automobileService.UnvalidateAsync(id);
+            return RedirectToAction(nameof(Validated)); // Redirect to the validated contracts page after unvalidation
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Validated(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)
+        {
+            var contracts = await _automobileService.GetAllValidatedAutomobilesAsync() ?? new List<AutomobileVM>();
+
+            // Apply search and filter
+            if (!string.IsNullOrEmpty(searchMake))
+            {
+                contracts = contracts.Where(c => c.VehicleMake?.Contains(searchMake, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchModel))
+            {
+                contracts = contracts.Where(c => c.Model?.Contains(searchModel, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchVehicleType))
+            {
+                contracts = contracts.Where(c => c.VehicleType?.Contains(searchVehicleType, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            // Apply pagination
+            var pagedContracts = contracts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(contracts.Count / (double)pageSize);
+
+            return View(pagedContracts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Unvalidated(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)
+        {
+            var contracts = await _automobileService.GetAllUnvalidatedAutomobilesAsync() ?? new List<AutomobileVM>();
+
+            // Apply search and filter
+            if (!string.IsNullOrEmpty(searchMake))
+            {
+                contracts = contracts.Where(c => c.VehicleMake?.Contains(searchMake, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchModel))
+            {
+                contracts = contracts.Where(c => c.Model?.Contains(searchModel, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchVehicleType))
+            {
+                contracts = contracts.Where(c => c.VehicleType?.Contains(searchVehicleType, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            // Apply pagination
+            var pagedContracts = contracts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(contracts.Count / (double)pageSize);
+
+            return View(pagedContracts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyValidatedContracts(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)
+        {
+            var contracts = await _automobileService.GetUserValidatedAutomobilesAsync() ?? new List<AutomobileVM>();
+
+            // Apply search and filter
+            if (!string.IsNullOrEmpty(searchMake))
+            {
+                contracts = contracts.Where(c => c.VehicleMake?.Contains(searchMake, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchModel))
+            {
+                contracts = contracts.Where(c => c.Model?.Contains(searchModel, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchVehicleType))
+            {
+                contracts = contracts.Where(c => c.VehicleType?.Contains(searchVehicleType, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
+            }
+
+            // Apply pagination
+            var pagedContracts = contracts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(contracts.Count / (double)pageSize);
+
+            return View(pagedContracts);
+        }
     }
 }

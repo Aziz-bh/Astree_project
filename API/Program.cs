@@ -2,6 +2,7 @@ using System.Text;
 using API.Extensions;
 using API.Models;
 using API.Seeds;
+using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddIdentityServices(builder.Configuration);
 
+builder.Services.AddHostedService<ContractValidationService>();
 
 var app = builder.Build();
 

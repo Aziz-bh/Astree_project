@@ -347,6 +347,123 @@ public async Task<IActionResult> UpdateAutomobile(long id, [FromBody] Automobile
                 _automobileService.GenerateContractQRCode(automobile);
             return File(qrCodeBytes, "image/png");
         }
-        // Add other actions as necessary...
+      
+
+        [HttpPost("{id}/validate")]
+public async Task<IActionResult> ValidateAutomobileContract(long id)
+{
+    try
+    {
+        await _automobileService.ValidateContractAsync(id);
+        return NoContent();
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(ex.Message);
+    }
+}
+[HttpGet("validated")]
+public async Task<ActionResult<IEnumerable<AutomobileDto>>> GetAllValidatedAutomobiles()
+{
+    var automobiles = await _automobileService.GetAllValidatedAutomobilesAsync();
+    var automobileDtos = automobiles.Select(auto => new AutomobileDto
+    {
+        Id = auto.Id,
+        ContractType = auto.ContractType,
+        StartDate = auto.StartDate,
+        EndDate = auto.EndDate,
+        Quota = auto.Quota,
+        UserId = auto.UserId,
+        VehicleType = auto.VehicleType,
+        RegistrationNumber = auto.RegistrationNumber,
+        RegistrationDate = auto.RegistrationDate,
+        EnginePower = auto.EnginePower,
+        VehicleMake = auto.VehicleMake,
+        SeatsNumber = auto.SeatsNumber,
+        VehicleValue = auto.VehicleValue,
+        TrueVehicleValue = auto.TrueVehicleValue,
+        Model = auto.Model,
+        Guarantees = auto.Guarantees
+    }).ToList();
+
+    return Ok(automobileDtos);
+}
+
+[HttpGet("unvalidated")]
+public async Task<ActionResult<IEnumerable<AutomobileDto>>> GetAllUnvalidatedAutomobiles()
+{
+    var automobiles = await _automobileService.GetAllUnvalidatedAutomobilesAsync();
+    var automobileDtos = automobiles.Select(auto => new AutomobileDto
+    {
+        Id = auto.Id,
+        ContractType = auto.ContractType,
+        StartDate = auto.StartDate,
+        EndDate = auto.EndDate,
+        Quota = auto.Quota,
+        UserId = auto.UserId,
+        VehicleType = auto.VehicleType,
+        RegistrationNumber = auto.RegistrationNumber,
+        RegistrationDate = auto.RegistrationDate,
+        EnginePower = auto.EnginePower,
+        VehicleMake = auto.VehicleMake,
+        SeatsNumber = auto.SeatsNumber,
+        VehicleValue = auto.VehicleValue,
+        TrueVehicleValue = auto.TrueVehicleValue,
+        Model = auto.Model,
+        Guarantees = auto.Guarantees
+    }).ToList();
+
+    return Ok(automobileDtos);
+}
+
+[HttpGet("mycontracts/validated")]
+public async Task<ActionResult<IEnumerable<AutomobileDto>>> GetUserValidatedAutomobiles()
+{
+    var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await _userManager.FindByEmailAsync(userEmail);
+    if (user == null)
+    {
+        return Unauthorized("User not found.");
+    }
+
+    var automobiles = await _automobileService.GetUserValidatedAutomobilesAsync(user.Id);
+    var automobileDtos = automobiles.Select(auto => new AutomobileDto
+    {
+        Id = auto.Id,
+        ContractType = auto.ContractType,
+        StartDate = auto.StartDate,
+        EndDate = auto.EndDate,
+        Quota = auto.Quota,
+        UserId = auto.UserId,
+        VehicleType = auto.VehicleType,
+        RegistrationNumber = auto.RegistrationNumber,
+        RegistrationDate = auto.RegistrationDate,
+        EnginePower = auto.EnginePower,
+        VehicleMake = auto.VehicleMake,
+        SeatsNumber = auto.SeatsNumber,
+        VehicleValue = auto.VehicleValue,
+        TrueVehicleValue = auto.TrueVehicleValue,
+        Model = auto.Model,
+        Guarantees = auto.Guarantees
+    }).ToList();
+
+    return Ok(automobileDtos);
+}
+
+
+[HttpPost("{id}/unvalidate")]
+public async Task<IActionResult> UnvalidateAutomobileContract(long id)
+{
+    try
+    {
+        await _automobileService.UnvalidateContractAsync(id);
+        return NoContent();
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return NotFound(ex.Message);
+    }
+}
+
     }
 }

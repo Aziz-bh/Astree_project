@@ -11,5 +11,12 @@ namespace API.Interfaces
         Task DeletePropertyAsync(long id);
         Task<IEnumerable<Property>> GetPropertiesByUserIdAsync(int userId);
         byte[] GeneratePropertyContractQRCode(Property property);
+        Task ValidateContractAsync(long id);
+         Task<IEnumerable<Property>> GetAllValidatedPropertiesAsync();
+         Task<IEnumerable<Property>> GetAllUnvalidatedPropertiesAsync();
+         Task<IEnumerable<Property>> GetUserValidatedPropertiesAsync(int userId);
+         Task UnvalidateContractAsync(long id);
+
+
     }
 }

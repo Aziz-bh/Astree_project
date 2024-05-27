@@ -117,5 +117,48 @@ public async Task<Property> CreatePropertyAsync(Property property)
                 }
             }
         }
+
+     public async Task ValidateContractAsync(long id)
+{
+    var property = await _context.Properties.FindAsync(id);
+    if (property == null)
+    {
+        throw new KeyNotFoundException("Contract not found.");
+    }
+
+    property.Validated = true;
+    _context.Properties.Update(property);
+    await _context.SaveChangesAsync();
+}
+
+public async Task<IEnumerable<Property>> GetAllValidatedPropertiesAsync()
+{
+    return await _context.Properties.Where(p => p.Validated).ToListAsync();
+}
+
+public async Task<IEnumerable<Property>> GetAllUnvalidatedPropertiesAsync()
+{
+    return await _context.Properties.Where(p => !p.Validated).ToListAsync();
+}
+
+public async Task<IEnumerable<Property>> GetUserValidatedPropertiesAsync(int userId)
+{
+    return await _context.Properties.Where(p => p.UserId == userId && p.Validated).ToListAsync();
+}
+
+public async Task UnvalidateContractAsync(long id)
+{
+    var property = await _context.Properties.FindAsync(id);
+    if (property == null)
+    {
+        throw new KeyNotFoundException("Contract not found.");
+    }
+
+    property.Validated = false;
+    _context.Properties.Update(property);
+    await _context.SaveChangesAsync();
+}
+
+
     }
 }

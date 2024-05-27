@@ -301,5 +301,55 @@ public async Task<IActionResult> Delete(long id)
     return RedirectToAction("Index"); // Redirect to the listing page after deletion
 }
 
+
+
+
+
+        [HttpPost]
+        [Route("PropertyContract/ValidatePropertyContract/{id}")]
+        public async Task<IActionResult> ValidatePropertyContract(long id)
+        {
+            await _propertyService.Validate2Async(id);
+            return RedirectToAction(nameof(Unvalidated)); // Redirect to the unvalidated contracts page after validation
+        }
+
+        [HttpPost]
+        [Route("PropertyContract/UnvalidatePropertyContract/{id}")]
+        public async Task<IActionResult> UnvalidatePropertyContract(long id)
+        {
+            await _propertyService.Unvalidate2Async(id);
+            return RedirectToAction(nameof(Validated)); // Redirect to the validated contracts page after unvalidation
+        }
+
+[HttpGet]
+public async Task<IActionResult> Validated(int pageNumber = 1, int pageSize = 10)
+{
+    var contracts = await _propertyService.GetAllValidatedPropertiesAsync();
+
+    // Pagination logic
+    var totalContracts = contracts.Count;
+    var pagedContracts = contracts.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+    ViewBag.PageNumber = pageNumber;
+    ViewBag.PageSize = pageSize;
+    ViewBag.TotalPages = (int)Math.Ceiling(totalContracts / (double)pageSize);
+
+    return View(pagedContracts);
+}
+
+
+        [HttpGet]
+        public async Task<IActionResult> Unvalidated()
+        {
+            var contracts = await _propertyService.GetAllUnvalidatedPropertiesAsync();
+            return View(contracts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyValidatedContracts()
+        {
+            var contracts = await _propertyService.GetUserValidatedPropertiesAsync();
+            return View(contracts);
+        }
     }
 }

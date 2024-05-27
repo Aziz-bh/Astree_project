@@ -191,6 +191,47 @@ namespace API.Services
         }
     }
 
-        
+    public async Task ValidateContractAsync(long id)
+{
+    var automobile = await _context.Automobiles.FindAsync(id);
+    if (automobile == null)
+    {
+        throw new KeyNotFoundException("Contract not found.");
+    }
+
+    automobile.Validated = true;
+    _context.Automobiles.Update(automobile);
+    await _context.SaveChangesAsync();
+}
+
+
+        public async Task<IEnumerable<Automobile>> GetAllValidatedAutomobilesAsync()
+{
+    return await _context.Automobiles.Where(a => a.Validated).ToListAsync();
+}
+
+public async Task<IEnumerable<Automobile>> GetAllUnvalidatedAutomobilesAsync()
+{
+    return await _context.Automobiles.Where(a => !a.Validated).ToListAsync();
+}
+
+public async Task<IEnumerable<Automobile>> GetUserValidatedAutomobilesAsync(int userId)
+{
+    return await _context.Automobiles.Where(a => a.UserId == userId && a.Validated).ToListAsync();
+}
+public async Task UnvalidateContractAsync(long id)
+{
+    var automobile = await _context.Automobiles.FindAsync(id);
+    if (automobile == null)
+    {
+        throw new KeyNotFoundException("Contract not found.");
+    }
+
+    automobile.Validated = false;
+    _context.Automobiles.Update(automobile);
+    await _context.SaveChangesAsync();
+}
+
+
     }
 }

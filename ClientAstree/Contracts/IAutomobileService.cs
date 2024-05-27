@@ -12,5 +12,10 @@ namespace ClientAstree.Contracts
         Task<AutomobileVM> CreateAutomobileAsync(AutomobileVM automobile);
         Task UpdateAutomobileAsync(AutomobileVM automobile);
         Task DeleteAutomobileAsync(long id);
+               Task<List<AutomobileVM>> GetAllValidatedAutomobilesAsync(); // New method
+        Task<List<AutomobileVM>> GetAllUnvalidatedAutomobilesAsync(); // New method
+        Task<List<AutomobileVM>> GetUserValidatedAutomobilesAsync(); 
+        Task ValidateAsync(long id);
+        Task UnvalidateAsync(long id);
     }
 }
