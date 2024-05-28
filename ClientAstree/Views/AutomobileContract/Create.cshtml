@@ -61,7 +61,20 @@
                         @Html.AntiForgeryToken()
                         <div class="form-group">
                             <label asp-for="VehicleMake">Vehicle Make</label>
-                            <input asp-for="VehicleMake" class="form-control" />
+                            <input list="carBrands" asp-for="VehicleMake" class="form-control" id="VehicleMake" />
+                            <datalist id="carBrands">
+                                @if (ViewBag.CarBrands != null && ViewBag.CarBrands.Count > 0)
+                                {
+                                    @foreach (var brand in ViewBag.CarBrands)
+                                    {
+                                        <option value="@brand">@brand</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">No car brands available</option>
+                                }
+                            </datalist>
                             <span asp-validation-for="VehicleMake" class="text-danger"></span>
                         </div>
 
@@ -150,3 +163,35 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#VehicleMake').change(function () {
+                var selectedBrand = $(this).val();
+                if (selectedBrand) {
+                    $.ajax({
+                        url: '@Url.Action("GetModels", "AutomobileContract")',
+                        type: 'GET',
+                        data: { brand: selectedBrand },
+                        success: function (data) {
+                            var modelSelect = $('#Model');
+                            modelSelect.empty();
+                            $.each(data, function (index, value) {
+                                modelSelect.append($('<option>', {
+                                    value: value,
+                                    text: value
+                                }));
+                            });
+                        }
+                    });
+                } else {
+                    $('#Model').empty().append($('<option>', {
+                        value: '',
+                        text: 'Select a model'
+                    }));
+                }
+            });
+        });
+    </script>
+}

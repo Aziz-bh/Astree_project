@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using iText.Layout.Borders;
 using iText.IO.Image;
+using ClientAstree.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ClientAstree.Controllers
 {
@@ -21,13 +23,15 @@ namespace ClientAstree.Controllers
           private readonly IAuthenticationService _authService;
             private readonly IAutomobileService _automobileService;
             private readonly IPropertyService _propertyService;
+            private readonly ExcelService _excelService;
 
-        public AutomobileContractController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService)
+        public AutomobileContractController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService,ExcelService excelService)
         {
             this._userService = leaveTypeService;
             this._authService = authService;
             this._automobileService=automobileService;
             this._propertyService=propertyService;
+            this._excelService = excelService;
         }
 
        [HttpGet]
@@ -97,11 +101,18 @@ public async Task<IActionResult> MyContract(string searchMake = null, string sea
 
 
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View(new AutomobileVM());
-        }
+[HttpGet]
+public IActionResult Create()
+{
+    var carBrands = _excelService.GetCarBrands();
+    if (carBrands == null || !carBrands.Any())
+    {
+        carBrands = new List<string>(); // Ensure it's not null
+    }
+    ViewBag.CarBrands = carBrands;
+    return View(new AutomobileVM());
+}
+
 
 [HttpPost]
 [ValidateAntiForgeryToken]
@@ -111,20 +122,37 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
 
     try
     {
-        // Manual extraction as a fallback or to ensure correct binding
         model.VehicleMake = form["VehicleMake"];
         model.Model = form["Model"];
         model.VehicleType = form["VehicleType"];
         model.RegistrationNumber = form["RegistrationNumber"];
         model.ContractType = form["ContractType"];
 
-        if (DateTimeOffset.TryParse(form["RegistrationDate"], out var registrationDate)) {
+        var carBrands = _excelService.GetCarBrands();
+        if (carBrands == null || !carBrands.Contains(model.VehicleMake))
+        {
+            validationErrors.Add("Vehicle Make does not exist.");
+        }
+        else
+        {
+            var carModels = _excelService.GetCarModels(model.VehicleMake);
+            Console.WriteLine($"Models for {model.VehicleMake}: {string.Join(", ", carModels)}"); // Debug output
+            if (carModels == null || !carModels.Contains(model.Model))
+            {
+                validationErrors.Add("Model does not exist for the selected Vehicle Make.");
+            }
+        }
+
+        if (DateTimeOffset.TryParse(form["RegistrationDate"], out var registrationDate))
+        {
             model.RegistrationDate = registrationDate;
         }
-        if (DateTimeOffset.TryParse(form["StartDate"], out var startDate)) {
+        if (DateTimeOffset.TryParse(form["StartDate"], out var startDate))
+        {
             model.StartDate = startDate;
         }
-        if (DateTimeOffset.TryParse(form["EndDate"], out var endDate)) {
+        if (DateTimeOffset.TryParse(form["EndDate"], out var endDate))
+        {
             model.EndDate = endDate;
         }
 
@@ -136,7 +164,6 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
         var guarantees = form["Guarantees"].Select(int.Parse).ToArray();
         model.Guarantees = guarantees.Sum().ToString();
 
-        // Manual validation
         if (string.IsNullOrWhiteSpace(model.VehicleMake))
         {
             validationErrors.Add("Vehicle Make is required.");
@@ -178,7 +205,6 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
             validationErrors.Add("Guarantees are required.");
         }
 
-        // Check if there are any validation errors
         if (!validationErrors.Any())
         {
             var createdAutomobile = await _automobileService.CreateAutomobileAsync(model);
@@ -194,10 +220,10 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
         validationErrors.Add($"An error occurred while creating the automobile contract: {ex.Message}");
     }
 
-    // Pass validation errors to the view
     ViewBag.ValidationErrors = validationErrors;
     return View(model);
 }
+
 
 [HttpGet]
 public async Task<IActionResult> ContractDetails(long id)

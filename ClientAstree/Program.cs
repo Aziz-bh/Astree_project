@@ -22,6 +22,7 @@ builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
  builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+ builder.Services.AddTransient<ExcelService>();
  builder.Services.Configure<CookiePolicyOptions>(options =>
             {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
