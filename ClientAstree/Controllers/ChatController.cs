@@ -74,5 +74,6 @@ public async Task<IActionResult> ReplyAsAdmin(SendMessageDto message)
     return RedirectToAction("ChatRoom", new { id = message.ChatRoomId });
 }
 
+
     }
        }

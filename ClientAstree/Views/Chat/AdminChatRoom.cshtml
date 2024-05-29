@@ -4,34 +4,140 @@
     ViewData["Title"] = "Chat with Admin";
 }
 
-<h1>@ViewData["Title"]: @Model.Name</h1>
+<style>
+    /* Modern Design Styling */
 
-<div>
-    <h4>Messages</h4>
-    <ul id="messagesList">
-        @foreach (var message in Model.Messages)
-        {
-            <li>
-                <strong>@message.UserName</strong>: @message.Content (@message.Timestamp.LocalDateTime.ToString("g"))
-            </li>
-        }
-    </ul>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font choice */
+        background-color: #f4f4f4; /* Light background */
+        color: #333; /* Dark text for contrast */
+    }
 
-    <form asp-action="SendMessage" asp-controller="Chat" method="post">
-        <input type="hidden" name="ChatRoomId" value="@Model.Id" />
-        <div class="form-group">
-            <label for="Content">Message:</label>
-            <textarea id="messageInput" name="Content" class="form-control" required></textarea>
+    .bg-image {
+        background-image: url('/img/fam1.png'); /* Replace with your desired background image */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+    }
+
+    .content-container, .form-container, .messages-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .chat-container {
+        max-width: 800px; /* Limit chat width */
+        margin: 20px auto; /* Center the container */
+        background-color: #fff; /* White container */
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+        background-color: #333; /* Dark header */
+        color: #fff;
+        padding: 15px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .chat-header h1 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .messages-container {
+        padding: 20px;
+        height: 400px; /* Set a fixed height */
+        overflow-y: auto; /* Enable scrolling */
+    }
+
+    .message {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+
+    .message-header {
+        display: flex; /* Arrange username and timestamp horizontally */
+        justify-content: space-between; /* Push them apart */
+        align-items: center; /* Vertically align */
+        margin-bottom: 5px;
+    }
+
+    .user-name {
+        font-weight: bold;
+        color: #007bff; /* Blue username */
+    }
+
+    .timestamp {
+        font-size: 0.85em; /* Slightly smaller timestamp */
+    }
+
+    .message-content {
+        white-space: pre-wrap; /* Preserve line breaks in messages */
+    }
+
+    .form-container {
+        padding: 20px;
+        border-top: 1px solid #ddd; /* Subtle separator */
+    }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
         </div>
-        <button type="submit" id="sendButton" class="btn btn-primary">Send</button>
-    </form>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8 col-12">
+            <div class="content-container">
+                <div class="chat-header">
+                    <h1>@ViewData["Title"]: @Model.Name</h1>
+                </div>
+
+                <div class="messages-container" id="messagesList">
+                    <h4>Messages</h4>
+                    @foreach (var message in Model.Messages)
+                    {
+                        <div class="message">
+                            <div class="message-header">
+                                <strong class="user-name">@message.UserName</strong>
+                                <span class="timestamp text-muted">@message.Timestamp.LocalDateTime.ToString("g")</span>
+                            </div>
+                            <div class="message-content">@message.Content</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-container">
+                    <form asp-action="SendMessage" asp-controller="Chat" method="post">
+                        <input type="hidden" name="ChatRoomId" value="@Model.Id" />
+                        <div class="form-group">
+                            <textarea id="messageInput" name="Content" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" id="sendButton" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.9/signalr.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script>
     const chatRoomId = @Model.Id;
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl(`/chatHub?chatRoomId=${chatRoomId}`)  // Ensure chatRoomId is passed as query string
+        .withUrl(`/chatHub?chatRoomId=${chatRoomId}`)
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
@@ -42,28 +148,40 @@
     });
 
     connection.on("ReceiveMessage", function (user, message) {
-        console.log("Received message:", user, message);
         const msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        const encodedMsg = `<strong>${user}</strong>: ${msg}`;
-        const li = document.createElement("li");
-        li.innerHTML = encodedMsg;
-        document.getElementById("messagesList").appendChild(li);
+        const encodedMsg = `
+            <div class="message">
+                <div class="message-header">
+                    <strong class="user-name" style="color: #007bff;">${user}</strong>
+                    <span class="timestamp text-muted">${new Date().toLocaleString()}</span>
+                </div>
+                <div class="message-content">${msg}</div>
+            </div>`;
+        const div = document.createElement("div");
+        div.innerHTML = encodedMsg;
+        document.getElementById("messagesList").appendChild(div);
+        scrollToBottom();
     });
-
 
     document.getElementById("sendButton").addEventListener("click", function (event) {
         event.preventDefault();
-        const chatRoomId = @Model.Id; // Use @ViewBag.ChatRoomId in ChatRoom if using ViewBag to pass the ID
         const message = document.getElementById("messageInput").value;
-        console.log("Sending message:", chatRoomId, '@User.Identity.Name', message); // Log the message being sent
-
         connection.invoke("SendMessage", chatRoomId, '@User.Identity.Name', message)
             .then(() => {
-                document.getElementById("messageInput").value = ''; // Clear the input after sending
-                console.log("Message sent successfully.");
+                document.getElementById("messageInput").value = '';
+                scrollToBottom();
             })
             .catch(function (err) {
                 console.error("Error sending message:", err.toString());
             });
+    });
+
+    function scrollToBottom() {
+        const messagesList = document.getElementById("messagesList");
+        messagesList.scrollTop = messagesList.scrollHeight;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        scrollToBottom();
     });
 </script>

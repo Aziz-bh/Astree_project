@@ -5,60 +5,62 @@
         <div class="page-header-image" data-parallax="true" style="background-image:url('/img/fam1.png');">
         </div>
         <div class="container mt-3">
-            <h2>User Profile</h2>
-            <div class="container overflow-auto" style="max-height: 50vh; padding-bottom: 0; margin-bottom: 0;"> <!-- Scrollable container -->
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-envelope"></i> Email:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.Email</p>
+            <h2 class="text-white">User Profile</h2>
+            <div class="container overflow-auto" style="max-height: 50vh; padding-bottom: 0; margin-bottom: 0;">
+                <div class="user-info">
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-envelope"></i> Email:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.Email</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person"></i> First Name:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.FirstName</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person"></i> First Name:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.FirstName</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person-fill"></i> Last Name:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.LastName</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person-fill"></i> Last Name:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.LastName</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-telephone"></i> Phone Number:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.PhoneNumber</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-telephone"></i> Phone Number:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.PhoneNumber</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-card-text"></i> CIN:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.CIN</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-card-text"></i> CIN:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.CIN</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-calendar3"></i> Birth Date:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.BirthDate</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-calendar3"></i> Birth Date:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.BirthDate</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-globe"></i> Nationality:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.Nationality</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-globe"></i> Nationality:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.Nationality</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-gender-ambiguous"></i> Gender:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.Gender</p>
+                    <div class="row">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-gender-ambiguous"></i> Gender:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.Gender</p>
+                        </div>
                     </div>
-                </div>
-                <div class="row mb-5 pb-5">
-                    <label class="col-sm-12 col-md-3 col-form-label text-md-start text-white"><i class="bi bi-person-lines-fill"></i> Civility:</label>
-                    <div class="col-sm-12 col-md-9">
-                        <p class="form-control-plaintext text-white">@Model.Civility</p>
+                    <div class="row mb-5 pb-5">
+                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person-lines-fill"></i> Civility:</label>
+                        <div class="col-sm-12 col-md-9">
+                            <p class="form-control-plaintext text-white">@Model.Civility</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,7 +77,7 @@
             <div class="d-flex justify-content-center mt-4">
                 <div class="row">
                     <!-- Automobile Contracts Card -->
-                    <div class="card" style="width: 20rem; margin-right: 10px;"> <!-- Adjust margin as necessary -->
+                    <div class="card" style="width: 20rem; margin-right: 10px;">
                         <img class="card-img-top" src="/img/contract/auto/personalCar.png" alt="Automobile Contracts">
                         <div class="card-body">
                             <h5 class="card-title">Automobile Contracts</h5>
@@ -197,7 +199,6 @@ $(document).ready(function() {
             success: function(response) {
                 $('#editProfileModal').modal('hide');
                 window.location.reload(true); 
-                // Optionally refresh the page or part of it
             },
             error: function() {
                 alert('Error updating profile.');
@@ -235,5 +236,10 @@ $(document).ready(function() {
         position: relative;
         bottom: 0;
         width: 100%;
+    }
+    .user-info {
+        background-color: rgba(255, 255, 255, 0.1); /* Light transparent background */
+        padding: 1rem;
+        border-radius: 0.5rem;
     }
 </style>

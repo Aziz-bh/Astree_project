@@ -13,7 +13,6 @@ public class ChatHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        // Example of adding to a group based on a query string parameter
         var chatRoomId = Context.GetHttpContext().Request.Query["chatRoomId"];
         await Groups.AddToGroupAsync(Context.ConnectionId, $"room-{chatRoomId}");
         await base.OnConnectedAsync();
@@ -25,5 +24,6 @@ public class ChatHub : Hub
         await _chatService.SendAsync(new SendMessageDto { ChatRoomId = chatRoomId, Content = message });
     }
 }
+
 
 }

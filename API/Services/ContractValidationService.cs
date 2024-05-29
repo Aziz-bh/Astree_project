@@ -75,22 +75,38 @@ public class ContractValidationService : BackgroundService
         await _emailService.SendEmailAsync(user.Email, subject, body);
     }
 
-    private string BuildEmailBody(User user, Contract contract)
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine($"<h1>Dear {user.FirstName} {user.LastName},</h1>");
-        sb.AppendLine("<p>We would like to inform you that your contract has expired.</p>");
-        sb.AppendLine("<p>Here are the details of your contract:</p>");
-        sb.AppendLine("<ul>");
-        sb.AppendLine($"<li>Contract ID: {contract.Id}</li>");
-        sb.AppendLine($"<li>Contract Type: {contract.ContractType}</li>");
-        sb.AppendLine($"<li>Start Date: {contract.StartDate.ToString("yyyy-MM-dd")}</li>");
-        sb.AppendLine($"<li>End Date: {contract.EndDate.ToString("yyyy-MM-dd")}</li>");
-        sb.AppendLine("</ul>");
-        sb.AppendLine("<p>Please contact us if you have any questions or need further assistance.</p>");
-        sb.AppendLine("<p>Best regards,</p>");
-        sb.AppendLine("<p>Astree assurance</p>");
-        return sb.ToString();
-    }
+private string BuildEmailBody(User user, Contract contract)
+{
+    var sb = new StringBuilder();
+
+    // Inline CSS for styling
+    sb.AppendLine("<div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>");
+
+    // Header
+    sb.AppendLine($"<h1 style='color: #007bff;'>Dear {user.FirstName} {user.LastName},</h1>");
+    sb.AppendLine("<p>We hope this email finds you well.</p>");
+    sb.AppendLine("<p>We would like to inform you that your contract has expired.</p>");
+
+    // Main Content
+    sb.AppendLine("<p>Here are the details of your contract:</p>");
+    sb.AppendLine("<ul style='list-style-type: none; padding: 0;'>");
+    sb.AppendLine($"<li><strong>Contract ID:</strong> {contract.Id}</li>");
+    sb.AppendLine($"<li><strong>Contract Type:</strong> {contract.ContractType}</li>");
+    sb.AppendLine($"<li><strong>Start Date:</strong> {contract.StartDate:yyyy-MM-dd}</li>");
+    sb.AppendLine($"<li><strong>End Date:</strong> {contract.EndDate:yyyy-MM-dd}</li>");
+    sb.AppendLine("</ul>");
+
+    // Call to Action (Optional)
+    sb.AppendLine("<p style='margin-top: 20px;'><a href='https://localhost:7054/' style='display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;'>Visit our website</a></p>");
+
+    // Footer
+    sb.AppendLine("<p>Please contact us if you have any questions or need further assistance.</p>");
+    sb.AppendLine("<p>Best regards,</p>");
+    sb.AppendLine("<p style='color: #007bff;'>Astree Assurance</p>");
+    sb.AppendLine("</div>");
+
+    return sb.ToString();
+}
+
 }
 }
