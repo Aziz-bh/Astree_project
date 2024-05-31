@@ -267,19 +267,21 @@ namespace API.Controllers
         }
 
         // Add other actions as necessary...
-        [HttpGet("{id}/qr")]
-        public async Task<IActionResult> GetPropertyContractQrCode(long id)
-        {
-            var property = await _propertyService.GetPropertyByIdAsync(id);
-            if (property == null)
-            {
-                return NotFound();
-            }
+[HttpGet("{id}/qr")]
+public async Task<IActionResult> GetPropertyContractQrCode(long id)
+{
+    var property = await _propertyService.GetPropertyByIdAsync(id);
+    if (property == null)
+    {
+        return NotFound();
+    }
 
-            var qrCodeBytes =
-                _propertyService.GeneratePropertyContractQRCode(property);
-            return File(qrCodeBytes, "image/png");
-        }
+    var contractUrl = $"https://localhost:7054/PropertyContract/Details/{id}";
+    var qrCodeBytes = _propertyService.GeneratePropertyContractQRCode(contractUrl);
+    return File(qrCodeBytes, "image/png");
+}
+
+
 
             [HttpPost("{id}/validate")]
             public async Task<IActionResult> ValidatePropertyContract(long id)

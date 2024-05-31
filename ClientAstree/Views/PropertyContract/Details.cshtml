@@ -60,9 +60,34 @@
                             <strong>Coverage:</strong> @Model.Coverage <br />
                             <strong>Quota:</strong> @Model.Quota
                         </p>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
-                            Sign Contract
-                        </button>
+
+                        @foreach (var claim in User.Claims)
+                        {
+                             @if(claim.Type=="role"){
+         @if(claim.Value=="Admin"){
+                                if ((bool)ViewBag.Validated)
+                                {
+                                    <form action="@Url.Action("UnvalidatePropertyContract", "PropertyContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-warning">Unvalidate</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form action="@Url.Action("ValidatePropertyContract", "PropertyContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-success">Validate</button>
+                                    </form>
+                                }
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
+                                    Sign Contract
+                                </button>
+                            }
+                        }
+                        }
                     </div>
                 </div>
             </div>

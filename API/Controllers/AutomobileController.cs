@@ -333,20 +333,20 @@ public async Task<IActionResult> UpdateAutomobile(long id, [FromBody] Automobile
             return Ok(automobileDtos);
         }
 
-        [HttpGet("{id}/qr")]
-        public async Task<IActionResult> GetContractQrCode(long id)
-        {
-            var automobile =
-                await _automobileService.GetAutomobileByIdAsync(id);
-            if (automobile == null)
-            {
-                return NotFound();
-            }
+[HttpGet("{id}/qr")]
+public async Task<IActionResult> GetContractQrCode(long id)
+{
+    var automobile = await _automobileService.GetAutomobileByIdAsync(id);
+    if (automobile == null)
+    {
+        return NotFound();
+    }
 
-            var qrCodeBytes =
-                _automobileService.GenerateContractQRCode(automobile);
-            return File(qrCodeBytes, "image/png");
-        }
+    var contractUrl = $"https://localhost:7054/AutomobileContract/ContractDetails/{id}";
+    var qrCodeBytes = _automobileService.GenerateContractQRCode(contractUrl);
+    return File(qrCodeBytes, "image/png");
+}
+
       
 
         [HttpPost("{id}/validate")]

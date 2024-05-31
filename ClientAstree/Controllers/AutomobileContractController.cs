@@ -228,13 +228,46 @@ public async Task<IActionResult> Create(AutomobileVM model, IFormCollection form
 [HttpGet]
 public async Task<IActionResult> ContractDetails(long id)
 {
-    var contract = await _automobileService.GetAutomobileByIdAsync(id);
+    // Fetch validated contracts
+    var contracts = await _automobileService.GetAllValidatedAutomobilesAsync() ?? new List<AutomobileVM>();
+    
+    // Log the fetched validated contracts
+    foreach (var validatedContract in contracts)
+    {
+        Console.WriteLine($"Validated Contract: Id={validatedContract.Id}");
+    }
+
+    // Fetch the specific contract by id
+    var contract = contracts.FirstOrDefault(c => c.Id == id) ?? await _automobileService.GetAutomobileByIdAsync(id);
+
+    // Check if the contract is null
     if (contract == null)
     {
         return NotFound("Automobile contract not found.");
     }
+
+    // Determine if the contract is validated using a loop and if statement
+    bool isValidated = false;
+    foreach (var validatedContract in contracts)
+    {
+        if (validatedContract.Id == id)
+        {
+            isValidated = true;
+            break;
+        }
+    }
+
+    // Assign the validation status to ViewBag
+    ViewBag.Validated = isValidated;
+
+    // Log the validation status
+    Console.WriteLine($"Contract Id={id} Validated={isValidated}");
+
     return View(contract);
 }
+
+
+
 
 
 [HttpGet]
@@ -492,21 +525,33 @@ await _automobileService.UpdateAutomobileAsync(model);
 
 
 
-        [HttpPost]
-        [Route("AutomobileContract/ValidateAutomobileContract/{id}")]
-        public async Task<IActionResult> ValidateAutomobileContract(long id)
-        {
-            await _automobileService.ValidateAsync(id);
-            return RedirectToAction(nameof(Unvalidated)); // Redirect to the unvalidated contracts page after validation
-        }
+[HttpPost]
+[Route("AutomobileContract/ValidateAutomobileContract/{id}")]
+public async Task<IActionResult> ValidateAutomobileContract(long id)
+{
+    await _automobileService.ValidateAsync(id);
+    string refererUrl = Request.Headers["Referer"].ToString();
+    if (string.IsNullOrEmpty(refererUrl))
+    {
+        return RedirectToAction("ContractDetails", new { id });
+    }
+    return Redirect(refererUrl); // Redirect to the previous page
+}
 
-        [HttpPost]
-        [Route("AutomobileContract/UnvalidateAutomobileContract/{id}")]
-        public async Task<IActionResult> UnvalidateAutomobileContract(long id)
-        {
-            await _automobileService.UnvalidateAsync(id);
-            return RedirectToAction(nameof(Validated)); // Redirect to the validated contracts page after unvalidation
-        }
+[HttpPost]
+[Route("AutomobileContract/UnvalidateAutomobileContract/{id}")]
+public async Task<IActionResult> UnvalidateAutomobileContract(long id)
+{
+    await _automobileService.UnvalidateAsync(id);
+    string refererUrl = Request.Headers["Referer"].ToString();
+    if (string.IsNullOrEmpty(refererUrl))
+    {
+        return RedirectToAction("ContractDetails", new { id });
+    }
+    return Redirect(refererUrl); // Redirect to the previous page
+}
+
+
 
         [HttpGet]
         public async Task<IActionResult> Validated(string searchMake = null, string searchModel = null, string searchVehicleType = null, int pageNumber = 1, int pageSize = 10)

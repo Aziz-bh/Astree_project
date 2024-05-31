@@ -116,13 +116,44 @@ public async Task<IActionResult> Create(PropertyVM model)
 [HttpGet]
 public async Task<IActionResult> Details(long id)
 {
-    var property = await _propertyService.GetPropertyByIdAsync(id);
+    // Fetch validated properties
+    var properties = await _propertyService.GetAllValidatedPropertiesAsync() ?? new List<PropertyVM>();
+    
+    // Log the fetched validated properties
+    foreach (var validatedProperty in properties)
+    {
+        Console.WriteLine($"Validated Property: Id={validatedProperty.Id}");
+    }
+
+    // Fetch the specific property by id
+    var property = properties.FirstOrDefault(p => p.Id == id) ?? await _propertyService.GetPropertyByIdAsync(id);
+
+    // Check if the property is null
     if (property == null)
     {
         return NotFound("Property not found.");
     }
+
+    // Determine if the property is validated using a loop and if statement
+    bool isValidated = false;
+    foreach (var validatedProperty in properties)
+    {
+        if (validatedProperty.Id == id)
+        {
+            isValidated = true;
+            break;
+        }
+    }
+
+    // Assign the validation status to ViewBag
+    ViewBag.Validated = isValidated;
+
+    // Log the validation status
+    Console.WriteLine($"Property Id={id} Validated={isValidated}");
+
     return View(property);
 }
+
 
 
 
@@ -305,21 +336,32 @@ public async Task<IActionResult> Delete(long id)
 
 
 
-        [HttpPost]
-        [Route("PropertyContract/ValidatePropertyContract/{id}")]
-        public async Task<IActionResult> ValidatePropertyContract(long id)
-        {
-            await _propertyService.Validate2Async(id);
-            return RedirectToAction(nameof(Unvalidated)); // Redirect to the unvalidated contracts page after validation
-        }
+[HttpPost]
+[Route("PropertyContract/ValidatePropertyContract/{id}")]
+public async Task<IActionResult> ValidatePropertyContract(long id)
+{
+    await _propertyService.Validate2Async(id);
+    string refererUrl = Request.Headers["Referer"].ToString();
+    if (string.IsNullOrEmpty(refererUrl))
+    {
+        return RedirectToAction("Details", new { id });
+    }
+    return Redirect(refererUrl); // Redirect to the previous page
+}
 
-        [HttpPost]
-        [Route("PropertyContract/UnvalidatePropertyContract/{id}")]
-        public async Task<IActionResult> UnvalidatePropertyContract(long id)
-        {
-            await _propertyService.Unvalidate2Async(id);
-            return RedirectToAction(nameof(Validated)); // Redirect to the validated contracts page after unvalidation
-        }
+[HttpPost]
+[Route("PropertyContract/UnvalidatePropertyContract/{id}")]
+public async Task<IActionResult> UnvalidatePropertyContract(long id)
+{
+    await _propertyService.Unvalidate2Async(id);
+    string refererUrl = Request.Headers["Referer"].ToString();
+    if (string.IsNullOrEmpty(refererUrl))
+    {
+        return RedirectToAction("Details", new { id });
+    }
+    return Redirect(refererUrl); // Redirect to the previous page
+}
+
 
 [HttpGet]
 public async Task<IActionResult> Validated(int pageNumber = 1, int pageSize = 10)

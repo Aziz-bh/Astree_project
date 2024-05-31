@@ -92,9 +92,40 @@
                     <dd class="col-sm-9">@String.Join(", ", Model.GuaranteesList)</dd>
                 </dl>
 
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
-                    Sign Contract
-                </button>
+
+
+                
+
+
+ 
+
+                @foreach (var claim in User.Claims)
+                {
+                        @if(claim.Type=="role"){
+         @if(claim.Value=="Admin"){
+                    
+                        @if ((bool)ViewBag.Validated)
+                        {
+                            <form action="@Url.Action("UnvalidateAutomobileContract", "AutomobileContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-warning">Unvalidate</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form action="@Url.Action("ValidateAutomobileContract", "AutomobileContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-success">Validate</button>
+                            </form>
+                        }
+                        }
+                        else{
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
+                            Sign Contract
+                            </button>
+                        }
+                    }
+                }
 
                 <!-- Sign Contract Modal -->
                 <div class="modal fade" id="signContractModal" tabindex="-1" role="dialog" aria-labelledby="signContractModalLabel" aria-hidden="true">

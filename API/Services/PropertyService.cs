@@ -95,28 +95,26 @@ public async Task<Property> CreatePropertyAsync(Property property)
                 .ToListAsync();
         }
 
-        public byte[] GeneratePropertyContractQRCode(Property property)
+public byte[] GeneratePropertyContractQRCode(string contractUrl)
+{
+    // Create a QR code generator instance
+    QRCodeGenerator qrGenerator = new QRCodeGenerator();
+    QRCodeData qrCodeData = qrGenerator.CreateQrCode(contractUrl, QRCodeGenerator.ECCLevel.Q);
+
+    // Create a QR code instance from the data
+    using (QRCode qrCode = new QRCode(qrCodeData))
+    {
+        using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
         {
-            // Convert property contract data to a string format
-            string contractData = $"Id: {property.Id}, Location: {property.Location}, Type: {property.Type}, Value: {property.PropertyValue}, Coverage: {property.Coverage}";
-
-            // Create a QR code generator instance
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(contractData, QRCodeGenerator.ECCLevel.Q);
-
-            // Create a QR code instance from the data
-            using (QRCode qrCode = new QRCode(qrCodeData))
+            using (MemoryStream stream = new MemoryStream())
             {
-                using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
-                {
-                    using (MemoryStream stream = new MemoryStream())
-                    {
-                        qrCodeImage.Save(stream, ImageFormat.Png);
-                        return stream.ToArray();
-                    }
-                }
+                qrCodeImage.Save(stream, ImageFormat.Png);
+                return stream.ToArray();
             }
         }
+    }
+}
+
 
      public async Task ValidateContractAsync(long id)
 {

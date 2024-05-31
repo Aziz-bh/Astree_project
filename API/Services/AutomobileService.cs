@@ -166,30 +166,27 @@ namespace API.Services
             return automobile;
         }
 
-        public byte[] GenerateContractQRCode(Automobile automobile)
+public byte[] GenerateContractQRCode(string contractUrl)
+{
+    // Create a QR code generator instance
+    QRCodeGenerator qrGenerator = new QRCodeGenerator();
+    QRCodeData qrCodeData = qrGenerator.CreateQrCode(contractUrl, QRCodeGenerator.ECCLevel.Q);
+
+    // Create a QR code instance from the data
+    QRCode qrCode = new QRCode(qrCodeData);
+
+    // Convert the QR code to a bitmap
+    using (var qrCodeImage = qrCode.GetGraphic(20))
     {
-        // Convert contract data to a string format, e.g., JSON
-        // For simplicity, this example just concatenates some fields
-        string contractData = $"Id: {automobile.Id}, Make: {automobile.VehicleMake}, Model: {automobile.Model}, Value: {automobile.VehicleValue}";
-
-        // Create a QR code generator instance
-        QRCodeGenerator qrGenerator = new QRCodeGenerator();
-        QRCodeData qrCodeData = qrGenerator.CreateQrCode(contractData, QRCodeGenerator.ECCLevel.Q);
-
-        // Create a QR code instance from the data
-        QRCode qrCode = new QRCode(qrCodeData);
-
-        // Convert the QR code to a bitmap
-        using (var qrCodeImage = qrCode.GetGraphic(20))
+        // Convert the bitmap to a byte array
+        using (var stream = new MemoryStream())
         {
-            // Convert the bitmap to a byte array
-            using (var stream = new MemoryStream())
-            {
-                qrCodeImage.Save(stream, ImageFormat.Png);
-                return stream.ToArray();
-            }
+            qrCodeImage.Save(stream, ImageFormat.Png);
+            return stream.ToArray();
         }
     }
+}
+
 
     public async Task ValidateContractAsync(long id)
 {
