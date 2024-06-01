@@ -108,7 +108,7 @@
                                         <td class="text-center">@Html.DisplayFor(modelItem => item.Gender)</td>
                                         <td class="text-center">
                                             <div class="btn-group" role="group">
-                                                <form asp-action="Details" asp-route-id="@item.Id" method="post">
+                                                <form asp-action="Details" asp-route-id="@item.Id" method="get">
                                                     <button type="submit" class="btn btn-success btn-icon btn-sm btn-neutral" rel="tooltip">
                                                         <i class="bi bi-person-fill"></i>
                                                     </button>

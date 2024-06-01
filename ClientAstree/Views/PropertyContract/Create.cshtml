@@ -46,13 +46,63 @@
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container form-container">
                 <h2>@ViewData["Title"]</h2>
-                <form asp-action="Create" asp-controller="PropertyContract" method="post">
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong> Please correct the following errors:
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <form asp-action="Create" asp-controller="PropertyContract" method="post" id="propertyForm">
                     @Html.AntiForgeryToken()
 
                     <div class="form-group">
-                        <label asp-for="Location">Location</label>
-                        <input asp-for="Location" class="form-control" />
+                        <label for="inputState" class="text-black">State</label>
+                        <select id="inputState" class="form-control">
+                            <option value="">Select State...</option>
+                            <option value="Ariana">Ariana</option>
+                            <option value="Beja">Beja</option>
+                            <option value="Ben Arous">Ben Arous</option>
+                            <option value="Bizerte">Bizerte</option>
+                            <option value="Gabes">Gabes</option>
+                            <option value="Gafsa">Gafsa</option>
+                            <option value="Jendouba">Jendouba</option>
+                            <option value="Kairouan">Kairouan</option>
+                            <option value="Kasserine">Kasserine</option>
+                            <option value="Kebili">Kebili</option>
+                            <option value="Kef">Kef</option>
+                            <option value="Mahdia">Mahdia</option>
+                            <option value="Manouba">Manouba</option>
+                            <option value="Medenine">Medenine</option>
+                            <option value="Monastir">Monastir</option>
+                            <option value="Nabeul">Nabeul</option>
+                            <option value="Sfax">Sfax</option>
+                            <option value="Sidi Bouzid">Sidi Bouzid</option>
+                            <option value="Siliana">Siliana</option>
+                            <option value="Sousse">Sousse</option>
+                            <option value="Tataouine">Tataouine</option>
+                            <option value="Tozeur">Tozeur</option>
+                            <option value="Tunis">Tunis (Capital)</option>
+                            <option value="Zaghouan">Zaghouan</option>
+                        </select>
                         <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddress" class="text-black">Address</label>
+                        <input type="text" class="form-control" id="inputAddress">
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" asp-for="Location" id="Location">
                     </div>
 
                     <div class="form-group">
@@ -97,6 +147,7 @@
                                 <option value="@coverage" selected="@(Model.Coverage == coverage ? "selected" : null)">@coverage</option>
                             }
                         </select>
+                        <span asp-validation-for="Coverage" class="text-danger"></span>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Create</button>
@@ -105,3 +156,12 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("propertyForm").addEventListener("submit", function(event) {
+        var state = document.getElementById("inputState").value;
+        var address = document.getElementById("inputAddress").value;
+        var location = state + ", " + address;
+        document.getElementById("Location").value = location;
+    });
+</script>

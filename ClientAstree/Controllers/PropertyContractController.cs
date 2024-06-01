@@ -91,16 +91,62 @@ namespace ClientAstree.Controllers
 
 
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View(new PropertyVM());
-        }
+[HttpGet]
+public IActionResult Create()
+{
+    return View(new PropertyVM());
+}
 
 [HttpPost]
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Create(PropertyVM model)
 {
+    // Manual validation
+    var locationParts = model.Location.Split(',');
+    if (locationParts.Length != 2 || string.IsNullOrWhiteSpace(locationParts[0]) || string.IsNullOrWhiteSpace(locationParts[1]))
+    {
+        ModelState.AddModelError("Location", "Address and state are required.");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.ContractType))
+    {
+        ModelState.AddModelError("ContractType", "Contract type is required.");
+    }
+
+    if (model.StartDate == default)
+    {
+        ModelState.AddModelError("StartDate", "Start date is required.");
+    }
+
+    if (model.EndDate == default)
+    {
+        ModelState.AddModelError("EndDate", "End date is required.");
+    }
+    else if (model.EndDate <= model.StartDate)
+    {
+        ModelState.AddModelError("EndDate", "End date must be later than start date.");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.Type))
+    {
+        ModelState.AddModelError("Type", "Property type is required.");
+    }
+
+    if (model.YearOfConstruction == default)
+    {
+        ModelState.AddModelError("YearOfConstruction", "Year of construction is required.");
+    }
+
+    if (model.PropertyValue <= 0)
+    {
+        ModelState.AddModelError("PropertyValue", "Property value must be greater than zero.");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.Coverage))
+    {
+        ModelState.AddModelError("Coverage", "Coverage is required.");
+    }
+
     if (ModelState.IsValid)
     {
         var createdProperty = await _propertyService.CreatePropertyAsync(model);
@@ -110,8 +156,12 @@ public async Task<IActionResult> Create(PropertyVM model)
         }
         ModelState.AddModelError("", "Failed to create property contract");
     }
+
     return View(model);
 }
+
+
+
 
 [HttpGet]
 public async Task<IActionResult> Details(long id)
@@ -312,17 +362,65 @@ private Cell CreateDetailCell(string content)
             return View(property);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(PropertyVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                await _propertyService.UpdatePropertyAsync(model);
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Update(PropertyVM model)
+{
+    // Manual validation
+    var locationParts = model.Location.Split(',');
+    if (locationParts.Length != 2 || string.IsNullOrWhiteSpace(locationParts[0]) || string.IsNullOrWhiteSpace(locationParts[1]))
+    {
+        ModelState.AddModelError("Location", "Address and state are required.");
+    }
 
-            }
-            return View(model);
-        }
+    if (string.IsNullOrWhiteSpace(model.ContractType))
+    {
+        ModelState.AddModelError("ContractType", "Contract type is required.");
+    }
+
+    if (model.StartDate == default)
+    {
+        ModelState.AddModelError("StartDate", "Start date is required.");
+    }
+
+    if (model.EndDate == default)
+    {
+        ModelState.AddModelError("EndDate", "End date is required.");
+    }
+    else if (model.EndDate <= model.StartDate)
+    {
+        ModelState.AddModelError("EndDate", "End date must be later than start date.");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.Type))
+    {
+        ModelState.AddModelError("Type", "Property type is required.");
+    }
+
+    if (model.YearOfConstruction == default)
+    {
+        ModelState.AddModelError("YearOfConstruction", "Year of construction is required.");
+    }
+
+    if (model.PropertyValue <= 0)
+    {
+        ModelState.AddModelError("PropertyValue", "Property value must be greater than zero.");
+    }
+
+    if (string.IsNullOrWhiteSpace(model.Coverage))
+    {
+        ModelState.AddModelError("Coverage", "Coverage is required.");
+    }
+
+    if (ModelState.IsValid)
+    {
+        await _propertyService.UpdatePropertyAsync(model);
+        return RedirectToAction(nameof(Details), new { id = model.Id });
+    }
+
+    return View(model);
+}
+
 
         [HttpPost]
 [ValidateAntiForgeryToken]

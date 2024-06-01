@@ -74,6 +74,19 @@
                 <div>
                     <h4>User Information</h4>
                     <hr />
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
                     <dl class="row">
                         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.User.Id)</dt>
                         <dd class="col-sm-10">@Html.DisplayFor(model => model.User.Id)</dd>
@@ -141,7 +154,7 @@
                                                 <span class="badge badge-success">@guarantee</span>
                                             }
                                         </p>
-                                        <a href="#" class="btn btn-primary">View Details</a>
+                                        <a href="/AutomobileContract/ContractDetails/@auto.Id" class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +192,7 @@
                                             Value: @prop.PropertyValue <br>
                                             Coverages: @String.Join(", ", prop.CoveragesList)
                                         </p>
-                                        <a href="#" class="btn btn-primary">View Details</a>
+                                        <a href="/PropertyContract/Details/@prop.Id" class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
                             </div>

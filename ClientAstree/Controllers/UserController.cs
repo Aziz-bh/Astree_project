@@ -237,6 +237,18 @@ Console.WriteLine("try");
             return View();
         }
 
+
+    public IActionResult MyContract()
+{
+    return View();
+}
+
+public IActionResult AddContract()
+{
+    return View();
+}
+
+
         // // GET: /User/Create
         // public IActionResult Create()
         // {

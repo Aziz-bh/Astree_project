@@ -82,7 +82,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Automobile Contracts</h5>
                             <p class="card-text">You currently have <strong class="text-danger">@ViewBag.AutomobileContractCount</strong> automobile contracts.</p>
-                            <a href="/AutomobileContract" class="btn btn-primary btn-round btn-lg">View Details</a>
+                            <a href="/AutomobileContract/MyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
                         </div>
                     </div>
 
@@ -92,7 +92,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Property Contracts</h5>
                             <p class="card-text">You currently have <strong class="text-danger">@ViewBag.PropertyContractCount</strong> property contracts.</p>
-                            <a href="/PropertyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
+                            <a href="/PropertyContract/MyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -188,9 +188,9 @@
 <script>
 $(document).ready(function() {
     $('#editProfileForm').submit(function(e) {
-        e.preventDefault();  // Prevent the normal submission action
+        e.preventDefault(); 
 
-        var formData = $(this).serialize();  // Serialize the form data.
+        var formData = $(this).serialize(); 
 
         $.ajax({
             type: 'POST',

@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "User Contracts";
+    ViewData["Title"] = "Contract Management";
 }
 
 <style>
@@ -65,22 +65,22 @@
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container">
                 <div class="title text-center">
-                    <h2>User Contracts</h2>
-                    <h4 class="description">Select the type of contract you want to manage.</h4>
+                    <h2>Contract Management</h2>
+                    <h4 class="description">Select the action you want to perform.</h4>
                 </div>
 
                 <div class="row card-container">
                     <div class="col-md-4">
                         <div class="card card-pricing">
                             <div class="card-body">
-                                <img class="card-img" src="/img/dashboard/cardash.png" alt="Car Logo">
-                                <h5 class="category text-primary">Automobile Contracts</h5>
+                                <img class="card-img" src="/img/dashboard/add.png" alt="Add Contract">
+                                <h5 class="category text-primary">Add Contract</h5>
                                 <ul>
-                                    <li class="text-primary">View contract details</li>
-                                    <li class="text-primary">Edit or delete contracts</li>
+                                    <li class="text-primary">Create a new contract</li>
+                                    <li class="text-primary">Enter contract details</li>
                                 </ul>
-                                <a href="/AutomobileContract/MyContract" class="btn btn-primary btn-round">
-                                    Manage Automobile Contracts
+                                <a href="/User/AddContract" class="btn btn-primary btn-round">
+                                    Add Contract
                                 </a>
                             </div>
                         </div>
@@ -88,15 +88,15 @@
 
                     <div class="col-md-4">
                         <div class="card card-pricing card-raised">
-                            <div class="card-body  text-white">
-                                <img class="card-img" src="/img/dashboard/houseDash.png" alt="House Logo">
-                                <h5 class="category text-white">Property Contracts</h5>
+                            <div class="card-body text-white">
+                                <img class="card-img" src="/img/dashboard/view.png" alt="View Contracts">
+                                <h5 class="category text-white">View Contracts</h5>
                                 <ul>
-                                    <li class="text-white">View contract details</li>
+                                    <li class="text-white">View existing contracts</li>
                                     <li class="text-white">Edit or delete contracts</li>
                                 </ul>
-                                <a href="/PropertyContract/MyContract" class="btn btn-neutral btn-round text-primary">
-                                    Manage Property Contracts
+                                <a href="/User/UserContract" class="btn btn-neutral btn-round text-primary">
+                                    View Contracts
                                 </a>
                             </div>
                         </div>
