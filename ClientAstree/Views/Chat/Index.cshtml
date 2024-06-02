@@ -4,13 +4,94 @@
     ViewData["Title"] = "Chat Rooms";
 }
 
-<h2>@ViewData["Title"]</h2>
-
-<ul class="list-group">
-    @foreach (var room in Model)
-    {
-        <li class="list-group-item">
-            <a asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
-        </li>
+<style>
+    /* Overall Styling */
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background-color: #f0f0f0; /* Softer background */
+        color: #333;
     }
-</ul>
+
+    /* Chat Background */
+    .chat-bg {
+        background-image: url('/img/fam1.png'); /* Your background image */
+        background-size: cover;
+        min-height: 100vh; /* Ensure it covers the entire viewport */
+        padding-top: 20px; /* Add some top padding */
+    }
+
+    /* Chat Container */
+    .chat-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Chat Room List */
+    .chat-list {
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+        grid-gap: 20px;
+    }
+
+    .chat-room-link {
+        text-decoration: none;
+        color: inherit; /* Inherit color from parent */
+    }
+
+    .chat-room {
+        background-color: #fff;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: box-shadow 0.3s ease; /* Add hover effect */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .chat-room:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .room-name {
+        color: #007bff;
+        margin-bottom: 5px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .last-message {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
+
+<div class="container-fluid chat-bg">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-4 side-menu">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <div class="col-lg-10 col-md-9 col-sm-8 content-area">
+            <div class="chat-container">
+                <h2>@ViewData["Title"]</h2>
+                <div class="chat-list">
+                    @foreach (var room in Model)
+                    {
+                        <a asp-action="ChatRoom" asp-route-id="@room.Id" class="chat-room-link">
+                            <div class="chat-room">
+                                <h3 class="room-name">@room.Name</h3> 
+                                <p class="last-message">Last message preview goes here...</p> 
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

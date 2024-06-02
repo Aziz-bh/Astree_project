@@ -4,13 +4,70 @@
     ViewData["Title"] = "Chat Rooms";
 }
 
-<h2>@ViewData["Title"]</h2>
+<style>
+    /* Modern Design Styling */
 
-<ul class="list-group">
-    @foreach (var room in Model)
-    {
-        <li class="list-group-item">
-            <a asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
-        </li>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font choice */
+        background-color: #f4f4f4; /* Light background */
+        color: #333; /* Dark text for contrast */
     }
-</ul>
+
+    .bg-image {
+        background-image: url('/img/fam1.png'); /* Replace with your desired background image */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+    }
+
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+
+    .list-group-item a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .list-group-item a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8 col-12">
+            <div class="content-container">
+                <h2>@ViewData["Title"]</h2>
+                <ul class="list-group">
+                    @foreach (var room in Model)
+                    {
+                        <li class="list-group-item">
+                            <a asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,18 +9,21 @@ namespace ClientAstree.Services
     {
         private readonly IMapper _mapper;
         private readonly IClient _httpClient;
+        private readonly BadWordFilterService _badWordFilterService;
          private readonly ILocalStorageService _localStorageService;
 
-           public ComplaintService(IMapper mapper, IClient httpclient, ILocalStorageService localStorageService) : base(httpclient, localStorageService)
+           public ComplaintService(IMapper mapper, IClient httpclient, BadWordFilterService badWordFilterService,ILocalStorageService localStorageService) : base(httpclient, localStorageService)
         {
             this._localStorageService = localStorageService;
             this._mapper = mapper;
             this._httpClient = httpclient;
+            _badWordFilterService = badWordFilterService;
         }
 
         public async Task<ComplaintDto> SubmitComplaintAsync(FileParameter attachment, string description, string complaintsSubject)
         {AddBearerToken();
-            return await _httpClient.SubmitAsync(attachment, description, complaintsSubject);
+        var filteredDescription = _badWordFilterService.FilterBadWords(description);
+            return await _httpClient.SubmitAsync(attachment, filteredDescription, complaintsSubject);
         }
 
         public async Task<IEnumerable<ComplaintDto>> GetAllComplaintsAsync()
@@ -50,10 +53,8 @@ namespace ClientAstree.Services
 
         public async Task UpdateComplaintAsync(long id, FileParameter attachment, string description, string complaintsSubject)
         {AddBearerToken();
-            Console.WriteLine("Service : "+ id);
-            
-            Console.WriteLine("Service : "+ id);
-            await _httpClient.UpdatecomplaintAsync(id, attachment, description, complaintsSubject);
+            var filteredDescription = _badWordFilterService.FilterBadWords(description);
+            await _httpClient.UpdatecomplaintAsync(id, attachment, filteredDescription, complaintsSubject);
         }
 
         public async Task<byte[]> GetComplaintAttachmentAsync(string fileName)

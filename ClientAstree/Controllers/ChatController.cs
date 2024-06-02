@@ -1,5 +1,6 @@
 using ClientAstree.Contracts;
 using ClientAstree.Services.Base;
+using ClientAstree.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientAstree.Controllers
@@ -7,10 +8,13 @@ namespace ClientAstree.Controllers
     public class ChatController : Controller
     {
         private readonly IChatService _chatService;
+         private readonly BadWordFilterService _badWordFilterService;
 
-        public ChatController(IChatService chatService)
+
+        public ChatController(IChatService chatService,BadWordFilterService badWordFilterService)
         {
             _chatService = chatService;
+            _badWordFilterService = badWordFilterService;
         }
 
         public async Task<IActionResult> Index()

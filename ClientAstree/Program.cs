@@ -19,6 +19,8 @@ builder.Services.AddScoped<IAutomobileService, AutomobileService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IComplaintService, ComplaintService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddSingleton<BadWordFilterService>();
+builder.Services.AddLogging(); 
 builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
  builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
