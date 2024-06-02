@@ -5,6 +5,7 @@
 }
 
 <style>
+    /* Colors */
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -14,18 +15,57 @@
     }
 
     .content-container {
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 20px;
+        background-color: #fff; /* Clean white background */
+        padding: 30px; /* Increased padding */
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 20px auto;
+        max-width: 80%; /* Limit width for readability */
+    }
+
+    /* Fonts */
+    h2 {
+        color: #212529; /* Darker gray for headings */
+        font-size: 1.5rem; /* 24px */
+        font-weight: 500;
+        text-align: center; /* Center align the heading */
+        margin-top: 20px;
+    }
+
+    dt {
+        color: #343a40; /* Dark gray for main text */
+        font-size: 1rem; /* 16px */
+        font-weight: 400; /* Regular */
+    }
+
+    dd {
+        color: #343a40; /* Dark gray for main text */
+        font-size: 1rem; /* 16px */
+        font-weight: 400; /* Regular */
     }
 
     .btn-sign {
         background-color: #4E6B8B;
         color: white;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .btn-success {
+        background-color: #28a745; /* Green for positive actions */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Interactivity */
     .modal-header {
         border-bottom: none;
     }
@@ -49,7 +89,7 @@
         <!-- Main Content Area -->
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container">
-                <h2>Contract Details</h2>
+                <h2>Contract</h2>
                 <hr />
                 <dl class="row">
                     <dt class="col-sm-3">Vehicle Make</dt>
@@ -92,36 +132,31 @@
                     <dd class="col-sm-9">@String.Join(", ", Model.GuaranteesList)</dd>
                 </dl>
 
-
-
-                
-
-
- 
-
                 @foreach (var claim in User.Claims)
                 {
-                        @if(claim.Type=="role"){
-         @if(claim.Value=="Admin"){
-                    
-                        @if ((bool)ViewBag.Validated)
+                    @if(claim.Type=="role")
+                    {
+                        @if(claim.Value=="Admin")
                         {
-                            <form action="@Url.Action("UnvalidateAutomobileContract", "AutomobileContract", new { id = Model.Id })" method="post" style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-warning">Unvalidate</button>
-                            </form>
+                            @if ((bool)ViewBag.Validated)
+                            {
+                                <form action="@Url.Action("UnvalidateAutomobileContract", "AutomobileContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-warning">Invalidate Contract</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form action="@Url.Action("ValidateAutomobileContract", "AutomobileContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-success">Validate Contract</button>
+                                </form>
+                            }
                         }
                         else
                         {
-                            <form action="@Url.Action("ValidateAutomobileContract", "AutomobileContract", new { id = Model.Id })" method="post" style="display:inline;">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-success">Validate</button>
-                            </form>
-                        }
-                        }
-                        else{
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
-                            Sign Contract
+                            <button type="button" class="btn btn-primary btn-sign" data-toggle="modal" data-target="#signContractModal">
+                                <i class="fa fa-check"></i> Sign Contract
                             </button>
                         }
                     }
@@ -140,12 +175,12 @@
                             <div class="modal-body">
                                 <p>Si vous souhaitez concrétiser ce contrat au niveau de l'agence veuillez fournir les pièces suivantes :</p>
                                 <ol>
-                                    <li>La pièce d'identité du souscripteur (CIN / passeport).</li>
-                                    <li>La carte grise du véhicule</li>
-                                    <li>La visite technique et la vignette</li>
-                                    <li>Le permis de conduire de l'assuré</li>
-                                    <li>Le relevé d'informations (justificatif de la dernière classe Bonus-Malus de l'assuré)</li>
-                                    <li>L'attestation de leasing</li>
+                                    <li><i class="fa fa-id-card"></i> La pièce d'identité du souscripteur (CIN / passeport).</li>
+                                    <li><i class="fa fa-car"></i> La carte grise du véhicule</li>
+                                    <li><i class="fa fa-wrench"></i> La visite technique et la vignette</li>
+                                    <li><i class="fa fa-drivers-license"></i> Le permis de conduire de l'assuré</li>
+                                    <li><i class="fa fa-file-alt"></i> Le relevé d'informations (justificatif de la dernière classe Bonus-Malus de l'assuré)</li>
+                                    <li><i class="fa fa-handshake"></i> L'attestation de leasing</li>
                                 </ol>
                             </div>
                             <div class="modal-footer">
@@ -161,5 +196,7 @@
     </div>
 </div>
 
+<!-- Include Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>

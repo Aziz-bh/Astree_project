@@ -54,29 +54,40 @@ namespace API.Services
             }
         }
 
-        public async Task<int> FindOrCreateChatRoomForUserAsync(string userEmail)
-        {
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            if (user == null)
-            {
-                throw new ArgumentException("User not found.");
-            }
+public async Task<int> FindOrCreateChatRoomForUserAsync(string userEmail)
+{
+    var user = await _userManager.FindByEmailAsync(userEmail);
+    if (user == null)
+    {
+        throw new ArgumentException("User not found.");
+    }
 
-            var chatRoomId = await _context.ChatMessages
-                .Where(cm => cm.UserId == user.Id)
-                .Select(cm => cm.ChatRoomId)
-                .FirstOrDefaultAsync();
+    // Check if a chat room exists with the user's email in the name
+    var chatRoom = await _context.ChatRooms
+        .FirstOrDefaultAsync(cr => cr.Name == $"Chat with {userEmail}");
 
-            if (chatRoomId == 0) // No existing chat room found
-            {
-                var chatRoom = new ChatRoom { Name = $"Chat with {user.UserName}" };
-                _context.ChatRooms.Add(chatRoom);
-                await _context.SaveChangesAsync();
-                chatRoomId = chatRoom.Id;
-            }
+    if (chatRoom != null)
+    {
+        return chatRoom.Id;
+    }
 
-            return chatRoomId;
-        }
+    // Check if a chat room exists where the user has already sent messages
+    var chatRoomId = await _context.ChatMessages
+        .Where(cm => cm.UserId == user.Id)
+        .Select(cm => cm.ChatRoomId)
+        .FirstOrDefaultAsync();
+
+    if (chatRoomId == 0) // No existing chat room found
+    {
+        chatRoom = new ChatRoom { Name = $"Chat with {user.UserName}" };
+        _context.ChatRooms.Add(chatRoom);
+        await _context.SaveChangesAsync();
+        chatRoomId = chatRoom.Id;
+    }
+
+    return chatRoomId;
+}
+
 
         public async Task<bool> ChatRoomExists(int chatRoomId)
         {

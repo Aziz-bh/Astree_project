@@ -5,19 +5,12 @@
 }
 
 <style>
-    /* Overall Styling */
-    body {
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        background-color: #f0f0f0; /* Softer background */
-        color: #333;
-    }
 
     /* Chat Background */
     .chat-bg {
         background-image: url('/img/fam1.png'); /* Your background image */
         background-size: cover;
         min-height: 100vh; /* Ensure it covers the entire viewport */
-        padding-top: 20px; /* Add some top padding */
     }
 
     /* Chat Container */
@@ -73,7 +66,7 @@
 
 <div class="container-fluid chat-bg">
     <div class="row">
-        <div class="col-lg-2 col-md-3 col-sm-4 side-menu">
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
             @Html.Partial("_SideMenu")
         </div>
 
