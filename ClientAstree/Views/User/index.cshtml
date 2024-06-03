@@ -5,7 +5,7 @@
 }
 
 <style>
-    /* Colors */
+    /* General Styles */
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -15,20 +15,59 @@
     }
 
     .content-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 30px;
+        background-color: #fff; /* White background for content containers */
+        padding: 30px; /* Increased padding for spacious feel */
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin: 20px auto;
-        max-width: 80%;
+        max-width: 80%; /* Limit the width of the main content container */
+        margin: 20px auto; /* Center the content container */
     }
 
     .form-container, .table-container, .pagination-container {
         background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 30px;
+        padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #212529; /* Darker gray for headings */
+        font-size: 1.5rem; /* Heading size */
+        font-weight: 500; /* Font weight for headings */
+        margin-top: 20px;
+        text-align: center; /* Center-align the heading */
+    }
+
+    .breadcrumb-item {
+        font-size: 1rem; /* Font size for breadcrumb items */
+    }
+
+    .table, .table th, .table td {
+        font-size: 1rem; /* Font size for table headers and data */
+    }
+
+    .table th {
+        background-color: #f8f9fa; /* Light gray for table headers */
+        color: #212529; /* Darker gray for table headers text */
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5; /* Hover effect for table rows */
+    }
+
+    .btn {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for buttons */
+    }
+
+    .btn:hover { 
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Hover effect for buttons */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #4E6B8B; /* Primary color for active pagination */
+        border-color: #4E6B8B;
     }
 
     .pagination-container {
@@ -36,58 +75,8 @@
         margin-bottom: 50px;
     }
 
-    h2 { 
-        color: #212529; 
-        font-size: 1.5rem; 
-        font-weight: 500; 
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .breadcrumb-item { 
-        font-size: 1rem; 
-    }
-
-    .table th { 
-        background-color: #f8f9fa; 
-        color: #212529; 
-        font-size: 1rem; 
-    }
-
-    .table td { 
-        font-size: 1rem; 
-    }
-
-    .form-label { 
-        font-size: 0.875rem; 
-        font-weight: 500;
-    }
-
-    .btn { 
-        transition: background-color 0.3s ease, box-shadow 0.3s ease; 
-    }
-
-    .btn:hover { 
-        filter: brightness(95%);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.15); 
-    }
-
-    .btn-success { background-color: rgba(0,0,0,0); border-color: #28a745; color: white; }
-    .btn-success:hover { background-color: #218838; }
-
-    .btn-info { background-color: rgba(0,0,0,0);; border-color: #17a2b8; color: white; }
-    .btn-info:hover { background-color: #138496; }
-
-    .btn-danger { background-color: rgba(0,0,0,0);; border-color: #dc3545; color: white; }
-    .btn-danger:hover { background-color: #c82333; }
-
-    .table-hover tbody tr:hover { 
-        background-color: #f5f5f5; 
-    }
-
-    .pagination .page-item.active .page-link { 
-        background-color: #4E6B8B; 
-        border-color: #4E6B8B; 
+    .form-label {
+        font-size: 0.875rem; /* Font size for form labels */
     }
 </style>
 
