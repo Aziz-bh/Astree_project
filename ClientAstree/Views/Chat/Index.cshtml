@@ -5,85 +5,94 @@
 }
 
 <style>
+    /* Color Palette */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6;   /* Soft Greenish Background */
+        color: #212529;              /* Darker Text for Contrast */
+    }
 
-    /* Chat Background */
-    .chat-bg {
-        background-image: url('/img/fam1.png'); /* Your background image */
+    .bg-image {
+        background-image: url('/img/fam1.png'); /* Replace with your desired background image */
         background-size: cover;
-        min-height: 100vh; /* Ensure it covers the entire viewport */
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
     }
 
-    /* Chat Container */
-    .chat-container {
-        background-color: white;
+    .content-container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;      /* More Rounded Corners */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Deeper Shadow */
+    }
+
+    .chat-room-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .chat-room-item {
+        display: flex;
+        align-items: center;
         padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px; 
+        margin-bottom: 15px;  /* Spacing between items */
+        background-color: #f8f9fa; /* Lighter Background for Items */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle Shadow for Items */
+        transition: transform 0.3s, box-shadow 0.3s; /* Smoother Animation */
     }
 
-    /* Chat Room List */
-    .chat-list {
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
-        grid-gap: 20px;
+    .chat-room-item:hover {
+        transform: translateY(-3px);  /* Lift on Hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Deeper Shadow on Hover */
     }
 
     .chat-room-link {
-        text-decoration: none;
-        color: inherit; /* Inherit color from parent */
-    }
-
-    .chat-room {
-        background-color: #fff;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        transition: box-shadow 0.3s ease; /* Add hover effect */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-    }
-
-    .chat-room:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .room-name {
         color: #007bff;
-        margin-bottom: 5px;
-        font-size: 1.2em;
-        font-weight: bold;
+        text-decoration: none;
+        font-weight: 600;
+        flex-grow: 1;
     }
 
-    .last-message {
-        flex-grow: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .chat-room-link:hover {
+        color: #0056b3; /* Darker Blue on Hover */
     }
+
+    /* Icon Styles (adjust as needed for your icons) */
+    .chat-room-icon {
+        margin-right: 15px;
+        font-size: 1.4em;   /* Larger Icon */
+        color: #1E3A7A; /* Green-ish Color for Icon */
+    }
+
+    h2 {
+        margin-bottom: 20px;  /* Add some space above the title */
+    }
+
+
 </style>
 
-<div class="container-fluid chat-bg">
+<div class="container-fluid bg-image">
     <div class="row">
+        <!-- Side Menu on the left -->
         <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
             @Html.Partial("_SideMenu")
         </div>
 
-        <div class="col-lg-10 col-md-9 col-sm-8 content-area">
-            <div class="chat-container">
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8 col-12">
+            <div class="content-container">
                 <h2>@ViewData["Title"]</h2>
-                <div class="chat-list">
+                <ul class="chat-room-list">
                     @foreach (var room in Model)
                     {
-                        <a asp-action="ChatRoom" asp-route-id="@room.Id" class="chat-room-link">
-                            <div class="chat-room">
-                                <h3 class="room-name">@room.Name</h3> 
-                                <p class="last-message">Last message preview goes here...</p> 
-                            </div>
-                        </a>
+                        <li class="chat-room-item">
+                            <i class="fas fa-comments chat-room-icon"></i> 
+                            <a class="chat-room-link" asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
+                        </li>
                     }
-                </div>
+                </ul>
             </div>
         </div>
     </div>

@@ -5,6 +5,16 @@
 }
 
 <style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #fff;
+        color: #333;
+    }
+
+    h1, h2 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -13,21 +23,69 @@
         min-height: 100vh; /* Ensures it covers the full height of the viewport */
     }
 
-    .form-container, .table-container, .pagination-container {
+    .content-container {
         background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
+        padding: 30px;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 80%;
     }
 
-    .table-container {
-        padding: 20px;
+    .form-container, .table-container, .pagination-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
 
     .pagination-container {
         padding: 10px;
         margin-bottom: 50px;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #F8F9FA;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        color: #1E3A7A; /* Primary color */
+        font-size: 1.5rem;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #1E3A7A; /* Primary color */
+        border-color: #1E3A7A;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #c90f1e;
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #1E3A7A; /* Primary color */
+        border-color: #1E3A7A;
     }
 </style>
 
@@ -80,7 +138,7 @@
                 </div>
 
                 <div class="table-container">
-                    <table class="table">
+                    <table class="table table-hover table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Make</th>

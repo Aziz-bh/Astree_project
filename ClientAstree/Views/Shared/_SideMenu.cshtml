@@ -1,3 +1,80 @@
+<style>
+/* Main side menu container */
+.side-menu {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    padding: 15px;
+    height: 100vh;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* User info section */
+.side-menu .user-info {
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.side-menu .user-info .simple-text {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FFFF;
+}
+
+.side-menu .user-info .user-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+/* Navigation menu */
+.side-menu .nav {
+    padding-top: 15px;
+}
+
+.side-menu .nav-item {
+    padding: 10px 0;
+}
+
+.side-menu .nav-link {
+    color: #333;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-menu .nav-link i {
+    margin-right: 10px;
+    color: #FFFF;
+}
+
+.side-menu .nav-link p {
+    margin: 0;
+    font-size: 1em;
+}
+
+.side-menu .nav-link:hover {
+    background-color: #e9ecef;
+    color: #FFFF;
+}
+
+.side-menu .nav-link:hover i {
+    color: #0056b3;
+}
+
+/* Footer links */
+.side-menu .footer-link {
+    color: #333;
+    transition: color 0.3s ease;
+    padding: 0 5px;
+}
+
+.side-menu .footer-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+</style>
 <div id="side-menu" class="sidebar side-menu" data-color="blue">
     <div class="logo user-info">
         @if (User.Identity.IsAuthenticated)
@@ -128,80 +205,4 @@
     </div>
 </div>
 
-<style>
-/* Main side menu container */
-.side-menu {
-    position: sticky;
-    top: 0;
-    background-color: #f8f9fa;
-    padding: 15px;
-    height: 100vh;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-/* User info section */
-.side-menu .user-info {
-    padding: 20px 0;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-}
-
-.side-menu .user-info .simple-text {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.side-menu .user-info .user-name {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #6c757d;
-}
-
-/* Navigation menu */
-.side-menu .nav {
-    padding-top: 15px;
-}
-
-.side-menu .nav-item {
-    padding: 10px 0;
-}
-
-.side-menu .nav-link {
-    color: #333;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.side-menu .nav-link i {
-    margin-right: 10px;
-    color: #007bff;
-}
-
-.side-menu .nav-link p {
-    margin: 0;
-    font-size: 1em;
-}
-
-.side-menu .nav-link:hover {
-    background-color: #e9ecef;
-    color: #007bff;
-}
-
-.side-menu .nav-link:hover i {
-    color: #0056b3;
-}
-
-/* Footer links */
-.side-menu .footer-link {
-    color: #333;
-    transition: color 0.3s ease;
-    padding: 0 5px;
-}
-
-.side-menu .footer-link:hover {
-    color: #0056b3;
-    text-decoration: underline;
-}
-</style>

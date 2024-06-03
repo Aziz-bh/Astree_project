@@ -6,52 +6,6 @@
 
 <style>
     /* Colors */
-    .content-container { 
-        background-color: #fff; 
-        padding: 30px; 
-        max-width: 80%; 
-        margin: 20px auto; 
-    }
-    h2 { 
-        color: #212529; 
-        margin-top: 20px; 
-        font-size: 1.5rem; 
-        font-weight: 500; 
-        text-align: center;
-    }
-    .breadcrumb-item { 
-        font-size: 1rem; 
-    }
-    .table th { 
-        background-color: #f8f9fa; 
-        color: #212529; 
-        font-size: 1rem; 
-    }
-    .table td { 
-        font-size: 1rem; 
-    }
-    .form-label { 
-        font-size: 0.875rem; 
-    }
-    .btn { 
-        transition: background-color 0.3s ease, box-shadow 0.3s ease; 
-    }
-    .btn:hover { 
-        filter: brightness(95%);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.15); 
-    }
-    .table-hover tbody tr:hover { 
-        background-color: #f5f5f5; 
-    }
-    .pagination .page-item.active .page-link { 
-        background-color: #4E6B8B; 
-        border-color: #4E6B8B; 
-    }
-    .pagination-container { 
-        padding: 10px; 
-        margin-bottom: 50px; 
-    }
-
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -60,17 +14,81 @@
         min-height: 100vh; /* Ensures it covers the full height of the viewport */
     }
 
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 80%;
+    }
+
     .form-container, .table-container, .pagination-container {
         background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
+        padding: 30px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }
 
-     .btn-success { background-color: rgba(40, 167, 69, 0.1); }
-    .btn-info { background-color: rgba(0, 123, 255, 0.1); }
-    .btn-danger { background-color: rgba(220, 53, 69, 0.1); }
+    .pagination-container {
+        padding: 10px;
+        margin-bottom: 50px;
+    }
+
+    h2 { 
+        color: #212529; 
+        font-size: 1.5rem; 
+        font-weight: 500; 
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .breadcrumb-item { 
+        font-size: 1rem; 
+    }
+
+    .table th { 
+        background-color: #f8f9fa; 
+        color: #212529; 
+        font-size: 1rem; 
+    }
+
+    .table td { 
+        font-size: 1rem; 
+    }
+
+    .form-label { 
+        font-size: 0.875rem; 
+        font-weight: 500;
+    }
+
+    .btn { 
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+    }
+
+    .btn:hover { 
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15); 
+    }
+
+    .btn-success { background-color: rgba(0,0,0,0); border-color: #28a745; color: white; }
+    .btn-success:hover { background-color: #218838; }
+
+    .btn-info { background-color: rgba(0,0,0,0);; border-color: #17a2b8; color: white; }
+    .btn-info:hover { background-color: #138496; }
+
+    .btn-danger { background-color: rgba(0,0,0,0);; border-color: #dc3545; color: white; }
+    .btn-danger:hover { background-color: #c82333; }
+
+    .table-hover tbody tr:hover { 
+        background-color: #f5f5f5; 
+    }
+
+    .pagination .page-item.active .page-link { 
+        background-color: #4E6B8B; 
+        border-color: #4E6B8B; 
+    }
 </style>
 
 <div class="container-fluid bg-image">
@@ -116,7 +134,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                             </div>
                         </div>
                     </form>
@@ -196,3 +214,5 @@
         </div>
     </div>
 </div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

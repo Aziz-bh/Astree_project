@@ -101,11 +101,18 @@ public IActionResult Create()
 [ValidateAntiForgeryToken]
 public async Task<IActionResult> Create(PropertyVM model)
 {
-    // Manual validation
-    var locationParts = model.Location.Split(',');
-    if (locationParts.Length != 2 || string.IsNullOrWhiteSpace(locationParts[0]) || string.IsNullOrWhiteSpace(locationParts[1]))
+    // Check if Location is not null and has more than 3 characters
+    if (string.IsNullOrWhiteSpace(model.Location) || model.Location.Length <= 3)
     {
-        ModelState.AddModelError("Location", "Address and state are required.");
+        ModelState.AddModelError("Location", "Location must be more than 3 characters.");
+    }
+    else
+    {
+        var locationParts = model.Location.Split(',');
+        if (locationParts.Length != 2 || string.IsNullOrWhiteSpace(locationParts[0]) || string.IsNullOrWhiteSpace(locationParts[1]))
+        {
+            ModelState.AddModelError("Location", "Address and state are required.");
+        }
     }
 
     if (string.IsNullOrWhiteSpace(model.ContractType))
@@ -159,6 +166,7 @@ public async Task<IActionResult> Create(PropertyVM model)
 
     return View(model);
 }
+
 
 
 

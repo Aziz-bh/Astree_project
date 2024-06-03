@@ -15,14 +15,10 @@
 
     .form-container, .table-container, .pagination-container {
         background-color: rgba(255, 255, 255, 0.8);
-        padding: 20px;
+        padding: 30px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
-    }
-
-    .table-container {
-        padding: 20px;
     }
 
     .pagination-container {
@@ -30,19 +26,50 @@
         margin-bottom: 50px;
     }
 
-    .content-container {
-        padding: 30px;
+    .content-container { 
+        background-color: #fff; 
+        padding: 30px; 
+        max-width: 80%; 
+        margin: 20px auto; 
     }
 
-    .form-label {
-        font-size: 0.875rem;
-        font-weight: 500;
+    h2 { 
+        color: #212529; 
+        margin-top: 20px; 
+        font-size: 1.5rem; 
+        font-weight: 500; 
+        text-align: center; 
+    }
+
+    .breadcrumb-item { 
+        font-size: 1rem; 
+    }
+
+    .table th { 
+        background-color: #DEE2E6; 
+        color: #212529; 
+    }
+
+    .table td { 
+        color: #555555; 
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) { 
+        background-color: #F8F9FA; 
+    }
+
+    .pagination .page-item.active .page-link { 
+        background-color: #1E3A7A; 
+        border-color: #1E3A7A; 
+    }
+
+    .btn { 
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; 
     }
 
     .btn-primary {
-        background-color: #4e6b8b;
-        border-color: #4e6b8b;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        background-color: #1E3A7A;
+        border-color: #1E3A7A;
     }
 
     .btn-primary:hover {
@@ -60,17 +87,9 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     }
 
-    .table th {
-        background-color: #DEE2E6;
-        color: #212529;
-    }
-
-    .table td {
-        color: #555555;
-    }
-
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #F8F9FA;
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
     }
 
     .breadcrumb {
@@ -127,7 +146,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                             </div>
                         </div>
                     </form>
@@ -202,3 +221,6 @@
         </div>
     </div>
 </div>
+
+<!-- FontAwesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

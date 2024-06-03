@@ -6,7 +6,6 @@
 
 <style>
     /* Modern Design Styling */
-
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font choice */
         background-color: #f4f4f4; /* Light background */
@@ -46,6 +45,44 @@
     .list-group-item a:hover {
         text-decoration: underline;
     }
+    
+    /* Enhanced Modern Styling */
+    .chat-room-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .chat-room-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #e9ecef; /* Light gray border */
+        transition: background-color 0.3s; /* Smooth hover effect */
+    }
+
+    .chat-room-item:hover {
+        background-color: #f2f2f2; /* Slightly lighter gray on hover */
+    }
+
+    .chat-room-link {
+        color: #1E3A7A;             /* Primary blue for links */
+        text-decoration: none;
+        font-weight: 500;
+        flex-grow: 1;
+    }
+
+    .chat-room-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Icon Styles (adjust as needed for your icons) */
+    .chat-room-icon {
+        margin-right: 10px;
+        font-size: 1.2em;  /* Adjust icon size */
+        color: #5a6268;     /* Slightly darker gray for icons */
+    }
+
+
 </style>
 
 <div class="container-fluid bg-image">
@@ -59,11 +96,12 @@
         <div class="col-lg-10 col-md-9 col-sm-8 col-12">
             <div class="content-container">
                 <h2>@ViewData["Title"]</h2>
-                <ul class="list-group">
+                <ul class="chat-room-list">
                     @foreach (var room in Model)
                     {
-                        <li class="list-group-item">
-                            <a asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
+                        <li class="chat-room-item">
+                            <i class="fas fa-comments chat-room-icon"></i>
+                            <a class="chat-room-link" asp-action="ChatRoom" asp-route-id="@room.Id">@room.Name</a>
                         </li>
                     }
                 </ul>

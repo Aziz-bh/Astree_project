@@ -5,6 +5,16 @@
 }
 
 <style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #fff;
+        color: #333;
+    }
+
+    h1, h2 {
+        font-family: 'Montserrat', sans-serif;
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -13,23 +23,98 @@
         min-height: 100vh; /* Ensures it covers the full height of the viewport */
     }
 
-    .form-container, .table-container, .pagination-container {
+    .content-container {
         background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
+        padding: 30px;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 80%;
     }
 
-    .table-container {
-        padding: 20px;
+    .form-container, .table-container, .pagination-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
 
     .pagination-container {
         padding: 10px;
         margin-bottom: 50px;
     }
+
+    .table th {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #F8F9FA;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        color: #1E3A7A; /* Primary color */
+        font-size: 1.5rem;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #1E3A7A; /* Primary color */
+        border-color: #1E3A7A;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #c90f1e;
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-warning {
+        background-color: #ffc107; /* Warning color */
+        border-color: #ffc107;
+        color: white;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #1E3A7A; /* Primary color */
+        border-color: #1E3A7A;
+    }
 </style>
+
+<script>
+// Add this script in the <script> tag on your page
+document.addEventListener("DOMContentLoaded", function () {
+    const unvalidateButtons = document.querySelectorAll('.btn-warning'); 
+
+    unvalidateButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            
+            if (confirm("Are you sure you want to unvalidate this contract?")) {
+                button.closest('form').submit(); // Submit the form if confirmed
+            }
+        });
+    });
+});
+</script>
 
 <div class="container-fluid bg-image">
     <div class="row">
@@ -73,14 +158,14 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                             </div>
                         </div>
                     </form>
                 </div>
 
                 <div class="table-container">
-                    <table class="table">
+                    <table class="table table-hover table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Make</th>
@@ -102,11 +187,15 @@
                                         <td>@contract.VehicleType</td>
                                         <td>@contract.StartDate.ToString("yyyy-MM-dd")</td>
                                         <td>@contract.EndDate.ToString("yyyy-MM-dd")</td>
-                                        <td>
-                                            <a href="@Url.Action("Update", "AutomobileContract", new { id = contract.Id })" class="btn btn-primary">Edit</a>
+                                        <td class="text-center">
+                                            <a href="@Url.Action("Update", "AutomobileContract", new { id = contract.Id })" class="btn btn-primary">
+                                                <i class="fas fa-pen"></i> Edit
+                                            </a>
                                             <form action="@Url.Action("UnvalidateAutomobileContract", "AutomobileContract", new { id = contract.Id })" method="post" style="display:inline;">
                                                 @Html.AntiForgeryToken()
-                                                <button type="submit" class="btn btn-warning">Unvalidate</button>
+                                                <button type="submit" class="btn btn-warning">
+                                                    <i class="fas fa-ban"></i> Unvalidate
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
@@ -128,6 +217,9 @@
                         @if (ViewBag.PageNumber > 1)
                         {
                             <li class="page-item">
+                                <a class="page-link" asp-action="Validated" asp-route-pageNumber="1" asp-route-pageSize="@ViewBag.PageSize">First</a>
+                            </li>
+                            <li class="page-item">
                                 <a class="page-link" asp-action="Validated" asp-route-pageNumber="@(ViewBag.PageNumber - 1)" asp-route-pageSize="@ViewBag.PageSize">Previous</a>
                             </li>
                         }
@@ -142,6 +234,9 @@
                             <li class="page-item">
                                 <a class="page-link" asp-action="Validated" asp-route-pageNumber="@(ViewBag.PageNumber + 1)" asp-route-pageSize="@ViewBag.PageSize">Next</a>
                             </li>
+                            <li class="page-item">
+                                <a class="page-link" asp-action="Validated" asp-route-pageNumber="@(ViewBag.TotalPages)" asp-route-pageSize="@ViewBag.PageSize">Last</a>
+                            </li>
                         }
                     </ul>
                 </nav>
@@ -149,3 +244,5 @@
         </div>
     </div>
 </div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

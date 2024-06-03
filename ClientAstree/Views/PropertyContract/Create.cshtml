@@ -10,62 +10,90 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
     }
 
     .form-container {
-        background-color: #f8f9fa;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        max-width: 800px;
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 50px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 20px auto;
-    }
-
-    .form-group label {
-        font-weight: 500;
-        margin-bottom: 5px;
-        color: #212529;
-    }
-
-    .form-check-label {
-        display: flex;
-        align-items: center;
-    }
-
-    .form-check-input {
-        margin-right: 10px;
-    }
-
-    .btn-primary {
-        background-color: #4e6b8b;
-        border-color: #4e6b8b;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background-color: #385572;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    }
-
-    .form-control, .form-select, .form-control-file {
-        transition: border-color 0.3s ease;
-    }
-
-    .form-control:focus, .form-select:focus {
-        border-color: #4E6B8B;
-        box-shadow: none;
-    }
-
-    .text-danger {
-        color: #dc3545;
+        max-width: 800px; /* Adjust the max-width as needed */
     }
 
     h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1E3A7A;  /* Deep Blue */
+        font-family: 'Montserrat', sans-serif; /* Update font */
+    }
+
+    .text-danger {
+        color: #F44336;
+    }
+
+    .form-group label {
+        color: #1E3A7A;
         font-family: 'Roboto', sans-serif;
-        font-weight: 500;
-        font-size: 1.5rem;
-        color: #343a40;
+    }
+
+    input[type="text"], 
+    input[type="date"], 
+    input[type="number"], 
+    select {
+        background-color: #fff;
+        border: 1px solid #555;
+        border-radius: 10px; 
+        padding: 10px;
+        width: 100%;
+        font-family: 'Lato', sans-serif;
+    }
+
+    input[type="text"]::placeholder, 
+    input[type="date"]::placeholder, 
+    input[type="number"]::placeholder {
+        color: #999;
+    }
+
+    input[type="text"]:focus, 
+    input[type="date"]:focus, 
+    input[type="number"]:focus, 
+    select:focus {
+        box-shadow: 0 0 5px rgba(25, 58, 122, 0.5); /* Light blue glow on focus */
+        outline: none;
+    }
+
+    .btn-primary {
+        background-color: #D4101F;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        transition: background-color 0.3s ease;
+        font-family: 'Lato', sans-serif;
+    }
+
+    .btn-primary:hover {
+        background-color: #c90f1e;
+    }
+
+    .alert-danger {
+        background-color: #F44336;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+    }
+    
+    .alert-success {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .form-check-input:checked ~ .form-check-label {
+        color: rgb(19, 192, 19);
     }
 </style>
 
@@ -78,114 +106,118 @@
 
         <!-- Main Content Area -->
         <div class="col-lg-10 col-md-9 col-sm-8">
-            <div class="content-container form-container">
-                <h2>@ViewData["Title"]</h2>
+            <div class="content-container">
+                <div class="form-container">
+                    <h2>@ViewData["Title"]</h2>
 
-                @if (!ViewData.ModelState.IsValid)
-                {
-                    <div class="alert alert-danger">
-                        <strong>Error!</strong> Please correct the following errors:
-                        <ul>
-                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                            {
-                                <li>@error.ErrorMessage</li>
-                            }
-                        </ul>
-                    </div>
-                }
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> Please correct the following errors:
+                            <ul>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
 
-                <form asp-action="Create" asp-controller="PropertyContract" method="post" id="propertyForm">
-                    @Html.AntiForgeryToken()
+                    <form asp-action="Create" asp-controller="PropertyContract" method="post" id="propertyForm">
+                        @Html.AntiForgeryToken()
 
-                    <div class="form-group">
-                        <label for="inputState" class="text-black">State</label>
-                        <select id="inputState" class="form-control">
-                            <option value="">Select State...</option>
-                            <option value="Ariana">Ariana</option>
-                            <option value="Beja">Beja</option>
-                            <option value="Ben Arous">Ben Arous</option>
-                            <option value="Bizerte">Bizerte</option>
-                            <option value="Gabes">Gabes</option>
-                            <option value="Gafsa">Gafsa</option>
-                            <option value="Jendouba">Jendouba</option>
-                            <option value="Kairouan">Kairouan</option>
-                            <option value="Kasserine">Kasserine</option>
-                            <option value="Kebili">Kebili</option>
-                            <option value="Kef">Kef</option>
-                            <option value="Mahdia">Mahdia</option>
-                            <option value="Manouba">Manouba</option>
-                            <option value="Medenine">Medenine</option>
-                            <option value="Monastir">Monastir</option>
-                            <option value="Nabeul">Nabeul</option>
-                            <option value="Sfax">Sfax</option>
-                            <option value="Sidi Bouzid">Sidi Bouzid</option>
-                            <option value="Siliana">Siliana</option>
-                            <option value="Sousse">Sousse</option>
-                            <option value="Tataouine">Tataouine</option>
-                            <option value="Tozeur">Tozeur</option>
-                            <option value="Tunis">Tunis (Capital)</option>
-                            <option value="Zaghouan">Zaghouan</option>
-                        </select>
-                        <span asp-validation-for="Location" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label for="inputState" class="text-black">State</label>
+                            <select id="inputState" class="form-control">
+                                <option value="">Select State...</option>
+                                <option value="Ariana">Ariana</option>
+                                <option value="Beja">Beja</option>
+                                <option value="Ben Arous">Ben Arous</option>
+                                <option value="Bizerte">Bizerte</option>
+                                <option value="Gabes">Gabes</option>
+                                <option value="Gafsa">Gafsa</option>
+                                <option value="Jendouba">Jendouba</option>
+                                <option value="Kairouan">Kairouan</option>
+                                <option value="Kasserine">Kasserine</option>
+                                <option value="Kebili">Kebili</option>
+                                <option value="Kef">Kef</option>
+                                <option value="Mahdia">Mahdia</option>
+                                <option value="Manouba">Manouba</option>
+                                <option value="Medenine">Medenine</option>
+                                <option value="Monastir">Monastir</option>
+                                <option value="Nabeul">Nabeul</option>
+                                <option value="Sfax">Sfax</option>
+                                <option value="Sidi Bouzid">Sidi Bouzid</option>
+                                <option value="Siliana">Siliana</option>
+                                <option value="Sousse">Sousse</option>
+                                <option value="Tataouine">Tataouine</option>
+                                <option value="Tozeur">Tozeur</option>
+                                <option value="Tunis">Tunis (Capital)</option>
+                                <option value="Zaghouan">Zaghouan</option>
+                            </select>
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="inputAddress" class="text-black">Address</label>
-                        <input type="text" class="form-control" id="inputAddress">
-                        <span asp-validation-for="Location" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label for="inputAddress" class="text-black">Address</label>
+                            <input type="text" class="form-control" id="inputAddress">
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <input type="hidden" asp-for="Location" id="Location">
-                    </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="Location" id="Location">
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="PropertyValue">Property Value ($)</label>
-                        <input asp-for="PropertyValue" type="number" class="form-control" />
-                        <span asp-validation-for="PropertyValue" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="PropertyValue">Property Value ($)</label>
+                            <input asp-for="PropertyValue" type="number" class="form-control" />
+                            <span asp-validation-for="PropertyValue" class="text-danger"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="Type">Property Type</label>
-                        <select asp-for="Type" class="form-control">
-                            <option value="">Select a type</option>
-                            <option value="House">House</option>
-                            <option value="Apartment">Apartment</option>
-                            <option value="Commercial">Commercial</option>
-                        </select>
-                        <span asp-validation-for="Type" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="Type">Property Type</label>
+                            <select asp-for="Type" class="form-control">
+                                <option value="">Select a type</option>
+                                <option value="House">House</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Commercial">Commercial</option>
+                            </select>
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="YearOfConstruction">Year of Construction</label>
-                        <input asp-for="YearOfConstruction" type="date" class="form-control" />
-                        <span asp-validation-for="YearOfConstruction" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="YearOfConstruction">Year of Construction</label>
+                            <input asp-for="YearOfConstruction" type="date" class="form-control" />
+                            <span asp-validation-for="YearOfConstruction" class="text-danger"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="StartDate">Start Date</label>
-                        <input asp-for="StartDate" type="date" class="form-control" />
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="StartDate">Start Date</label>
+                            <input asp-for="StartDate" type="date" class="form-control" />
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="EndDate">End Date</label>
-                        <input asp-for="EndDate" type="date" class="form-control" />
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="EndDate">End Date</label>
+                            <input asp-for="EndDate" type="date" class="form-control" />
+                        </div>
 
-                    <div class="form-group">
-                        <label asp-for="Coverage">Coverage</label>
-                        <select asp-for="Coverage" class="form-control">
-                            <option value="">Select Coverage</option>
-                            @foreach (var coverage in Enum.GetValues(typeof(ClientAstree.Services.Base.Coverage)))
-                            {
-                                <option value="@coverage" selected="@(Model.Coverage == coverage ? "selected" : null)">@coverage</option>
-                            }
-                        </select>
-                        <span asp-validation-for="Coverage" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="Coverage">Coverage</label>
+                            <select asp-for="Coverage" class="form-control">
+                                <option value="">Select Coverage</option>
+                                @foreach (var coverage in Enum.GetValues(typeof(ClientAstree.Services.Base.Coverage)))
+                                {
+                                    <option value="@coverage" selected="@(Model.Coverage == coverage ? "selected" : null)">@coverage</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Coverage" class="text-danger"></span>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </form>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
