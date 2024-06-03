@@ -1,21 +1,101 @@
 @model ClientAstree.Services.Base.ComplaintDto
 
 <h2>Edit Complaint</h2>
-<form asp-action="Edit" asp-controller="Complaints" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Id" />
-    <div class="form-group">
-        <label asp-for="Description">Description</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ComplaintsSubject">Subject</label>
-        <input asp-for="ComplaintsSubject" class="form-control" />
-        <span asp-validation-for="ComplaintsSubject" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Attachment">New Attachment</label>
-        <input asp-for="Attachment" type="file" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Update</button>
-</form>
+
+<div class="form-container p-3">
+    <form asp-action="Edit" asp-controller="Complaints" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="ComplaintsSubject" class="control-label"></label>
+            <input asp-for="ComplaintsSubject" class="form-control" />
+            <span asp-validation-for="ComplaintsSubject" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Attachment" class="control-label"></label>
+            <div class="custom-file">
+                <input asp-for="Attachment" type="file" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Choose file</label>
+            </div>
+            <span asp-validation-for="Attachment" class="text-danger"></span>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary mt-3">Update</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Form Container */
+    .form-container {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softer box shadow */
+        padding: 30px;
+    }
+
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 20px; 
+    }
+
+    label {
+        font-weight: 500;
+        font-size: 1rem; /* Labels: 16px */
+        margin-bottom: 5px;  
+        color: #212529; /* Labels: Darker Gray */
+    }
+
+    .form-control {
+        font-size: 1rem; /* Inputs/Textarea: 16px */
+        color: #343a40; /* Text: Dark Gray */
+    }
+
+    .text-danger {
+        color: #dc3545; /* Red for validation errors */
+    }
+
+    .custom-file-label {
+        color: #343a40; /* Text: Dark Gray */
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background-color: #4e6b8b; /* Use lighter shade of blue */
+        border-color: #4e6b8b;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #385572;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-success {
+        background-color: #28a745; /* Green for success */
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Red for danger */
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+</style>

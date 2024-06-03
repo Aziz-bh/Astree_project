@@ -8,9 +8,9 @@
         switch (status.ToLower())
         {
             case "approved":
-                return "text-success"; // dark green
+                return "text-success"; // green
             case "waiting":
-                return "text-primary"; // primary color
+                return "text-info"; // blue
             case "rejected":
                 return "text-danger"; // red
             default:
@@ -26,6 +26,18 @@
 }
 
 <style>
+    /* General styling */
+    body {
+        font-family: 'Roboto', sans-serif;
+        color: #343a40;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #212529;
+        margin-top: 20px;
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -35,7 +47,7 @@
     }
 
     .form-container, .complaint-card, .pagination-container {
-        background-color: rgba(255, 255, 255, 1); /* White with 80% opacity */
+        background-color: #f8f9fa;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -56,6 +68,14 @@
         color: #555;
     }
 
+    .form-group label {
+        cursor: pointer;
+    }
+
+    .btn {
+        margin-left: 5px;
+    }
+
     /* Modal styling */
     .modal {
         display: none;
@@ -68,6 +88,7 @@
         height: 100%;
         overflow: auto;
         background-color: rgba(0,0,0,0.9);
+        transition: opacity 0.5s ease;
     }
 
     .modal-content {
@@ -75,6 +96,8 @@
         display: block;
         width: 80%;
         max-width: 700px;
+        transform: translate(-50%, -50%);
+        text-align: center;
     }
 
     .close {
@@ -94,7 +117,18 @@
         cursor: pointer;
     }
 
+    /* Specific card styling */
+    .card-title {
+        font-size: 1.125rem;
+    }
 
+    .card-description {
+        font-size: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+    }
 </style>
 
 <div class="container-fluid bg-image">
@@ -162,7 +196,9 @@
                                     }
                                 </div>
                                 <div class="card-body">
-                                    <h6 class="category @GetStatusClass(item.ComplaintState)">@item.ComplaintState</h6>
+                                    <h6 class="category @GetStatusClass(item.ComplaintState)">
+                                        <i class="fas fa-circle"></i> @item.ComplaintState
+                                    </h6>
                                     <h5 class="card-title">
                                         <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })">@item.ComplaintsSubject</a>
                                     </h5>
@@ -174,11 +210,15 @@
                                             <span>@item.UserName (@item.UserEmail)</span>
                                         </div>
                                         <div class="stats">
-                                            <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })" class="btn btn-primary btn-sm">Edit</a>
+                                            <a href="@Url.Action("EditComplaint", "Complaints", new { id = item.Id })" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-pencil-alt"></i> Edit
+                                            </a>
                                             <form asp-action="Delete" asp-controller="Complaints" method="post" onsubmit="return confirm('Are you sure you want to delete this complaint?');" style="display:inline;">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                </button>
                                             </form>
                                         </div>
                                     </div>

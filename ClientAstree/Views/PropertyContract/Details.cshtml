@@ -82,51 +82,57 @@
 
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container">
-                <h2>@ViewData["Title"]</h2>
+                <h2 class="mb-3">@ViewData["Title"]</h2>
+
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Property Contract Details</h5>
-                        <p class="card-text">
-                            <strong>Location:</strong> @Model.Location <br />
-                            <strong>Property Value:</strong> @Model.PropertyValue <br />
-                            <strong>Type:</strong> @Model.Type <br />
-                            <strong>Year of Construction:</strong> @Model.YearOfConstruction.ToString("dd-MM-yyyy") <br />
-                            <strong>Start Date:</strong> @Model.StartDate.ToString("dd-MM-yyyy") <br />
-                            <strong>End Date:</strong> @Model.EndDate.ToString("dd-MM-yyyy") <br />
-                            <strong>Coverage:</strong> @Model.Coverage <br />
-                            <strong>Quota:</strong> @Model.Quota
-                        </p>
-                        <hr />
 
-                        @foreach (var claim in User.Claims)
-                        {
-                            @if(claim.Type == "role")
-                            {
-                                @if(claim.Value == "Admin")
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="card-text">
+                                    <i class="fas fa-map-marker-alt"></i><strong> Location:</strong> @Model.Location<br />
+                                    <i class="fas fa-money-bill-wave"></i><strong> Property Value:</strong> @Model.PropertyValue<br />
+                                    <i class="fas fa-home"></i><strong> Type:</strong> @Model.Type<br />
+                                    <i class="fas fa-calendar"></i><strong> Year of Construction:</strong> @Model.YearOfConstruction.ToString("dd-MM-yyyy")<br />
+                                    <i class="fas fa-calendar-check"></i><strong> Start Date:</strong> @Model.StartDate.ToString("dd-MM-yyyy")<br />
+                                    <i class="fas fa-calendar-times"></i><strong> End Date:</strong> @Model.EndDate.ToString("dd-MM-yyyy")<br />
+                                    <i class="fas fa-shield-alt"></i><strong> Coverage:</strong> @Model.Coverage<br />
+                                    <i class="fas fa-coins"></i><strong> Quota:</strong> @Model.Quota
+                                </p>
+                            </div>
+                            <div class="col-md-6 text-center d-flex flex-column justify-content-center">
+                                @foreach (var claim in User.Claims)
                                 {
-                                    if ((bool)ViewBag.Validated)
+                                    if (claim.Type == "role")
                                     {
-                                        <form action="@Url.Action("UnvalidatePropertyContract", "PropertyContract", new { id = Model.Id })" method="post" style="display:inline;">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn btn-warning">Invalidate Contract</button>
-                                        </form>
-                                    }
-                                    else
-                                    {
-                                        <form action="@Url.Action("ValidatePropertyContract", "PropertyContract", new { id = Model.Id })" method="post" style="display:inline;">
-                                            @Html.AntiForgeryToken()
-                                            <button type="submit" class="btn btn-success">Validate Contract</button>
-                                        </form>
+                                        if (claim.Value == "Admin")
+                                        {
+                                            if ((bool)ViewBag.Validated)
+                                            {
+                                                <form action="@Url.Action("UnvalidatePropertyContract", "PropertyContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-warning">Invalidate Contract</button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form action="@Url.Action("ValidatePropertyContract", "PropertyContract", new { id = Model.Id })" method="post" style="display:inline;">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="submit" class="btn btn-success">Validate Contract</button>
+                                                </form>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#signContractModal">
+                                                <i class="fas fa-clipboard-check"></i> Sign Contract
+                                            </button>
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signContractModal">
-                                        <i class="fas fa-clipboard-check"></i> Sign Contract
-                                    </button>
-                                }
-                            }
-                        }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

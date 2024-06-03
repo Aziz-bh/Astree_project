@@ -10,7 +10,7 @@
             case "approved":
                 return "text-success"; // dark green
             case "waiting":
-                return "text-primary"; // primary color
+                return "text-info"; // info color
             case "rejected":
                 return "text-danger"; // red
             default:
@@ -26,6 +26,45 @@
 }
 
 <style>
+    /* Colors */
+    .content-container { 
+        background-color: #fff; 
+        padding: 30px; 
+        max-width: 80%; 
+        margin: 20px auto; 
+    }
+    h2 { 
+        color: #212529; 
+        margin-top: 20px; 
+        font-size: 1.5rem; 
+        font-weight: 500; 
+        text-align: center;
+    }
+    .breadcrumb-item { 
+        font-size: 1rem; 
+    }
+    .form-label { 
+        font-size: 0.875rem; 
+    }
+    .btn { 
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+    }
+    .btn:hover { 
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15); 
+    }
+    .table-hover tbody tr:hover { 
+        background-color: #f5f5f5; 
+    }
+    .pagination .page-item.active .page-link { 
+        background-color: #4E6B8B; 
+        border-color: #4E6B8B; 
+    }
+    .pagination-container { 
+        padding: 10px; 
+        margin-bottom: 50px; 
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -35,7 +74,7 @@
     }
 
     .form-container, .complaint-card, .pagination-container {
-        background-color: rgba(255, 255, 255, 1); /* White with 80% opacity */
+        background-color: rgba(255, 255, 255, 1); /* White with full opacity */
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -44,11 +83,8 @@
 
     .complaint-card {
         padding: 20px;
-    }
-
-    .pagination-container {
-        padding: 10px;
-        margin-bottom: 50px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .file-placeholder {
@@ -67,7 +103,8 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0,0,0,0.9);
+        background-color: rgba(0,0,0,0.8);
+        transition: opacity 0.5s ease;
     }
 
     .modal-content {
@@ -75,6 +112,7 @@
         display: block;
         width: 80%;
         max-width: 700px;
+        text-align: center; /* Center image in modal */
     }
 
     .close {
@@ -94,7 +132,10 @@
         cursor: pointer;
     }
 
-
+    /* Button colors with transparency */
+    .btn-success { background-color: rgba(40, 167, 69, 0.8); }
+    .btn-info { background-color: rgba(23, 162, 184, 0.8); }
+    .btn-danger { background-color: rgba(220, 53, 69, 0.8); }
 </style>
 
 <div class="container-fluid bg-image">

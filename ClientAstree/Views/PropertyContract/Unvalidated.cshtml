@@ -10,11 +10,11 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+        min-height: 100vh;
     }
 
     .form-container, .table-container, .pagination-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -28,6 +28,60 @@
     .pagination-container {
         padding: 10px;
         margin-bottom: 50px;
+    }
+
+    .content-container {
+        padding: 30px;
+    }
+
+    .form-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .btn-primary {
+        background-color: #4e6b8b;
+        border-color: #4e6b8b;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .table th {
+        background-color: #DEE2E6;
+        color: #212529;
+    }
+
+    .table td {
+        color: #555555;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #F8F9FA;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+    }
+
+    h2 {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: #333333;
     }
 </style>
 
@@ -80,7 +134,7 @@
                 </div>
 
                 <div class="table-container">
-                    <table class="table">
+                    <table class="table table-hover table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Location</th>
@@ -102,10 +156,10 @@
                                         <td>@contract.PropertyValue</td>
                                         <td>@contract.StartDate.ToString("yyyy-MM-dd")</td>
                                         <td>@contract.EndDate.ToString("yyyy-MM-dd")</td>
-                                        <td>
+                                        <td class="text-center">
                                             <form action="@Url.Action("ValidatePropertyContract", "PropertyContract", new { id = contract.Id })" method="post" style="display:inline;">
                                                 @Html.AntiForgeryToken()
-                                                <button type="submit" class="btn btn-success">Validate</button>
+                                                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Validate</button>
                                             </form>
                                         </td>
                                     </tr>

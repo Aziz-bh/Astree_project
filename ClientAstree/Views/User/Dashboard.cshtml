@@ -5,6 +5,12 @@
 }
 
 <style>
+    body {
+        font-family: 'Open Sans', sans-serif; /* Base font */
+        background-color: #F2F2F2;
+        color: #333333;
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
@@ -25,16 +31,24 @@
         margin-bottom: 20px;
         background-color: #1E3A7A; /* Set the background color of the card */
         color: white; /* Set the text color to white */
+        border: none; /* Remove default border */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+    }
+
+    .card:hover {
+        transform: translateY(-5px); /* Lift up slightly on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* More prominent shadow */
     }
 
     .card-title {
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: white; /* Ensure the card title text is white */
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.5rem; /* Larger title */
+        color: #FFD700; /* Gold color for highlights */
     }
 
     .card-text {
-        font-size: 1rem;
+        font-size: 1rem; 
         color: white; /* Ensure the card text is white */
     }
 
@@ -52,7 +66,7 @@
     }
 
     .btn-primary {
-        background-color: white; 
+        background-color: #FFD700; /* Gold for highlights */
         color: #1E3A7A; /* Set the button text color to match the card background */
         border: none; /* Remove the button border */
     }

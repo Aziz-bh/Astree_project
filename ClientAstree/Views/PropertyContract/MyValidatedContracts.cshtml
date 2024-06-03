@@ -10,24 +10,60 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+        min-height: 100vh;
+    }
+
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 90%;
     }
 
     .form-container, .table-container, .pagination-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
     }
 
-    .table-container {
-        padding: 20px;
-    }
-
     .pagination-container {
         padding: 10px;
         margin-bottom: 50px;
+    }
+
+    .table th {
+        background-color: #DEE2E6;
+        color: #212529;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #F8F9FA;
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: ">";
+        color: #007BFF;
+    }
+
+    h2 {
+        color: #212529;
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     }
 </style>
 
@@ -80,7 +116,7 @@
                 </div>
 
                 <div class="table-container">
-                    <table class="table">
+                    <table class="table table-hover table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Location</th>
@@ -141,3 +177,7 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

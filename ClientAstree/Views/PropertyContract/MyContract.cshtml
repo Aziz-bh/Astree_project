@@ -1,55 +1,123 @@
 @model IEnumerable<ClientAstree.Models.PropertyVM>
 
 @{
-    ViewData["Title"] = "My Property Contracts";
+    ViewData["Title"] = "Property Contracts";
 }
 
 <style>
+    /* Colors */
+    :root {
+        --primary-color: #1E3A7A;
+        --secondary-color: #1E3A7A;
+        --background-color: #FFFFFF;
+        --text-color: #000000;
+        --text-muted-color: #555555;
+    }
+
+
+
+    body {
+        font-family: 'Lato', sans-serif;
+        color: var(--text-color);
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+        min-height: 100vh;
     }
 
     .content-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
-        border-radius: 8px;
+        background-color: var(--background-color);
+        padding: 50px;
+        border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 20px auto;
+        max-width: 90%;
+    }
+
+    .form-container {
+        background-color: #F2F2F2;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        color: var(--primary-color);
+    }
+
+    .btn-primary {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #c90f1e;
     }
 
     .card {
+        border: 1px solid lightgray;
+        border-radius: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-bottom: 20px;
-        width: 25rem; /* Increase the width of the card */
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .card-title {
         font-size: 1.25rem;
         font-weight: bold;
+        color: var(--text-color);
     }
 
     .card-text {
         font-size: 1rem;
+        color: var(--text-muted-color);
     }
 
     .card-img-top {
         width: 100px;
         height: auto;
         display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 10px;
+        margin: 10px auto;
+        border-radius: 15px 15px 0 0;
     }
 
     .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         text-align: center;
     }
 
     .breadcrumb {
         background-color: transparent;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .card-divider {
+        border-top: 1px solid lightgray;
+        margin: 10px 0;
     }
 </style>
 
@@ -67,7 +135,7 @@
                     <nav aria-label="breadcrumb" role="navigation">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">User</li>
-                            <li class="breadcrumb-item active" aria-current="page">My Property Contracts</li>
+                            <li class="breadcrumb-item active" aria-current="page">Property Contracts</li>
                         </ol>
                     </nav>
                 </div>
@@ -96,7 +164,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                             </div>
                         </div>
                     </form>
@@ -106,22 +174,26 @@
                     @foreach (var contract in Model)
                     {
                         <div class="col-md-4">
-                            <div class="card">
-                                <img class="card-img-top" src="@(contract.Type == "Commercial" ? "/img/contract/property/house.png" : "/img/contract/property/house.png")" alt="Property Image">
+                            <div class="card h-100">
+                                <img class="card-img-top img-fluid" src="@(contract.Type == "Commercial" ? "/img/contract/property/house.png" : "/img/contract/property/house.png")" alt="Property Image">
+                                <div class="card-divider"></div>
                                 <div class="card-body">
                                     <h4 class="card-title">@contract.Location</h4>
-                                    <p class="card-text">
-                                        Type: @contract.Type <br>
-                                        Start Date: @contract.StartDate.ToString("yyyy-MM-dd") <br>
-                                        End Date: @contract.EndDate.ToString("yyyy-MM-dd") <br>
-                                        Value: $@contract.PropertyValue <br>
-                                        Year of Construction: @contract.YearOfConstruction.ToString("yyyy") <br>
-                                        Coverages: @foreach (var coverage in contract.CoveragesList)
-                                        {
-                                            <span class="badge badge-success">@coverage</span>
-                                        }
-                                    </p>
-                                    <a href="@Url.Action("Details", "PropertyContract", new { id = contract.Id })" class="btn btn-primary">View Details</a>
+                                    <hr class="my-3">
+                                    <div class="card-text mb-auto">
+                                        <p><i class="fas fa-home"></i> Type: @contract.Type</p>
+                                        <p><i class="fas fa-calendar-alt"></i> Start Date: @contract.StartDate.ToString("yyyy-MM-dd")</p>
+                                        <p><i class="fas fa-calendar-alt"></i> End Date: @contract.EndDate.ToString("yyyy-MM-dd")</p>
+                                        <p><i class="fas fa-money-bill-wave"></i> Property Value: $@contract.PropertyValue</p>
+                                        <p><i class="fas fa-calendar-check"></i> Year Built: @contract.YearOfConstruction.ToString("yyyy")</p>
+                                        <p><i class="fas fa-shield-alt"></i> Coverages: 
+                                            @foreach (var coverage in contract.CoveragesList)
+                                            {
+                                                <span class="badge badge-secondary">@coverage</span>
+                                            }
+                                        </p>
+                                    </div>
+                                    <a href="@Url.Action("Details", "PropertyContract", new { id = contract.Id })" class="btn btn-primary mt-3"><i class="fas fa-eye"></i> View Contract</a>
                                 </div>
                             </div>
                         </div>
@@ -155,3 +227,7 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

@@ -13,6 +13,15 @@
         min-height: 100vh; /* Ensures it covers the full height of the viewport */
     }
 
+    .content-container {
+        background-color: #fff; /* White background for content containers */
+        padding: 30px; /* Increased padding for spacious feel */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 80%; /* Limit the width of the main content container */
+        margin: 20px auto; /* Center the content container */
+    }
+
     .form-container, .table-container, .pagination-container {
         background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
         padding: 20px;
@@ -21,14 +30,53 @@
         margin-bottom: 20px;
     }
 
-    .table-container {
-        padding: 20px;
+    h2 {
+        color: #212529; /* Darker gray for headings */
+        font-size: 1.5rem; /* Heading size */
+        font-weight: 500; /* Font weight for headings */
+        margin-top: 20px;
+        text-align: center; /* Center-align the heading */
+    }
+
+    .breadcrumb-item {
+        font-size: 1rem; /* Font size for breadcrumb items */
+    }
+
+    .table, .table th, .table td {
+        font-size: 1rem; /* Font size for table headers and data */
+    }
+
+    .table th {
+        background-color: #f8f9fa; /* Light gray for table headers */
+        color: #212529; /* Darker gray for table headers text */
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5; /* Hover effect for table rows */
+    }
+
+    .btn {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for buttons */
+    }
+
+    .btn:hover { 
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Hover effect for buttons */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #4E6B8B; /* Primary color for active pagination */
+        border-color: #4E6B8B;
     }
 
     .pagination-container {
         padding: 10px;
- margin-bottom: 50px;
-     }
+        margin-bottom: 50px;
+    }
+
+    .form-label {
+        font-size: 0.875rem; /* Font size for form labels */
+    }
 </style>
 
 <div class="container-fluid bg-image">
@@ -73,14 +121,16 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
 
                 <div class="table-container">
-                    <table class="table">
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>Location</th>
@@ -101,11 +151,15 @@
                                     <td>@item.StartDate.ToString("yyyy-MM-dd")</td>
                                     <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
                                     <td>
-                                        <a href="@Url.Action("Update", "PropertyContract", new { id = item.Id })" class="btn btn-primary">Edit</a> |
+                                        <a href="@Url.Action("Update", "PropertyContract", new { id = item.Id })" class="btn btn-primary">
+                                            <i class="fas fa-pencil-alt"></i> Edit
+                                        </a> |
                                         <form asp-action="Delete" asp-controller="PropertyContract" method="post" onsubmit="return confirm('Are you sure you want to delete this property?');" style="display:inline;">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
-                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -141,3 +195,5 @@
         </div>
     </div>
 </div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

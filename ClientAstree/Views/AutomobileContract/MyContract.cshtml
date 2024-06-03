@@ -5,51 +5,118 @@
 }
 
 <style>
+    /* Colors */
+    :root {
+        --primary-color: #1E3A7A;
+        --secondary-color: #1E3A7A;
+        --background-color: #FFFFFF;
+        --text-color: #000000;
+        --text-muted-color: #555555;
+    }
+
+    /* Fonts */
+
+    body {
+        font-family: 'Lato', sans-serif;
+        color: var(--text-color);
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
     .bg-image {
         background-image: url('/img/fam1.png');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+        min-height: 100vh;
     }
 
     .content-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
-        border-radius: 8px;
+        background-color: var(--background-color);
+        padding: 50px;
+        border-radius: 15px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 20px auto;
+        max-width: 90%;
+    }
+
+    .form-container {
+        background-color: #F2F2F2;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        color: var(--primary-color);
+    }
+
+    .btn-primary {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #c90f1e;
     }
 
     .card {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        transition: all 0.3s ease;
         margin-bottom: 20px;
-        width: 25rem; /* Increase the width of the card */
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .card-title {
         font-size: 1.25rem;
         font-weight: bold;
+        color: var(--text-color);
     }
 
     .card-text {
         font-size: 1rem;
+        color: var(--text-muted-color);
     }
 
     .card-img-top {
         width: 100px;
         height: auto;
         display: block;
-        margin-left: auto;
-        margin-right: auto;
-        padding-top: 10px;
+        margin: 10px auto;
+        border-radius: 10px 10px 0 0;
     }
 
     .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         text-align: center;
     }
 
     .breadcrumb {
         background-color: transparent;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .card-divider {
+        border-top: 1px solid lightgray;
+        margin: 10px 0;
     }
 </style>
 
@@ -96,7 +163,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
                             </div>
                         </div>
                     </form>
@@ -108,23 +175,25 @@
                         <div class="col-md-4">
                             <div class="card">
                                 <img class="card-img-top" src="@(contract.VehicleType == "Business" ? "/img/contract/auto/businessCar.png" : "/img/contract/auto/personalCar.png")" alt="Vehicle Image">
+                                <div class="card-divider"></div>
                                 <div class="card-body">
                                     <h4 class="card-title">@contract.VehicleMake @contract.Model</h4>
                                     <p class="card-text">
-                                        Type: @contract.VehicleType <br>
-                                        Start Date: @contract.StartDate.ToString("yyyy-MM-dd") <br>
-                                        End Date: @contract.EndDate.ToString("yyyy-MM-dd") <br>
-                                        Quota: @contract.Quota <br>
-                                        Engine Power: @contract.EnginePower HP <br>
-                                        Seats: @contract.SeatsNumber <br>
-                                        Value: $@contract.VehicleValue <br>
-                                        True Value: $@contract.TrueVehicleValue <br>
-                                        Guarantees: @foreach (var guarantee in contract.GuaranteesList)
+                                        <i class="fas fa-car"></i> Type: @contract.VehicleType <br>
+                                        <i class="fas fa-calendar-alt"></i> Start Date: @contract.StartDate.ToString("yyyy-MM-dd") <br>
+                                        <i class="fas fa-calendar-alt"></i> End Date: @contract.EndDate.ToString("yyyy-MM-dd") <br>
+                                        <i class="fas fa-tachometer-alt"></i> Quota: @contract.Quota <br>
+                                        <i class="fas fa-horse"></i> Engine Power: @contract.EnginePower HP <br>
+                                        <i class="fas fa-chair"></i> Seats: @contract.SeatsNumber <br>
+                                        <i class="fas fa-dollar-sign"></i> Value: $@contract.VehicleValue <br>
+                                        <i class="fas fa-dollar-sign"></i> True Value: $@contract.TrueVehicleValue <br>
+                                        <i class="fas fa-shield-alt"></i> Guarantees: 
+                                        @foreach (var guarantee in contract.GuaranteesList)
                                         {
                                             <span class="badge badge-success">@guarantee</span>
                                         }
                                     </p>
-                                    <a href="@Url.Action("ContractDetails", "AutomobileContract", new { id = contract.Id })" class="btn btn-primary">View Details</a>
+                                    <a href="@Url.Action("ContractDetails", "AutomobileContract", new { id = contract.Id })" class="btn btn-primary"><i class="fas fa-eye"></i> View Contract</a>
                                 </div>
                             </div>
                         </div>
@@ -157,6 +226,8 @@
             </div>
         </div>
     </div>
-
-    
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

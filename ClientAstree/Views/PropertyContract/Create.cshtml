@@ -10,19 +10,22 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+        min-height: 100vh;
     }
 
     .form-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
+        background-color: #f8f9fa;
+        padding: 25px;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 20px auto;
     }
 
     .form-group label {
-        font-weight: bold;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #212529;
     }
 
     .form-check-label {
@@ -32,6 +35,37 @@
 
     .form-check-input {
         margin-right: 10px;
+    }
+
+    .btn-primary {
+        background-color: #4e6b8b;
+        border-color: #4e6b8b;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #385572;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-control, .form-select, .form-control-file {
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #4E6B8B;
+        box-shadow: none;
+    }
+
+    .text-danger {
+        color: #dc3545;
+    }
+
+    h2 {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: #343a40;
     }
 </style>
 
@@ -158,10 +192,12 @@
 </div>
 
 <script>
-    document.getElementById("propertyForm").addEventListener("submit", function(event) {
+    document.getElementById("inputState").addEventListener("change", updateLocation);
+    document.getElementById("inputAddress").addEventListener("input", updateLocation);
+
+    function updateLocation() {
         var state = document.getElementById("inputState").value;
         var address = document.getElementById("inputAddress").value;
-        var location = state + ", " + address;
-        document.getElementById("Location").value = location;
-    });
+        document.getElementById("Location").value = state + ", " + address;
+    }
 </script>

@@ -14,17 +14,66 @@
     }
 
     .form-container {
-        background-color: rgba(255, 255, 255, 1); /* White with 80% opacity */
-        padding: 20px;
+        background-color: #f8f9fa; /* Light gray for the form */
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 30px;
         margin: 20px auto;
-        max-width: 800px; /* Adjust the max-width as needed */
+        max-width: 800px;
     }
 
     h2 {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        font-size: 1.5rem; /* 24px */
         text-align: center;
         margin-bottom: 20px;
+    }
+
+    label {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        font-size: 1rem; /* 16px */
+        margin-bottom: 5px;
+        color: #212529; /* Darker Gray */
+    }
+
+    .form-control, .form-control-file {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-size: 1rem; /* 16px */
+        transition: border-color 0.3s ease; /* Smooth border transition */
+    }
+
+    .form-control:focus, .form-control-file:focus {
+        border-color: #4E6B8B; /* Highlight on focus */
+        box-shadow: none;     /* Remove default focus shadow */
+    }
+
+    .form-floating > .form-control:focus ~ label, /* Floating labels */
+    .form-floating > .form-control:not(:placeholder-shown) ~ label,
+    .form-floating > .form-select ~ label {
+      opacity: .65;
+      transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+    }
+
+    .btn-primary {
+        background-color: #4e6b8b;
+        border-color: #4e6b8b;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #385572;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-danger {
+        color: #dc3545; /* Bootstrap red */
     }
 </style>
 
@@ -42,21 +91,22 @@
                     <form asp-action="Submit" asp-controller="Complaints" method="post" enctype="multipart/form-data">
                         @Html.AntiForgeryToken()
 
-                        <div class="form-group">
-                            <label asp-for="Description">Description</label>
-                            <textarea asp-for="Description" class="form-control"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
+                        <div class="form-floating mb-3">
+                            <input asp-for="ComplaintsSubject" class="form-control" id="floatingSubject" placeholder="Subject">
                             <label asp-for="ComplaintsSubject">Subject</label>
-                            <input asp-for="ComplaintsSubject" class="form-control" />
                             <span asp-validation-for="ComplaintsSubject" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="Description" class="form-control" id="floatingDescription" placeholder="Description" rows="5"></textarea>
+                            <label asp-for="Description">Description</label>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="mb-3">
                             <label asp-for="Attachment">Attachment</label>
                             <input asp-for="Attachment" type="file" class="form-control" />
+                            <span asp-validation-for="Attachment" class="text-danger"></span>
                         </div>
 
                         <div class="text-center">
