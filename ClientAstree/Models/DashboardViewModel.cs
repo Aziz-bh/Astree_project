@@ -6,5 +6,6 @@ namespace ClientAstree.Models
         public int PropertyContractsCount { get; set; }
         public int UsersCount { get; set; }
         public int ComplaintsCount { get; set; }
+        public string Sessions { get; set; }
     }
 }

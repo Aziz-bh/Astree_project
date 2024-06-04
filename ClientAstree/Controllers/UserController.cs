@@ -14,14 +14,16 @@ namespace ClientAstree.Controllers
             private readonly IAutomobileService _automobileService;
             private readonly IPropertyService _propertyService;
              private readonly IComplaintService _complaintService;
+             private readonly AnalyticsService _analyticsService;
 
-        public UserController(IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService ,IComplaintService complaintService)
+        public UserController(AnalyticsService analyticsService,IUserService leaveTypeService,IAuthenticationService authService,IAutomobileService automobileService,IPropertyService propertyService ,IComplaintService complaintService)
         {
             this._userService = leaveTypeService;
             this._authService = authService;
             this._automobileService=automobileService;
             this._propertyService=propertyService;
             this._complaintService = complaintService;
+            this._analyticsService = analyticsService;
         }
 
         // GET: /User
@@ -218,23 +220,19 @@ Console.WriteLine("try");
             var users = await _userService.GetUsersAsync();
             var complaints = await _complaintService.GetAllComplaintsAsync();
 
+            var report = await _analyticsService.GetReport();
+            var sessions = report?.Rows?.FirstOrDefault()?.MetricValues?.FirstOrDefault()?.Value;
+
             var model = new DashboardViewModel
             {
                 AutomobileContractsCount = automobileContracts?.Count() ?? 0,
                 PropertyContractsCount = propertyContracts?.Count() ?? 0,
                 UsersCount = users?.Count() ?? 0,
-                ComplaintsCount = complaints?.Count() ?? 0
+                ComplaintsCount = complaints?.Count() ?? 0,
+                Sessions = sessions
             };
 
             return View(model);
-        }
-
-                [HttpGet]
-        public IActionResult UserContract()
-        {
-
-            // Prepare any necessary data for the view, if needed
-            return View();
         }
 
 
