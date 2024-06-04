@@ -221,7 +221,50 @@ Console.WriteLine("try");
             var complaints = await _complaintService.GetAllComplaintsAsync();
 
             var report = await _analyticsService.GetReport();
-            var sessions = report?.Rows?.FirstOrDefault()?.MetricValues?.FirstOrDefault()?.Value;
+
+            var sessions = new List<string>();
+            var totalUsers = new List<string>();
+            var screenPageViews = new List<string>();
+            var bounceRates = new List<string>();
+            var engagementRates = new List<string>();
+            var eventCounts = new List<string>();
+            var conversions = new List<string>();
+            var dates = new List<string>();
+            var countries = new List<string>();
+            var regions = new List<string>();
+            var sessionSources = new List<string>();
+            var sessionDefaultChannelGroupings = new List<string>();
+            var pagePaths = new List<string>();
+            var eventNames = new List<string>();
+            var deviceCategories = new List<string>();
+            var browsers = new List<string>();
+
+            foreach (var row in report.Rows)
+            {
+                if (row.MetricValues.Count >= 7)
+                {
+                    sessions.Add(row.MetricValues[0].Value);
+                    totalUsers.Add(row.MetricValues[1].Value);
+                    screenPageViews.Add(row.MetricValues[2].Value);
+                    bounceRates.Add(row.MetricValues[3].Value);
+                    engagementRates.Add(row.MetricValues[4].Value);
+                    eventCounts.Add(row.MetricValues[5].Value);
+                    conversions.Add(row.MetricValues[6].Value);
+                }
+
+                if (row.DimensionValues.Count >= 8)
+                {
+                    dates.Add(row.DimensionValues[0].Value);
+                    countries.Add(row.DimensionValues[1].Value);
+                    regions.Add(row.DimensionValues[2].Value);
+                    sessionSources.Add(row.DimensionValues[3].Value);
+                    sessionDefaultChannelGroupings.Add(row.DimensionValues[4].Value);
+                    pagePaths.Add(row.DimensionValues[5].Value);
+                    eventNames.Add(row.DimensionValues[6].Value);
+                    deviceCategories.Add(row.DimensionValues[7].Value);
+                    browsers.Add(row.DimensionValues[8].Value);
+                }
+            }
 
             var model = new DashboardViewModel
             {
@@ -229,7 +272,22 @@ Console.WriteLine("try");
                 PropertyContractsCount = propertyContracts?.Count() ?? 0,
                 UsersCount = users?.Count() ?? 0,
                 ComplaintsCount = complaints?.Count() ?? 0,
-                Sessions = sessions
+                Sessions = sessions,
+                TotalUsers = totalUsers,
+                ScreenPageViews = screenPageViews,
+                BounceRates = bounceRates,
+                EngagementRates = engagementRates,
+                EventCounts = eventCounts,
+                Conversions = conversions,
+                Dates = dates,
+                Countries = countries,
+                Regions = regions,
+                SessionSources = sessionSources,
+                SessionDefaultChannelGroupings = sessionDefaultChannelGroupings,
+                PagePaths = pagePaths,
+                EventNames = eventNames,
+                DeviceCategories = deviceCategories,
+                Browsers = browsers
             };
 
             return View(model);

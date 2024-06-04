@@ -136,9 +136,65 @@
                             <img class="card-img-top" src="/img/dashboard/analyticsDash.png" alt="Analytics Logo">
                             <div class="card-body">
                                 <h4 class="card-title">Sessions</h4>
-                                <p class="card-text">@Model.Sessions sessions in the last 30 days.</p>
+                                <p class="card-text">@Model.Sessions?.FirstOrDefault() sessions in the last 30 days.</p>
+                                <p class="card-text">@Model.ScreenPageViews?.FirstOrDefault() page views in the last 30 days.</p>
+                                <p class="card-text">@Model.BounceRates?.FirstOrDefault() bounce rate in the last 30 days.</p>
+                                <p class="card-text">@Model.TotalUsers?.FirstOrDefault() total users in the last 30 days.</p>
+                                <p class="card-text">@Model.EngagementRates?.FirstOrDefault() engagement rate in the last 30 days.</p>
+                                <p class="card-text">@Model.EventCounts?.FirstOrDefault() event counts in the last 30 days.</p>
+                                <p class="card-text">@Model.Conversions?.FirstOrDefault() conversions in the last 30 days.</p>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Add more detailed data display -->
+                    <div class="col-12">
+                        <h3>Detailed Analytics Data</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Sessions</th>
+                                    <th>Page Views</th>
+                                    <th>Bounce Rate</th>
+                                    <th>Total Users</th>
+                                    <th>Engagement Rate</th>
+                                    <th>Event Count</th>
+                                    <th>Conversions</th>
+                                    <th>Country</th>
+                                    <th>Region</th>
+                                    <th>Session Source</th>
+                                    <th>Session Default Channel Grouping</th>
+                                    <th>Page Path</th>
+                                    <th>Event Name</th>
+                                    <th>Device Category</th>
+                                    <th>Browser</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.Dates.Count; i++)
+                                {
+                                    <tr>
+                                        <td>@Model.Dates[i]</td>
+                                        <td>@Model.Sessions[i]</td>
+                                        <td>@Model.ScreenPageViews[i]</td>
+                                        <td>@Model.BounceRates[i]</td>
+                                        <td>@Model.TotalUsers[i]</td>
+                                        <td>@Model.EngagementRates[i]</td>
+                                        <td>@Model.EventCounts[i]</td>
+                                        <td>@Model.Conversions[i]</td>
+                                        <td>@Model.Countries[i]</td>
+                                        <td>@Model.Regions[i]</td>
+                                        <td>@Model.SessionSources[i]</td>
+                                        <td>@Model.SessionDefaultChannelGroupings[i]</td>
+                                        <td>@Model.PagePaths[i]</td>
+                                        <td>@Model.EventNames[i]</td>
+                                        <td>@Model.DeviceCategories[i]</td>
+                                        <td>@Model.Browsers[i]</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>

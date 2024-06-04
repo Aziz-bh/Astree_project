@@ -2,6 +2,7 @@ using Google.Apis.AnalyticsData.v1beta;
 using Google.Apis.AnalyticsData.v1beta.Data;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ClientAstree.Services
@@ -36,12 +37,35 @@ namespace ClientAstree.Services
             });
 
             var dateRange = new DateRange { StartDate = "30daysAgo", EndDate = "today" };
-            var sessions = new Metric { Name = "sessions" };
+            var metrics = new List<Metric>
+            {
+                new Metric { Name = "sessions" },
+                new Metric { Name = "totalUsers" },
+                new Metric { Name = "screenPageViews" },
+                new Metric { Name = "bounceRate" },
+                new Metric { Name = "engagementRate" },
+                new Metric { Name = "eventCount" },
+                new Metric { Name = "conversions" }
+            };
+
+            var dimensions = new List<Dimension>
+            {
+                new Dimension { Name = "date" },
+                new Dimension { Name = "country" },
+                new Dimension { Name = "region" },
+                new Dimension { Name = "sessionSource" },
+                new Dimension { Name = "sessionDefaultChannelGrouping" },
+                new Dimension { Name = "pagePath" },
+                new Dimension { Name = "eventName" },
+                new Dimension { Name = "deviceCategory" },
+                new Dimension { Name = "browser" }
+            };
 
             var request = new RunReportRequest
             {
                 DateRanges = new List<DateRange> { dateRange },
-                Metrics = new List<Metric> { sessions }
+                Metrics = metrics,
+                Dimensions = dimensions
             };
 
             return await analyticsDataService.Properties.RunReport(request, $"properties/{_propertyId}").ExecuteAsync();
