@@ -2,11 +2,14 @@
 
 @{
     ViewData["Title"] = "Admin Dashboard";
+
+    var deviceCategories = Model.DeviceCategories.Distinct().ToList();
+    var deviceCounts = deviceCategories.Select(dc => Model.DeviceCategories.Count(d => d == dc)).ToList();
 }
 
 <style>
     body {
-        font-family: 'Open Sans', sans-serif; /* Base font */
+        font-family: 'Open Sans', sans-serif;
         background-color: #F2F2F2;
         color: #333333;
     }
@@ -16,11 +19,11 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+        min-height: 100vh;
     }
 
     .content-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -29,27 +32,27 @@
 
     .card {
         margin-bottom: 20px;
-        background-color: #1E3A7A; /* Set the background color of the card */
-        color: white; /* Set the text color to white */
-        border: none; /* Remove default border */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transitions */
+        background-color: #1E3A7A;
+        color: white;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .card:hover {
-        transform: translateY(-5px); /* Lift up slightly on hover */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .card-title {
         font-family: 'Roboto', sans-serif;
-        font-size: 1.5rem; /* Larger title */
-        color: #FFFF; /* Gold color for highlights */
+        font-size: 1.5rem;
+        color: #FFFF;
     }
 
     .card-text {
-        font-size: 1rem; 
-        color: white; /* Ensure the card text is white */
+        font-size: 1rem;
+        color: white;
     }
 
     .card-img-top {
@@ -66,14 +69,22 @@
     }
 
     .btn-primary {
-        background-color: #FFFF; /* Gold for highlights */
-        color: #1E3A7A; /* Set the button text color to match the card background */
-        border: none; /* Remove the button border */
+        background-color: #FFFF;
+        color: #1E3A7A;
+        border: none;
     }
 
     .btn-primary:hover {
-        background-color: #4E6B8B; /* Lighten the button background on hover */
-        color: #1E3A7A; /* Keep the button text color the same */
+        background-color: #4E6B8B;
+        color: #1E3A7A;
+    }
+
+    .chart-container {
+        margin: 20px 0;
+    }
+
+    .table-container {
+        margin-top: 20px;
     }
 </style>
 
@@ -86,71 +97,55 @@
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/dashboard/cardash.png" alt="Car Logo">
-                            <div class="card-body">
-                                <h4 class="card-title">Automobile Contracts</h4>
-                                <p class="card-text">@Model.AutomobileContractsCount automobile contracts.</p>
-                                <a href="/AutomobileContract/Index" class="btn btn-primary">View Contracts</a>
+
+                    @* Summary Cards *@
+                    @foreach (var card in new[] { 
+                        new { Title = "Automobile Contracts", Count = Model.AutomobileContractsCount, Url = "/AutomobileContract/Index", Image = "/img/dashboard/cardash.png" },
+                        new { Title = "Property Contracts", Count = Model.PropertyContractsCount, Url = "/PropertyContract/Index", Image = "/img/dashboard/houseDash.png" },
+                        new { Title = "Users", Count = Model.UsersCount, Url = "/User", Image = "/img/dashboard/userDash.png" },
+                        new { Title = "Complaints", Count = Model.ComplaintsCount, Url = "/Complaints/Index", Image = "/img/dashboard/complaintDash.png" } 
+                    })
+                    {
+                        <div class="col-md-3">
+                            <div class="card" style="width: 100%;">
+                                <img class="card-img-top" src="@card.Image" alt="@card.Title Logo">
+                                <div class="card-body">
+                                    <h4 class="card-title">@card.Title</h4>
+                                    <p class="card-text">@card.Count @card.Title.ToLower().Replace(" contracts", "")</p>
+                                    <a href="@card.Url" class="btn btn-primary">View @card.Title</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    } 
 
-                    <div class="col-md-3">
-                        <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/dashboard/houseDash.png" alt="House Logo">
-                            <div class="card-body">
-                                <h4 class="card-title">Property Contracts</h4>
-                                <p class="card-text">@Model.PropertyContractsCount property contracts.</p>
-                                <a href="/PropertyContract/Index" class="btn btn-primary">View Contracts</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/dashboard/userDash.png" alt="User Logo">
-                            <div class="card-body">
-                                <h4 class="card-title">Users</h4>
-                                <p class="card-text">@Model.UsersCount users.</p>
-                                <a href="/User" class="btn btn-primary">View Users</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/dashboard/complaintDash.png" alt="Complaint Logo">
-                            <div class="card-body">
-                                <h4 class="card-title">Complaints</h4>
-                                <p class="card-text">@Model.ComplaintsCount complaints.</p>
-                                <a href="/Complaints/Index" class="btn btn-primary">View Complaints</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Add GA data here -->
-                    <div class="col-md-3">
+                    @* Detailed Analytics Card *@
+                    <div class="col-md-6">
                         <div class="card" style="width: 100%;">
                             <img class="card-img-top" src="/img/dashboard/analyticsDash.png" alt="Analytics Logo">
                             <div class="card-body">
-                                <h4 class="card-title">Sessions</h4>
-                                <p class="card-text">@Model.Sessions?.FirstOrDefault() sessions in the last 30 days.</p>
-                                <p class="card-text">@Model.ScreenPageViews?.FirstOrDefault() page views in the last 30 days.</p>
-                                <p class="card-text">@Model.BounceRates?.FirstOrDefault() bounce rate in the last 30 days.</p>
-                                <p class="card-text">@Model.TotalUsers?.FirstOrDefault() total users in the last 30 days.</p>
-                                <p class="card-text">@Model.EngagementRates?.FirstOrDefault() engagement rate in the last 30 days.</p>
-                                <p class="card-text">@Model.EventCounts?.FirstOrDefault() event counts in the last 30 days.</p>
-                                <p class="card-text">@Model.Conversions?.FirstOrDefault() conversions in the last 30 days.</p>
+                                <h4 class="card-title">Analytics Summary (Last 30 Days)</h4>
+                                @if (Model.Sessions != null && Model.Sessions.Any())  
+                                {
+                                    <p class="card-text">Sessions: @Model.Sessions.FirstOrDefault()</p>
+                                    <p class="card-text">Page Views: @Model.ScreenPageViews.FirstOrDefault()</p>
+                                    <p class="card-text">Bounce Rate: @Model.BounceRates.FirstOrDefault()</p>
+                                    <p class="card-text">Users: @Model.TotalUsers.FirstOrDefault()</p>
+                                    <p class="card-text">Engagement Rate: @Model.EngagementRates.FirstOrDefault()</p>
+                                    <a href="#detailedTable" class="btn btn-primary">View Details</a> 
+                                }
+                                else
+                                {
+                                    <p class="card-text">No analytics data available yet.</p> 
+                                }
                             </div>
                         </div>
                     </div>
 
-                    <!-- Add more detailed data display -->
+                    @* Detailed Analytics Table *@
                     <div class="col-12">
                         <h3>Detailed Analytics Data</h3>
-                        <table class="table table-striped">
+                        <button class="btn btn-primary" onclick="toggleTable()">Toggle Detailed Table</button>
+                        <table id="detailedTable" class="table table-striped" style="display: none;">
                             <thead>
                                 <tr>
                                     <th>Date</th>
@@ -175,7 +170,7 @@
                                 @for (int i = 0; i < Model.Dates.Count; i++)
                                 {
                                     <tr>
-                                        <td>@Model.Dates[i]</td>
+                                        <td>@DateTime.ParseExact(Model.Dates[i], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy/MM/dd")</td>
                                         <td>@Model.Sessions[i]</td>
                                         <td>@Model.ScreenPageViews[i]</td>
                                         <td>@Model.BounceRates[i]</td>
@@ -197,8 +192,238 @@
                         </table>
                     </div>
 
+                    @* Line Charts *@
+                    <div class="col-12 chart-container">
+                        <canvas id="lineChart1"></canvas>
+                    </div>
+                    <div class="col-12 chart-container">
+                        <canvas id="lineChart2"></canvas>
+                    </div>
+
+                    @* Bar Chart *@
+                    <div class="col-12 chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+
+                    @* Pie Chart *@
+                    <div class="col-12 chart-container">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+
+                    @* Geo Maps *@
+                    <div class="col-12 chart-container">
+                        <div id="geoChart" style="width: 100%; height: 500px;"></div>
+                    </div>
+
+                    @* Bubble Charts *@
+                    <div class="col-12 chart-container">
+                        <canvas id="bubbleChart"></canvas>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function toggleTable() {
+            var table = document.getElementById('detailedTable');
+            table.style.display = table.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Line Chart 1: Page Views + Users / Date
+        var lineChart1Ctx = document.getElementById('lineChart1').getContext('2d');
+        var lineChart1 = new Chart(lineChart1Ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Dates.Select(date => DateTime.ParseExact(date, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy/MM/dd")))),
+                datasets: [
+                    {
+                        label: 'Page Views',
+                        data: @Html.Raw(Json.Serialize(Model.ScreenPageViews)),
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    },
+                    {
+                        label: 'Users',
+                        data: @Html.Raw(Json.Serialize(Model.TotalUsers)),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return Number.isInteger(value) ? value : null; },
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Line Chart 2: Sessions + Bounce Rate + Engagement Rate / Date
+        var lineChart2Ctx = document.getElementById('lineChart2').getContext('2d');
+        var lineChart2 = new Chart(lineChart2Ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Dates.Select(date => DateTime.ParseExact(date, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy/MM/dd")))),
+                datasets: [
+                    {
+                        label: 'Sessions',
+                        data: @Html.Raw(Json.Serialize(Model.Sessions)),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    },
+                    {
+                        label: 'Bounce Rate',
+                        data: @Html.Raw(Json.Serialize(Model.BounceRates)),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    },
+                    {
+                        label: 'Engagement Rate',
+                        data: @Html.Raw(Json.Serialize(Model.EngagementRates)),
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return Number.isInteger(value) ? value : null; },
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart: Regions and Number of Users/Sessions
+        var barChartCtx = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(barChartCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Regions.Distinct())),
+                datasets: [{
+                    label: 'Number of Users/Sessions',
+                    data: @Html.Raw(Json.Serialize(Model.Regions.Distinct().Select(region => Model.Regions.Count(r => r == region)))),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return Number.isInteger(value) ? value : null; },
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart: Device Categories
+        var pieChartCtx = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(pieChartCtx, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(deviceCategories)),
+                datasets: [{
+                    label: 'Device Categories',
+                    data: @Html.Raw(Json.Serialize(deviceCounts)),
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Geo Map
+        google.charts.load('current', {'packages':['geochart']});
+        google.charts.setOnLoadCallback(drawGeoChart);
+        function drawGeoChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Country', 'Sessions'],
+                @foreach (var country in Model.Countries.Distinct())
+                {
+                    <text>['@country', @Model.Countries.Count(c => c == country)],</text>
+                }
+            ]);
+
+            console.log(data.toJSON()); // Debug statement to verify the data being passed
+
+            var options = {
+                region: 'world',
+                displayMode: 'regions',
+                colorAxis: {colors: ['#e0f7fa', '#006064']}
+            };
+
+            var chart = new google.visualization.GeoChart(document.getElementById('geoChart'));
+            chart.draw(data, options);
+        }
+
+        // Bubble Chart
+        var bubbleCtx = document.getElementById('bubbleChart').getContext('2d');
+        var bubbleChart = new Chart(bubbleCtx, {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Traffic Source Performance',
+                    data: @Html.Raw(Json.Serialize(Model.Dates.Select((date, i) => new { x = DateTime.ParseExact(date, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture), y = Model.TotalUsers[i], r = Model.EventCounts[i] }))),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            displayFormats: {
+                                day: 'YYYY/MM/DD'
+                            }
+                        },
+                        position: 'bottom'
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    });
+</script>
