@@ -116,108 +116,40 @@
                                 </div>
                             </div>
                         </div>
-                    } 
-
-                    @* Detailed Analytics Card *@
-                    <div class="col-md-6">
-                        <div class="card" style="width: 100%;">
-                            <img class="card-img-top" src="/img/dashboard/analyticsDash.png" alt="Analytics Logo">
-                            <div class="card-body">
-                                <h4 class="card-title">Analytics Summary (Last 30 Days)</h4>
-                                @if (Model.Sessions != null && Model.Sessions.Any())  
-                                {
-                                    <p class="card-text">Sessions: @Model.Sessions.FirstOrDefault()</p>
-                                    <p class="card-text">Page Views: @Model.ScreenPageViews.FirstOrDefault()</p>
-                                    <p class="card-text">Bounce Rate: @Model.BounceRates.FirstOrDefault()</p>
-                                    <p class="card-text">Users: @Model.TotalUsers.FirstOrDefault()</p>
-                                    <p class="card-text">Engagement Rate: @Model.EngagementRates.FirstOrDefault()</p>
-                                    <a href="#detailedTable" class="btn btn-primary">View Details</a> 
-                                }
-                                else
-                                {
-                                    <p class="card-text">No analytics data available yet.</p> 
-                                }
-                            </div>
-                        </div>
-                    </div>
-
-                    @* Detailed Analytics Table *@
-                    <div class="col-12">
-                        <h3>Detailed Analytics Data</h3>
-                        <button class="btn btn-primary" onclick="toggleTable()">Toggle Detailed Table</button>
-                        <table id="detailedTable" class="table table-striped" style="display: none;">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Sessions</th>
-                                    <th>Page Views</th>
-                                    <th>Bounce Rate</th>
-                                    <th>Total Users</th>
-                                    <th>Engagement Rate</th>
-                                    <th>Event Count</th>
-                                    <th>Conversions</th>
-                                    <th>Country</th>
-                                    <th>Region</th>
-                                    <th>Session Source</th>
-                                    <th>Session Default Channel Grouping</th>
-                                    <th>Page Path</th>
-                                    <th>Event Name</th>
-                                    <th>Device Category</th>
-                                    <th>Browser</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.Dates.Count; i++)
-                                {
-                                    <tr>
-                                        <td>@DateTime.ParseExact(Model.Dates[i], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy/MM/dd")</td>
-                                        <td>@Model.Sessions[i]</td>
-                                        <td>@Model.ScreenPageViews[i]</td>
-                                        <td>@Model.BounceRates[i]</td>
-                                        <td>@Model.TotalUsers[i]</td>
-                                        <td>@Model.EngagementRates[i]</td>
-                                        <td>@Model.EventCounts[i]</td>
-                                        <td>@Model.Conversions[i]</td>
-                                        <td>@Model.Countries[i]</td>
-                                        <td>@Model.Regions[i]</td>
-                                        <td>@Model.SessionSources[i]</td>
-                                        <td>@Model.SessionDefaultChannelGroupings[i]</td>
-                                        <td>@Model.PagePaths[i]</td>
-                                        <td>@Model.EventNames[i]</td>
-                                        <td>@Model.DeviceCategories[i]</td>
-                                        <td>@Model.Browsers[i]</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                    }
 
                     @* Line Charts *@
-                    <div class="col-12 chart-container">
+                    <div class="col-md-6 chart-container">
+                        <h5>Page Views and Users Over Time</h5>
                         <canvas id="lineChart1"></canvas>
                     </div>
-                    <div class="col-12 chart-container">
+                    <div class="col-md-6 chart-container">
+                        <h5>Sessions, Bounce Rate, and Engagement Rate Over Time</h5>
                         <canvas id="lineChart2"></canvas>
                     </div>
 
                     @* Bar Chart *@
-                    <div class="col-12 chart-container">
+                    <div class="col-md-6 chart-container">
+                        <h5>Regions and Number of Users/Sessions</h5>
                         <canvas id="barChart"></canvas>
                     </div>
 
-                    @* Pie Chart *@
-                    <div class="col-12 chart-container">
-                        <canvas id="pieChart"></canvas>
-                    </div>
-
                     @* Geo Maps *@
-                    <div class="col-12 chart-container">
+                    <div class="col-md-6 chart-container">
+                        <h5>Geographical Distribution of Sessions</h5>
                         <div id="geoChart" style="width: 100%; height: 500px;"></div>
                     </div>
 
-                    @* Bubble Charts *@
-                    <div class="col-12 chart-container">
-                        <canvas id="bubbleChart"></canvas>
+                    @* New Bar Chart: Page Views vs. Users *@
+                    <div class="col-md-6 chart-container">
+                        <h5>Page Views vs. Users by Page</h5>
+                        <canvas id="pageViewsUsersBarChart"></canvas>
+                    </div>
+
+                    @* Pie Chart *@
+                    <div class="col-md-6 chart-container" style="height: 400px;">
+                        <h5>Device Categories</h5>
+                        <canvas id="pieChart"></canvas>
                     </div>
 
                 </div>
@@ -230,11 +162,6 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        function toggleTable() {
-            var table = document.getElementById('detailedTable');
-            table.style.display = table.style.display === 'none' ? 'block' : 'none';
-        }
-
         // Line Chart 1: Page Views + Users / Date
         var lineChart1Ctx = document.getElementById('lineChart1').getContext('2d');
         var lineChart1 = new Chart(lineChart1Ctx, {
@@ -349,25 +276,6 @@
             }
         });
 
-        // Pie Chart: Device Categories
-        var pieChartCtx = document.getElementById('pieChart').getContext('2d');
-        var pieChart = new Chart(pieChartCtx, {
-            type: 'pie',
-            data: {
-                labels: @Html.Raw(Json.Serialize(deviceCategories)),
-                datasets: [{
-                    label: 'Device Categories',
-                    data: @Html.Raw(Json.Serialize(deviceCounts)),
-                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-
         // Geo Map
         google.charts.load('current', {'packages':['geochart']});
         google.charts.setOnLoadCallback(drawGeoChart);
@@ -392,38 +300,64 @@
             chart.draw(data, options);
         }
 
-        // Bubble Chart
-        var bubbleCtx = document.getElementById('bubbleChart').getContext('2d');
-        var bubbleChart = new Chart(bubbleCtx, {
-            type: 'bubble',
+        // New Bar Chart: Page Views vs. Users by Page
+        var pageViewsUsersBarChartCtx = document.getElementById('pageViewsUsersBarChart').getContext('2d');
+        var pageViewsUsersBarChart = new Chart(pageViewsUsersBarChartCtx, {
+            type: 'bar',
             data: {
-                datasets: [{
-                    label: 'Traffic Source Performance',
-                    data: @Html.Raw(Json.Serialize(Model.Dates.Select((date, i) => new { x = DateTime.ParseExact(date, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture), y = Model.TotalUsers[i], r = Model.EventCounts[i] }))),
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
+                labels: @Html.Raw(Json.Serialize(Model.PagePaths)),
+                datasets: [
+                    {
+                        label: 'Page Views',
+                        data: @Html.Raw(Json.Serialize(Model.ScreenPageViews)),
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Users',
+                        data: @Html.Raw(Json.Serialize(Model.TotalUsers)),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 scales: {
                     x: {
-                        type: 'time',
-                        time: {
-                            unit: 'day',
-                            displayFormats: {
-                                day: 'YYYY/MM/DD'
-                            }
-                        },
-                        position: 'bottom'
+                        beginAtZero: true
                     },
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return Number.isInteger(value) ? value : null; },
+                            stepSize: 1
+                        }
                     }
                 }
             }
         });
 
+        // Pie Chart: Device Categories
+        var pieChartCtx = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(pieChartCtx, {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(deviceCategories)),
+                datasets: [{
+                    label: 'Device Categories',
+                    data: @Html.Raw(Json.Serialize(deviceCounts)),
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
     });
 </script>

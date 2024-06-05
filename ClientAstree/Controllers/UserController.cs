@@ -306,49 +306,16 @@ public IActionResult AddContract()
 }
 
 
-        // // GET: /User/Create
-        // public IActionResult Create()
-        // {
-        //     // TODO: Implement logic to display the user creation form
-        //     return View();
-        // }
+        // GET: Admin/Automobile
+        public IActionResult AdminAutomobile()
+        {
+            return View();
+        }
 
-        // // POST: /User/Create
-        // [HttpPost]
-        // public IActionResult Create(UserModel user)
-        // {
-        //     // TODO: Implement logic to create a new user based on the provided UserModel
-        //     return RedirectToAction("Index");
-        // }
-
-        // GET: /User/Edit/{id}
-        // public IActionResult Edit(int id)
-        // {
-        //     // TODO: Implement logic to retrieve and display the user edit form based on the provided id
-        //     return View();
-        // }
-
-        // POST: /User/Edit/{id}
-        // [HttpPost]
-        // public IActionResult Edit(int id, UserModel user)
-        // {
-        //     // TODO: Implement logic to update the user based on the provided id and UserModel
-        //     return RedirectToAction("Index");
-        // }
-
-        // GET: /User/Delete/{id}
-        // public IActionResult Delete(int id)
-        // {
-        //     // TODO: Implement logic to retrieve and display the user delete confirmation page based on the provided id
-        //     return View();
-        // }
-
-        // POST: /User/Delete/{id}
-        // [HttpPost]
-        // public IActionResult DeleteConfirmed(int id)
-        // {
-        //     // TODO: Implement logic to delete the user based on the provided id
-        //     return RedirectToAction("Index");
-        // }
+                // GET: Admin/PropertyManagement
+        public IActionResult AdminPropertyManagement()
+        {
+            return View();
+        }
     }
 }

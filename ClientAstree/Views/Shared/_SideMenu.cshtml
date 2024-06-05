@@ -103,7 +103,7 @@
             {
                 @if(claim.Type=="role")
                 {
-                    @if(claim.Value=="Member")
+                    @if(claim.Value=="Admin")
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="User" asp-action="Dashboard">
@@ -115,12 +115,6 @@
                             <a class="nav-link" asp-controller="User" asp-action="MyContract">
                                 <i class="fas fa-file-contract"></i> <!-- Icon -->
                                 <p>My Contracts</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-quote-right"></i> <!-- Icon -->
-                                <p>Quotes</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -169,13 +163,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="AutomobileContract" asp-action="Index">
+                            <a class="nav-link" asp-controller="User" asp-action="AdminAutomobile">
                                 <i class="fas fa-car"></i> <!-- Icon -->
                                 <p>Automobile</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="PropertyContract" asp-action="Index">
+                            <a class="nav-link" asp-area="" asp-controller="User" asp-action="AdminPropertyManagement">
                                 <i class="fas fa-home"></i> <!-- Icon -->
                                 <p>Property</p>
                             </a>

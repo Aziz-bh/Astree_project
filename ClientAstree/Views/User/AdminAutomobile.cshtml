@@ -1,0 +1,124 @@
+@{
+    ViewData["Title"] = "Contract Management";
+}
+
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
+
+    .content-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+    }
+
+    .card-pricing {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        margin: 20px auto;
+    }
+
+    .card-raised {
+        background-color: #1E3A7A;
+        color: white;
+    }
+
+    .btn-neutral {
+        background-color: white;
+        color: #1E3A7A;
+    }
+
+    .card-img {
+        width: 350px;
+        height: auto;
+        display: block;
+        margin: 0 auto 10px;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <div class="title text-center">
+                    <h2>Contract Management</h2>
+                    <h4 class="description">Select the action you want to perform.</h4>
+                </div>
+
+                <div class="row card-container">
+                    <div class="col-md-3">
+                        <div class="card card-pricing card-raised">
+                            <div class="card-body text-white">
+                                <img class="card-img" src="/img/dashboard/planning.png" alt="Manage Contract">
+                                <h5 class="category text-white">Manage Contract</h5>
+                                <ul>
+                                    <li class="text-white">View contracts</li>
+                                    <li class="text-white">Update contract details</li>
+                                </ul>
+                                <a href="/AutomobileContract" class="btn btn-neutral btn-round text-primary">
+                                    Manage Contracts
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card card-pricing card-raised">
+                            <div class="card-body text-white">
+                                <img class="card-img" src="/img/dashboard/check.png" alt="Validate Contracts">
+                                <h5 class="category text-white">Validate Contracts</h5>
+                                <ul>
+                                    <li class="text-white">View pending contracts</li>
+                                    <li class="text-white">Validate or reject contracts</li>
+                                </ul>
+                                <a href="/AutomobileContract/Validated" class="btn btn-neutral btn-round text-primary">
+                                    Validate Contracts
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card card-pricing card-raised">
+                            <div class="card-body text-white">
+                                <img class="card-img" src="/img/dashboard/cross.png" alt="Unvalidate Contracts">
+                                <h5 class="category text-white">Unvalidate Contracts</h5>
+                                <ul>
+                                    <li class="text-white">View validated contracts</li>
+                                    <li class="text-white">Unvalidate contracts</li>
+                                </ul>
+                                <a href="/AutomobileContract/Unvalidated" class="btn btn-neutral btn-round text-primary">
+                                    Unvalidate Contracts
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
