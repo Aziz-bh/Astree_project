@@ -119,7 +119,7 @@ namespace API.Services
             return sb.ToString();
         }
 
-        private async Task GenerateValidatedContractsReportAsync(AstreeDbContext context)
+                private async Task GenerateValidatedContractsReportAsync(AstreeDbContext context)
         {
             var allAutomobiles = await context.Automobiles
                 .Include(a => a.User)
@@ -128,106 +128,34 @@ namespace API.Services
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Reports", "ValidatedContractsReport.xlsx");
 
-            using (var package = new ExcelPackage())
+            try
             {
-                var worksheet = package.Workbook.Worksheets.Add("ValidatedContracts");
-
-                // Adding headers
-                worksheet.Cells[1, 1].Value = "Id";
-                worksheet.Cells[1, 2].Value = "ContractType";
-                worksheet.Cells[1, 3].Value = "StartDate";
-                worksheet.Cells[1, 4].Value = "EndDate";
-                worksheet.Cells[1, 5].Value = "Quota";
-                worksheet.Cells[1, 6].Value = "UserId";
-                worksheet.Cells[1, 7].Value = "VehicleType";
-                worksheet.Cells[1, 8].Value = "RegistrationNumber";
-                worksheet.Cells[1, 9].Value = "RegistrationDate";
-                worksheet.Cells[1, 10].Value = "EnginePower";
-                worksheet.Cells[1, 11].Value = "VehicleMake";
-                worksheet.Cells[1, 12].Value = "Model";
-                worksheet.Cells[1, 13].Value = "SeatsNumber";
-                worksheet.Cells[1, 14].Value = "VehicleValue";
-                worksheet.Cells[1, 15].Value = "TrueVehicleValue";
-                worksheet.Cells[1, 16].Value = "Guarantees";
-                worksheet.Cells[1, 17].Value = "Valid"; // New column for validity
-
-                // Adding data rows
-                int row = 2;
-                foreach (var automobile in allAutomobiles)
+                using (var package = new ExcelPackage())
                 {
-                    worksheet.Cells[row, 1].Value = automobile.Id;
-                    worksheet.Cells[row, 2].Value = automobile.ContractType.ToString();
-                    worksheet.Cells[row, 3].Value = automobile.StartDate.ToString("yyyy-MM-dd");
-                    worksheet.Cells[row, 4].Value = automobile.EndDate.ToString("yyyy-MM-dd");
-                    worksheet.Cells[row, 5].Value = automobile.Quota;
-                    worksheet.Cells[row, 6].Value = automobile.UserId;
-                    worksheet.Cells[row, 7].Value = automobile.VehicleType.ToString();
-                    worksheet.Cells[row, 8].Value = automobile.RegistrationNumber;
-                    worksheet.Cells[row, 9].Value = automobile.RegistrationDate.ToString("yyyy-MM-dd");
-                    worksheet.Cells[row, 10].Value = automobile.EnginePower;
-                    worksheet.Cells[row, 11].Value = automobile.VehicleMake;
-                    worksheet.Cells[row, 12].Value = automobile.Model;
-                    worksheet.Cells[row, 13].Value = automobile.SeatsNumber;
-                    worksheet.Cells[row, 14].Value = automobile.VehicleValue;
-                    worksheet.Cells[row, 15].Value = automobile.TrueVehicleValue;
-                    worksheet.Cells[row, 16].Value = automobile.Guarantees.ToString();
-                    worksheet.Cells[row, 17].Value = automobile.Validated ? 1 : 0; // Validity column
-                    row++;
-                }
+                    var worksheet = package.Workbook.Worksheets.Add("ValidatedContracts");
 
-                // Styling the header
-                using (var range = worksheet.Cells[1, 1, 1, 17])
-                {
-                    range.Style.Font.Bold = true;
-                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
-                }
+                    // Adding headers
+                    worksheet.Cells[1, 1].Value = "Id";
+                    worksheet.Cells[1, 2].Value = "ContractType";
+                    worksheet.Cells[1, 3].Value = "StartDate";
+                    worksheet.Cells[1, 4].Value = "EndDate";
+                    worksheet.Cells[1, 5].Value = "Quota";
+                    worksheet.Cells[1, 6].Value = "UserId";
+                    worksheet.Cells[1, 7].Value = "VehicleType";
+                    worksheet.Cells[1, 8].Value = "RegistrationNumber";
+                    worksheet.Cells[1, 9].Value = "RegistrationDate";
+                    worksheet.Cells[1, 10].Value = "EnginePower";
+                    worksheet.Cells[1, 11].Value = "VehicleMake";
+                    worksheet.Cells[1, 12].Value = "Model";
+                    worksheet.Cells[1, 13].Value = "SeatsNumber";
+                    worksheet.Cells[1, 14].Value = "VehicleValue";
+                    worksheet.Cells[1, 15].Value = "TrueVehicleValue";
+                    worksheet.Cells[1, 16].Value = "Guarantees";
+                    worksheet.Cells[1, 17].Value = "Valid"; // New column for validity
 
-                // AutoFit columns
-                worksheet.Cells.AutoFitColumns();
-
-                // Save the Excel package
-                var reportsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Reports");
-                if (!Directory.Exists(reportsDirectory))
-                {
-                    Directory.CreateDirectory(reportsDirectory);
-                }
-                var fileInfo = new FileInfo(filePath);
-                await package.SaveAsAsync(fileInfo);
-            }
-        }
-        private async Task GenerateExpiredContractsReportAsync(List<Contract> expiredContracts)
-        {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Reports", "ExpiredContractsReport.xlsx");
-
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("ExpiredContracts");
-
-                // Adding headers
-                worksheet.Cells[1, 1].Value = "Id";
-                worksheet.Cells[1, 2].Value = "ContractType";
-                worksheet.Cells[1, 3].Value = "StartDate";
-                worksheet.Cells[1, 4].Value = "EndDate";
-                worksheet.Cells[1, 5].Value = "Quota";
-                worksheet.Cells[1, 6].Value = "UserId";
-                worksheet.Cells[1, 7].Value = "VehicleType";
-                worksheet.Cells[1, 8].Value = "RegistrationNumber";
-                worksheet.Cells[1, 9].Value = "RegistrationDate";
-                worksheet.Cells[1, 10].Value = "EnginePower";
-                worksheet.Cells[1, 11].Value = "VehicleMake";
-                worksheet.Cells[1, 12].Value = "Model";
-                worksheet.Cells[1, 13].Value = "SeatsNumber";
-                worksheet.Cells[1, 14].Value = "VehicleValue";
-                worksheet.Cells[1, 15].Value = "TrueVehicleValue";
-                worksheet.Cells[1, 16].Value = "Guarantees";
-                worksheet.Cells[1, 17].Value = "Valid"; // New column for validity
-
-                // Adding data rows
-                int row = 2;
-                foreach (var contract in expiredContracts)
-                {
-                    if (contract is Automobile automobile)
+                    // Adding data rows
+                    int row = 2;
+                    foreach (var automobile in allAutomobiles)
                     {
                         worksheet.Cells[row, 1].Value = automobile.Id;
                         worksheet.Cells[row, 2].Value = automobile.ContractType.ToString();
@@ -248,50 +176,147 @@ namespace API.Services
                         worksheet.Cells[row, 17].Value = automobile.Validated ? 1 : 0; // Validity column
                         row++;
                     }
-                    else if (contract is Property property)
+
+                    // Styling the header
+                    using (var range = worksheet.Cells[1, 1, 1, 17])
                     {
-                        worksheet.Cells[row, 1].Value = property.Id;
-                        worksheet.Cells[row, 2].Value = property.ContractType.ToString();
-                        worksheet.Cells[row, 3].Value = property.StartDate.ToString("yyyy-MM-dd");
-                        worksheet.Cells[row, 4].Value = property.EndDate.ToString("yyyy-MM-dd");
-                        worksheet.Cells[row, 5].Value = property.Quota;
-                        worksheet.Cells[row, 6].Value = property.UserId;
-                        worksheet.Cells[row, 7].Value = string.Empty; // Placeholder for VehicleType (not applicable)
-                        worksheet.Cells[row, 8].Value = string.Empty; // Placeholder for RegistrationNumber (not applicable)
-                        worksheet.Cells[row, 9].Value = string.Empty; // Placeholder for RegistrationDate (not applicable)
-                        worksheet.Cells[row, 10].Value = string.Empty; // Placeholder for EnginePower (not applicable)
-                        worksheet.Cells[row, 11].Value = string.Empty; // Placeholder for VehicleMake (not applicable)
-                        worksheet.Cells[row, 12].Value = string.Empty; // Placeholder for Model (not applicable)
-                        worksheet.Cells[row, 13].Value = string.Empty; // Placeholder for SeatsNumber (not applicable)
-                        worksheet.Cells[row, 14].Value = string.Empty; // Placeholder for VehicleValue (not applicable)
-                        worksheet.Cells[row, 15].Value = string.Empty; // Placeholder for TrueVehicleValue (not applicable)
-                        worksheet.Cells[row, 16].Value = string.Empty; // Placeholder for Guarantees (not applicable)
-                        worksheet.Cells[row, 17].Value = property.Validated ? 1 : 0; // Validity column
-                        row++;
+                        range.Style.Font.Bold = true;
+                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                     }
-                }
 
-                // Styling the header
-                using (var range = worksheet.Cells[1, 1, 1, 17])
-                {
-                    range.Style.Font.Bold = true;
-                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
-                }
+                    // AutoFit columns
+                    worksheet.Cells.AutoFitColumns();
 
-                // AutoFit columns
-                worksheet.Cells.AutoFitColumns();
-
-                // Save the Excel package
-                var reportsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Reports");
-                if (!Directory.Exists(reportsDirectory))
-                {
-                    Directory.CreateDirectory(reportsDirectory);
+                    // Save the Excel package
+                    var reportsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Reports");
+                    if (!Directory.Exists(reportsDirectory))
+                    {
+                        Directory.CreateDirectory(reportsDirectory);
+                    }
+                    var fileInfo = new FileInfo(filePath);
+                    await package.SaveAsAsync(fileInfo);
                 }
-                var fileInfo = new FileInfo(filePath);
-                await package.SaveAsAsync(fileInfo);
+            }
+            catch (IOException ex)
+            {
+                _logger.LogError(ex, $"Error saving file {filePath}. It might be in use by another process.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Unexpected error while saving file {filePath}.");
             }
         }
+
+
+        private async Task GenerateExpiredContractsReportAsync(List<Contract> expiredContracts)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Reports", "ExpiredContractsReport.xlsx");
+
+            try
+            {
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("ExpiredContracts");
+
+                    // Adding headers
+                    worksheet.Cells[1, 1].Value = "Id";
+                    worksheet.Cells[1, 2].Value = "ContractType";
+                    worksheet.Cells[1, 3].Value = "StartDate";
+                    worksheet.Cells[1, 4].Value = "EndDate";
+                    worksheet.Cells[1, 5].Value = "Quota";
+                    worksheet.Cells[1, 6].Value = "UserId";
+                    worksheet.Cells[1, 7].Value = "VehicleType";
+                    worksheet.Cells[1, 8].Value = "RegistrationNumber";
+                    worksheet.Cells[1, 9].Value = "RegistrationDate";
+                    worksheet.Cells[1, 10].Value = "EnginePower";
+                    worksheet.Cells[1, 11].Value = "VehicleMake";
+                    worksheet.Cells[1, 12].Value = "Model";
+                    worksheet.Cells[1, 13].Value = "SeatsNumber";
+                    worksheet.Cells[1, 14].Value = "VehicleValue";
+                    worksheet.Cells[1, 15].Value = "TrueVehicleValue";
+                    worksheet.Cells[1, 16].Value = "Guarantees";
+                    worksheet.Cells[1, 17].Value = "Valid"; // New column for validity
+
+                    // Adding data rows
+                    int row = 2;
+                    foreach (var contract in expiredContracts)
+                    {
+                        if (contract is Automobile automobile)
+                        {
+                            worksheet.Cells[row, 1].Value = automobile.Id;
+                            worksheet.Cells[row, 2].Value = automobile.ContractType.ToString();
+                            worksheet.Cells[row, 3].Value = automobile.StartDate.ToString("yyyy-MM-dd");
+                            worksheet.Cells[row, 4].Value = automobile.EndDate.ToString("yyyy-MM-dd");
+                            worksheet.Cells[row, 5].Value = automobile.Quota;
+                            worksheet.Cells[row, 6].Value = automobile.UserId;
+                            worksheet.Cells[row, 7].Value = automobile.VehicleType.ToString();
+                            worksheet.Cells[row, 8].Value = automobile.RegistrationNumber;
+                            worksheet.Cells[row, 9].Value = automobile.RegistrationDate.ToString("yyyy-MM-dd");
+                            worksheet.Cells[row, 10].Value = automobile.EnginePower;
+                            worksheet.Cells[row, 11].Value = automobile.VehicleMake;
+                            worksheet.Cells[row, 12].Value = automobile.Model;
+                            worksheet.Cells[row, 13].Value = automobile.SeatsNumber;
+                            worksheet.Cells[row, 14].Value = automobile.VehicleValue;
+                            worksheet.Cells[row, 15].Value = automobile.TrueVehicleValue;
+                            worksheet.Cells[row, 16].Value = automobile.Guarantees.ToString();
+                            worksheet.Cells[row, 17].Value = automobile.Validated ? 1 : 0; // Validity column
+                            row++;
+                        }
+                        else if (contract is Property property)
+                        {
+                            worksheet.Cells[row, 1].Value = property.Id;
+                            worksheet.Cells[row, 2].Value = property.ContractType.ToString();
+                            worksheet.Cells[row, 3].Value = property.StartDate.ToString("yyyy-MM-dd");
+                            worksheet.Cells[row, 4].Value = property.EndDate.ToString("yyyy-MM-dd");
+                            worksheet.Cells[row, 5].Value = property.Quota;
+                            worksheet.Cells[row, 6].Value = property.UserId;
+                            worksheet.Cells[row, 7].Value = string.Empty; // Placeholder for VehicleType (not applicable)
+                            worksheet.Cells[row, 8].Value = string.Empty; // Placeholder for RegistrationNumber (not applicable)
+                            worksheet.Cells[row, 9].Value = string.Empty; // Placeholder for RegistrationDate (not applicable)
+                            worksheet.Cells[row, 10].Value = string.Empty; // Placeholder for EnginePower (not applicable)
+                            worksheet.Cells[row, 11].Value = string.Empty; // Placeholder for VehicleMake (not applicable)
+                            worksheet.Cells[row, 12].Value = string.Empty; // Placeholder for Model (not applicable)
+                            worksheet.Cells[row, 13].Value = string.Empty; // Placeholder for SeatsNumber (not applicable)
+                            worksheet.Cells[row, 14].Value = string.Empty; // Placeholder for VehicleValue (not applicable)
+                            worksheet.Cells[row, 15].Value = string.Empty; // Placeholder for TrueVehicleValue (not applicable)
+                            worksheet.Cells[row, 16].Value = string.Empty; // Placeholder for Guarantees (not applicable)
+                            worksheet.Cells[row, 17].Value = property.Validated ? 1 : 0; // Validity column
+                            row++;
+                        }
+                    }
+
+                    // Styling the header
+                    using (var range = worksheet.Cells[1, 1, 1, 17])
+                    {
+                        range.Style.Font.Bold = true;
+                        range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                    }
+
+                    // AutoFit columns
+                    worksheet.Cells.AutoFitColumns();
+
+                    // Save the Excel package
+                    var reportsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Reports");
+                    if (!Directory.Exists(reportsDirectory))
+                    {
+                        Directory.CreateDirectory(reportsDirectory);
+                    }
+                    var fileInfo = new FileInfo(filePath);
+                    await package.SaveAsAsync(fileInfo);
+                }
+            }
+            catch (IOException ex)
+            {
+                _logger.LogError(ex, $"Error saving file {filePath}. It might be in use by another process.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Unexpected error while saving file {filePath}.");
+            }
+        }
+
 
     }
 }

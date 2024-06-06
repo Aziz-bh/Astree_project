@@ -1,0 +1,101 @@
+@{
+    ViewData["Title"] = "Add Words";
+}
+
+<style>
+    /* Modern Design Styling */
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font choice */
+        background-color: #f4f4f4; /* Light background */
+        color: #333; /* Dark text for contrast */
+    }
+
+    .bg-image {
+        background-image: url('/img/fam1.png'); /* Replace with your desired background image */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+    }
+
+    .content-container, .form-container {
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .chat-container {
+        max-width: 800px; /* Limit chat width */
+        margin: 20px auto; /* Center the container */
+        background-color: #fff; /* White container */
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+        background-color: #333; /* Dark header */
+        color: #fff;
+        padding: 15px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .chat-header h1 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .form-container {
+        padding: 20px;
+        border-top: 1px solid #ddd; /* Subtle separator */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8 col-12">
+            <div class="content-container">
+                <div class="chat-header">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+
+                <div class="form-container">
+                    <form asp-action="AddWord" method="post">
+                        <div class="form-group">
+                            <label for="word">Word</label>
+                            <input type="text" class="form-control" id="word" name="word" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Word</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
