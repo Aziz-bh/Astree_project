@@ -317,5 +317,33 @@ public IActionResult AddContract()
         {
             return View();
         }
+        // POST: /User/EditRoles
+[HttpPost]
+public async Task<IActionResult> EditRoles(int id, string userName, string role)
+{
+    if (id == 0 || string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(role))
+    {
+        TempData["ErrorMessage"] = "User ID, username, and role are required.";
+        return RedirectToAction("Details", new { id = id });
+    }
+
+    var roleEditDto = new RoleEditDto
+    {
+        RoleNames = new List<string> { role }
+    };
+
+    try
+    {
+        await _userService.EditRolesAsync(userName, roleEditDto);
+        TempData["SuccessMessage"] = "User role updated successfully!";
+    }
+    catch (Exception ex)
+    {
+        TempData["ErrorMessage"] = $"Error updating user role: {ex.Message}";
+    }
+
+    return RedirectToAction("Details", new { id = id });
+}
+
     }
 }

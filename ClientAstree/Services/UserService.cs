@@ -95,5 +95,10 @@ namespace ClientAstree.Services
             AddBearerToken();
             await _client.UsersDELETEAsync(id);
         }
+        public async Task EditRolesAsync(string userName, RoleEditDto body)
+        {
+            AddBearerToken();
+            await _client.EditRolesAsync( userName,  body);
+        }
     }
 }

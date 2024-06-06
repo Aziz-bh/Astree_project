@@ -12,5 +12,6 @@ namespace ClientAstree.Contracts
         Task<UserVM> ProfileAsync();
 
         Task UpdateAsync(UserUpdateDTO body);
+        Task EditRolesAsync(string userName, RoleEditDto body);
     }
 }

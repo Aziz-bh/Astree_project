@@ -173,6 +173,24 @@
                     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
                 </div>
 
+                <!-- Add Role Editing Section -->
+                <div class="section-header">
+                    <i class="fas fa-user-shield"></i>
+                    <h4>Change User Role</h4>
+                </div>
+                <form asp-action="EditRoles" method="post">
+                    <input type="hidden" name="id" value="@Model.User.Id" />
+                    <input type="hidden" name="userName" value="@Model.User.Email" />
+                    <div class="form-group">
+                        <label for="role">Select Role</label>
+                        <select class="form-control" id="role" name="role">
+                            <option value="Admin">Admin</option>
+                            <option value="Member">Member</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Role</button>
+                </form>
+
                 <div class="section-header">
                     <i class="fas fa-car"></i>
                     <h4>Automobile Contracts</h4>
