@@ -61,6 +61,24 @@
         font-weight: bold;
     }
 
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        color: #fff; /* White text for all alerts */
+    }
+
+    .alert-success {
+        background-color: #28a745; /* Success background color */
+        border-color: #28a745;
+    }
+
+    .alert-danger {
+        background-color: #dc3545; /* Danger background color */
+        border-color: #dc3545;
+    }
+
     .btn-primary {
         background-color: #007bff;
         border-color: #007bff;
@@ -85,6 +103,20 @@
                 <div class="chat-header">
                     <h1>@ViewData["Title"]</h1>
                 </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
 
                 <div class="form-container">
                     <form asp-action="AddWord" method="post">

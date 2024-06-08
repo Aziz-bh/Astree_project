@@ -68,8 +68,31 @@
 
     h2 {
         margin-bottom: 20px;  /* Add some space above the title */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
+    .settings-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #1E3A7A; /* Color of the gear icon and text */
+        font-weight: 600;
+    }
+
+    .settings-link:hover {
+        color: #0056b3; /* Darker color on hover */
+    }
+
+    .settings-icon {
+        font-size: 1.2em; /* Adjust size as needed */
+        margin-right: 5px;
+    }
+
+    .settings-text {
+        font-size: 0.6em; /* Smaller text size */
+    }
 
 </style>
 
@@ -83,7 +106,13 @@
         <!-- Main Content Area -->
         <div class="col-lg-10 col-md-9 col-sm-8 col-12">
             <div class="content-container">
-                <h2>@ViewData["Title"]</h2>
+                <h2>
+                    @ViewData["Title"]
+                    <a asp-action="AddWords" class="settings-link">
+                        <i class="fas fa-cog settings-icon"></i>
+                        <span class="settings-text">Words detector</span>
+                    </a>
+                </h2>
                 <ul class="chat-room-list">
                     @foreach (var room in Model)
                     {

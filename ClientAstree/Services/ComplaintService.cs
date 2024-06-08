@@ -2,6 +2,9 @@ using AutoMapper;
 using ClientAstree.Contracts;
 using ClientAstree.Models;
 using ClientAstree.Services.Base;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ClientAstree.Services
 {
@@ -10,55 +13,62 @@ namespace ClientAstree.Services
         private readonly IMapper _mapper;
         private readonly IClient _httpClient;
         private readonly BadWordFilterService _badWordFilterService;
-         private readonly ILocalStorageService _localStorageService;
 
-           public ComplaintService(IMapper mapper, IClient httpclient, BadWordFilterService badWordFilterService,ILocalStorageService localStorageService) : base(httpclient, localStorageService)
+        public ComplaintService(IMapper mapper, IClient httpclient, BadWordFilterService badWordFilterService, IHttpContextAccessor httpContextAccessor)
+            : base(httpclient, httpContextAccessor)
         {
-            this._localStorageService = localStorageService;
-            this._mapper = mapper;
-            this._httpClient = httpclient;
+            _mapper = mapper;
+            _httpClient = httpclient;
             _badWordFilterService = badWordFilterService;
         }
 
         public async Task<ComplaintDto> SubmitComplaintAsync(FileParameter attachment, string description, string complaintsSubject)
-        {AddBearerToken();
-        var filteredDescription = _badWordFilterService.FilterBadWords(description);
+        {
+            AddBearerToken();
+            var filteredDescription = _badWordFilterService.FilterBadWords(description);
             return await _httpClient.SubmitAsync(attachment, filteredDescription, complaintsSubject);
         }
 
         public async Task<IEnumerable<ComplaintDto>> GetAllComplaintsAsync()
-        {AddBearerToken();
+        {
+            AddBearerToken();
             return await _httpClient.AllAsync();
         }
 
         public async Task UpdateComplaintStatusAsync(long id, ComplaintState state)
-        {AddBearerToken();
+        {
+            AddBearerToken();
             await _httpClient.UpdateStateAsync(id, state);
         }
 
         public async Task<IEnumerable<ComplaintDto>> GetUserComplaintsAsync()
-        {AddBearerToken();
+        {
+            AddBearerToken();
             return await _httpClient.MycomplaintsAsync();
         }
 
         public async Task<ComplaintDto> GetComplaintAsync(long id)
-        {AddBearerToken();
+        {
+            AddBearerToken();
             return await _httpClient.ComplaintsAsync(id);
         }
 
         public async Task DeleteComplaintAsync(long id)
-        {AddBearerToken();
+        {
+            AddBearerToken();
             await _httpClient.DeletecomplaintAsync(id);
         }
 
         public async Task UpdateComplaintAsync(long id, FileParameter attachment, string description, string complaintsSubject)
-        {AddBearerToken();
+        {
+            AddBearerToken();
             var filteredDescription = _badWordFilterService.FilterBadWords(description);
             await _httpClient.UpdatecomplaintAsync(id, attachment, filteredDescription, complaintsSubject);
         }
 
         public async Task<byte[]> GetComplaintAttachmentAsync(string fileName)
-        {AddBearerToken();
+        {
+            AddBearerToken();
             return null;
         }
     }

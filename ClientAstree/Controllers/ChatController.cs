@@ -75,35 +75,47 @@ namespace ClientAstree.Controllers
         }
 
         // New method to display the addWords view
-        public IActionResult AddWords()
-        {
-            return View();
-        }
 
-        // New method to handle adding a word to the Excel file
-        [HttpPost]
-        public async Task<IActionResult> AddWord(string word)
-        {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Words.xlsx");
 
-            using (var package = new ExcelPackage(new FileInfo(filePath)))
+public IActionResult AddWords()
+{
+    return View();
+}
+
+// New method to handle adding a word to the Excel file
+[HttpPost]
+public async Task<IActionResult> AddWord(string word)
+{
+    try
+    {
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Words.xlsx");
+
+        using (var package = new ExcelPackage(new FileInfo(filePath)))
+        {
+            var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Words");
+
+            // Find the first empty row
+            var row = 1;
+            while (worksheet.Cells[row, 1].Value != null)
             {
-                var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Words");
-
-                // Find the first empty row
-                var row = 1;
-                while (worksheet.Cells[row, 1].Value != null)
-                {
-                    row++;
-                }
-
-                worksheet.Cells[row, 1].Value = word;
-
-                // Save the Excel package
-                package.Save();
+                row++;
             }
 
-            return RedirectToAction("AddWords");
+            worksheet.Cells[row, 1].Value = word;
+
+            // Save the Excel package
+            package.Save();
         }
+
+        TempData["SuccessMessage"] = "Word added successfully!";
+    }
+    catch (Exception ex)
+    {
+        TempData["ErrorMessage"] = "Action failed: " + ex.Message;
+    }
+
+    return RedirectToAction("AddWords");
+}
+
     }
 }
