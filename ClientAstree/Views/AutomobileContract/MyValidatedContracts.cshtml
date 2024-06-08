@@ -87,6 +87,10 @@
         background-color: #1E3A7A; /* Primary color */
         border-color: #1E3A7A;
     }
+
+    .clickable-row {
+        cursor: pointer;
+    }
 </style>
 
 <div class="container-fluid bg-image">
@@ -153,7 +157,7 @@
                             {
                                 @foreach (var contract in Model)
                                 {
-                                    <tr>
+                                    <tr class="clickable-row" onclick="window.location.href='@Url.Action("ContractDetails", "AutomobileContract", new { id = contract.Id })'">
                                         <td>@contract.VehicleMake</td>
                                         <td>@contract.Model</td>
                                         <td>@contract.VehicleType</td>

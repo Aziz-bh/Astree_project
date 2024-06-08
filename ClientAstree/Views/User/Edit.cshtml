@@ -1,0 +1,97 @@
+@model ClientAstree.Services.Base.UserUpdateDTO
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<style>
+    .bg-image {
+        background-image: url('/img/fam1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh; /* Ensures it covers the full height of the viewport */
+    }
+
+    .content-container {
+        background-color: #fff; /* White background for content containers */
+        padding: 30px; /* Increased padding for spacious feel */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 80%; /* Limit the width of the main content container */
+        margin: 20px auto; /* Center the content container */
+    }
+
+    h2 {
+        color: #212529; /* Darker gray for headings */
+        font-size: 1.5rem; /* Heading size */
+        font-weight: 500; /* Font weight for headings */
+        margin-top: 20px;
+        text-align: center; /* Center-align the heading */
+    }
+
+    .btn {
+        transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for buttons */
+    }
+
+    .btn:hover { 
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Hover effect for buttons */
+    }
+</style>
+
+<div class="container-fluid bg-image">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="content-container">
+                <h2>Edit User</h2>
+                <form asp-action="Edit" method="post">
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Cin" class="control-label"></label>
+                        <input asp-for="Cin" class="form-control" />
+                        <span asp-validation-for="Cin" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BirthDate" class="control-label"></label>
+                        <input asp-for="BirthDate" class="form-control" type="date" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nationality" class="control-label"></label>
+                        <input asp-for="Nationality" class="form-control" />
+                        <span asp-validation-for="Nationality" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -343,7 +343,65 @@ public async Task<IActionResult> EditRoles(int id, string userName, string role)
     }
 
     return RedirectToAction("Details", new { id = id });
+    
 }
 
+
+        public IActionResult Mydues()
+        {
+            return View();
+        }
+
+         public IActionResult ViewContracts()
+        {
+            return View();
+        }
+
+
+        public async Task<IActionResult> Edit(int id)
+{
+    var user = await _userService.GetUserAsync(id); // Implement GetUserById in your service
+
+    if (user == null)
+    {
+        return NotFound();
+    }
+
+    var model = new UserUpdateDTO
+    {
+        FirstName = user.FirstName,
+        LastName = user.LastName,
+        Cin = user.CIN,
+        PhoneNumber = user.PhoneNumber,
+        Gender = Enum.Parse<UserGender>(user.Gender),
+        BirthDate = user.BirthDate,
+        Nationality = user.Nationality,
+        Civility = Enum.Parse<CivilStatus>(user.Civility)
+    };
+
+    return View(model);
+}
+
+[HttpPost]
+public async Task<IActionResult> Edit(UserUpdateDTO model)
+{
+    if (!ModelState.IsValid)
+    {
+        return View(model);
+    }
+
+    try
+    {
+        await _userService.UpdateAsync(model);
+        TempData["SuccessMessage"] = "User updated successfully!";
+    }
+    catch (Exception ex)
+    {
+        TempData["ErrorMessage"] = "Error updating user: " + ex.Message;
+        return View(model);
+    }
+
+    return RedirectToAction("Index");
+}
     }
 }

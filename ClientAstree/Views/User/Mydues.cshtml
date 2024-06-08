@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Contract Management";
+    ViewData["Title"] = "My Dues";
 }
 
 <style>
@@ -65,22 +65,22 @@
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container">
                 <div class="title text-center">
-                    <h2>Contract Management</h2>
-                    <h4 class="description">Select the action you want to perform.</h4>
+                    <h2>My Dues</h2>
+                    <h4 class="description">Select the type of contract dues you want to view.</h4>
                 </div>
 
                 <div class="row card-container">
                     <div class="col-md-4">
                         <div class="card card-pricing">
                             <div class="card-body">
-                                <img class="card-img" src="/img/dashboard/add.png" alt="Add Contract">
-                                <h5 class="category text-primary">Add Contract</h5>
+                                <img class="card-img" src="/img/dashboard/car-insurance.png" alt="Automobile Contract">
+                                <h5 class="category text-primary">Automobile Contract Dues</h5>
                                 <ul>
-                                    <li class="text-primary">Create a new contract</li>
-                                    <li class="text-primary">Enter contract details</li>
+                                    <li class="text-primary">Automobile contract dues</li>
+                                    <li class="text-primary">Details of expiring contracts</li>
                                 </ul>
-                                <a href="/User/AddContract" class="btn btn-primary btn-round">
-                                    Add Contract
+                                <a href="/AutomobileContract/MyValidatedContracts" class="btn btn-primary btn-round">
+                                    View Automobile Dues
                                 </a>
                             </div>
                         </div>
@@ -89,14 +89,14 @@
                     <div class="col-md-4">
                         <div class="card card-pricing card-raised">
                             <div class="card-body text-white">
-                                <img class="card-img" src="/img/dashboard/view.png" alt="View Contracts">
-                                <h5 class="category text-white">View Contracts</h5>
+                                <img class="card-img" src="/img/dashboard/home-insurance.png" alt="Property Contract">
+                                <h5 class="category text-white">Property Contract Dues</h5>
                                 <ul>
-                                    <li class="text-white">View existing contracts</li>
-                                    <li class="text-white">Edit or delete contracts</li>
+                                    <li class="text-white">Property contract dues</li>
+                                    <li class="text-white">Details of expiring contracts</li>
                                 </ul>
-                                <a href="/User/ViewContracts" class="btn btn-neutral btn-round text-primary">
-                                    View Contracts
+                                <a href="/PropertyContract/MyValidatedContracts" class="btn btn-neutral btn-round text-primary">
+                                    View Property Dues
                                 </a>
                             </div>
                         </div>
