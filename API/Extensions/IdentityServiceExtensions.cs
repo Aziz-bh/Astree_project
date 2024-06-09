@@ -1,6 +1,6 @@
 using System.Text;
-using API.Models;
-using API.Persistence;
+using Data.Models;
+using Data.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

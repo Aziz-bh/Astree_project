@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace API.Migrations.AstreeDb
+namespace Data.Migrations.AstreeDb
 {
     public partial class ContractNewAttribute : Migration
     {

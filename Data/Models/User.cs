@@ -13,12 +13,6 @@ namespace Data.Models
             NA
         }
 
-        public enum UserRole
-        {
-            Admin,
-            Moderator,
-            User
-        }
 
         public enum CivilStatus
         {
@@ -30,7 +24,6 @@ namespace Data.Models
 
         public User()
         {
-            Role = UserRole.User;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -69,9 +62,6 @@ namespace Data.Models
         [JsonConverter(typeof (JsonStringEnumConverter))]
         public UserGender? Gender { get; set; }
 
-        [JsonConverter(typeof (JsonStringEnumConverter))]
-        public UserRole? Role { get; set; }
-
         [Required]
         public DateTime BirthDate { get; set; }
 
@@ -81,11 +71,21 @@ namespace Data.Models
         [JsonConverter(typeof (JsonStringEnumConverter))]
         public CivilStatus? Civility { get; set; }
 
+        public string? VerificationToken  { get; set; }
+
+        public DateTime? VerifiedAt { get; set; }
+
+        public string?  PasswordRestToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
+
         public Boolean? IsDeleted { get; set; }
 
         public DateTime? CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
+        public virtual ICollection<Complaint> Complaints { get; set; }
+        public virtual ICollection<Contract> Contracts { get; set; }
+        
     }
 }

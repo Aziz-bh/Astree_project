@@ -1,6 +1,6 @@
 
 using API.Interfaces;
-using API.Persistence;
+using Data.Persistence;
 using API.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;

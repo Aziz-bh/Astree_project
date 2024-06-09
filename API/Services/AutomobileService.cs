@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Interfaces;
-using API.Models;
-using API.Persistence;
+using Data.Models;
+using Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using QRCoder;
 using System.Drawing;

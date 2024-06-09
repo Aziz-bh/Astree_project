@@ -1,8 +1,8 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using API.Interfaces;
-using API.Models;
-using API.Persistence;
+using Data.Models;
+using Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using QRCoder;
 

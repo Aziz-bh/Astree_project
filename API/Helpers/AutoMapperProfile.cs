@@ -1,5 +1,5 @@
 using API.DTOs;
-using API.Models;
+using Data.Models;
 using AutoMapper;
 
 public class AutoMapperProfile : Profile

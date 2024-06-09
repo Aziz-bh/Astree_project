@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Models
+namespace Data.Models
 {
     [Flags]
     public enum Guarantees

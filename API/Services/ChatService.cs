@@ -1,6 +1,6 @@
 using API.DTOs;
-using API.Models;
-using API.Persistence;
+using Data.Models;
+using Data.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
