@@ -23,6 +23,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
-    <ProjectReference Include="..\API\API.csproj" />
+    <!-- <ProjectReference Include="..\API\API.csproj" /> -->
   </ItemGroup>
 </Project>

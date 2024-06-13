@@ -1,249 +1,94 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using API.DTOs;
-using Data.Models;
-using Data.Persistence;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
     // [Authorize]
     public class UsersController : BaseApiController
     {
-        private readonly AstreeDbContext _context;
+        private readonly IUserService _userService;
 
-        private readonly UserManager<User> _userManager;
-
-        public UsersController(
-            UserManager<User> userManager,
-            AstreeDbContext context
-        )
+        public UsersController(IUserService userService)
         {
-            _context = context;
-            _userManager = userManager;
+            _userService = userService;
         }
 
         // [Authorize(Roles = "Admin")]
         [HttpGet]
-public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
-{
-    // Fetch users excluding deleted ones
-    var users = await _context.Users
-        .Where(u => !(bool)u.IsDeleted)
-        .ToListAsync();
-
-    // Prepare a list to hold the UserDto objects
-    var userDtos = new List<UserDto>();
-
-    foreach (var user in users)
-    {
-         
-
-        var roles = await _userManager.GetRolesAsync(user); 
-
-        var userDto = new UserDto
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
-            Id = user.Id,
-            UserName = user.UserName,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            PhoneNumber = user.PhoneNumber,
-            Picture = user.Picture,
-            CIN = user.CIN,
-            Gender = user.Gender.HasValue ? user.Gender.Value.ToString() : null, 
-            BirthDate = user.BirthDate,
-            Nationality = user.Nationality,
-            Civility = user.Civility.HasValue ? user.Civility.Value.ToString() : null, 
-            Roles = roles.ToList()
-        };
-
-        userDtos.Add(userDto);
-    }
-
-    return Ok(userDtos);
-}
-
+            var users = await _userService.GetUsers();
+            return Ok(users);
+        }
 
         // [Authorize(Roles = "Member, Admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null || (bool) user.IsDeleted)
+            try
             {
-                return NotFound();
+                var user = await _userService.GetUserById(id);
+                return Ok(user);
             }
-
-
-            var roles = await _userManager.GetRolesAsync(user);
-
-            var userDto =
-                new UserDto {
-            Id = user.Id,
-            UserName = user.UserName,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            PhoneNumber = user.PhoneNumber,
-            Picture = user.Picture,
-            CIN = user.CIN,
-            Gender = user.Gender.HasValue ? user.Gender.Value.ToString() : null, 
-            BirthDate = user.BirthDate,
-            Nationality = user.Nationality,
-            Civility = user.Civility.HasValue ? user.Civility.Value.ToString() : null, 
-            Roles = roles.ToList()
-                };
-
-            return Ok(userDto);
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-
-                [HttpGet("profile")]
+        [HttpGet("profile")]
         public async Task<ActionResult<UserDto>> GetProfile()
         {
-            // Retrieve user email from the token
-            var email =
-                HttpContext
-                    .User?
-                    .Claims?
-                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
-                    .Value;
+            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(email))
             {
                 return Unauthorized("Invalid token information");
             }
 
-   
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+            try
             {
-                return NotFound($"User with email {email} not found.");
+                var user = await _userService.GetProfile(email);
+                return Ok(user);
             }
-
-            if (user == null || (bool)user.IsDeleted)
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            var roles = await _userManager.GetRolesAsync(user);
-            var userDto = new UserDto
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber,
-                Picture = user.Picture,
-                CIN = user.CIN,
-                Gender = user.Gender.HasValue ? user.Gender.Value.ToString() : null,
-                BirthDate = user.BirthDate,
-                Nationality = user.Nationality,
-                Civility = user.Civility.HasValue ? user.Civility.Value.ToString() : null,
-                Roles = roles.ToList()
-            };
-
-            return Ok(userDto);
         }
-
-
-
 
         // [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser([FromBody] User user)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto userDto)
         {
-            if (user == null)
+            if (userDto == null)
             {
                 return BadRequest("Invalid user data");
             }
 
-            _context.Users.Add (user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            var createdUser = await _userService.CreateUser(userDto);
+            return CreatedAtAction(nameof(GetUser), new { id = createdUser.Id }, createdUser);
         }
 
         // [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult>
-        UpdateUser(int id, [FromBody] UserUpdateDTO userUpdateDTO)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDTO userUpdateDTO)
         {
             if (userUpdateDTO == null)
             {
                 return BadRequest("Invalid user data");
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var success = await _userService.UpdateUser(id, userUpdateDTO);
+            if (!success)
             {
                 return NotFound();
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.FirstName))
-            {
-                user.FirstName = userUpdateDTO.FirstName;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.LastName))
-            {
-                user.LastName = userUpdateDTO.LastName;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.CIN))
-            {
-                user.CIN = userUpdateDTO.CIN;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.PhoneNumber))
-            {
-                user.PhoneNumber = userUpdateDTO.PhoneNumber;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Picture))
-            {
-                user.Picture = userUpdateDTO.Picture;
-            }
-            if (userUpdateDTO.Gender.HasValue)
-            {
-                user.Gender = userUpdateDTO.Gender.Value;
-            }
-            if (userUpdateDTO.BirthDate.HasValue)
-            {
-                user.BirthDate = userUpdateDTO.BirthDate.Value;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Nationality))
-            {
-                user.Nationality = userUpdateDTO.Nationality;
-            }
-            if (userUpdateDTO.Civility.HasValue)
-            {
-                user.Civility = userUpdateDTO.Civility.Value;
-            }
-
-            user.UpdatedAt = DateTime.UtcNow;
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Users.Any(e => e.Id == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
             }
 
             return NoContent();
@@ -251,74 +96,19 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
 
         // [Authorize(Roles = "Member")]
         [HttpPut("update")]
-        public async Task<IActionResult>
-        UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO userUpdateDTO)
         {
-
-            var email =
-                HttpContext
-                    .User?
-                    .Claims?
-                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?
-                    .Value;
+            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(email))
             {
                 return Unauthorized("Invalid token information");
             }
 
-   
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+            var success = await _userService.UpdateUserProfile(email, userUpdateDTO);
+            if (!success)
             {
                 return NotFound($"User with email {email} not found.");
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.FirstName))
-            {
-                user.FirstName = userUpdateDTO.FirstName;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.LastName))
-            {
-                user.LastName = userUpdateDTO.LastName;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.CIN))
-            {
-                user.CIN = userUpdateDTO.CIN;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.PhoneNumber))
-            {
-                user.PhoneNumber = userUpdateDTO.PhoneNumber;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Picture))
-            {
-                user.Picture = userUpdateDTO.Picture;
-            }
-            if (userUpdateDTO.Gender.HasValue)
-            {
-                user.Gender = userUpdateDTO.Gender.Value;
-            }
-            if (userUpdateDTO.BirthDate.HasValue)
-            {
-                user.BirthDate = userUpdateDTO.BirthDate.Value;
-            }
-            if (!string.IsNullOrWhiteSpace(userUpdateDTO.Nationality))
-            {
-                user.Nationality = userUpdateDTO.Nationality;
-            }
-            if (userUpdateDTO.Civility.HasValue)
-            {
-                user.Civility = userUpdateDTO.Civility.Value;
-            }
-
-
-            user.UpdatedAt = DateTime.UtcNow;
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
             }
 
             return NoContent();
@@ -328,14 +118,11 @@ public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var success = await _userService.DeleteUser(id);
+            if (!success)
             {
                 return NotFound();
             }
-
-            user.IsDeleted = true;
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

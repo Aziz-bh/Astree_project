@@ -1,25 +1,26 @@
 using System.Security.Claims;
 using API.DTOs;
+using API.Interfaces;
 using Data.Models;
 using Data.Persistence;
-using API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
     public class ChatController : BaseApiController
     {
-        private readonly ChatService _chatService;
-
+        private readonly IChatService _chatService;
         private readonly UserManager<User> _userManager;
-
         private readonly AstreeDbContext _context;
 
         public ChatController(
-            ChatService chatService,
+            IChatService chatService,
             UserManager<User> userManager,
             AstreeDbContext context
         )
@@ -31,14 +32,11 @@ namespace API.Controllers
 
         [HttpPost("send")]
         [Authorize(Roles = "Member,Admin")]
-        // [Authorize(Roles = "Member,Admin")]
-        public async Task<IActionResult>
-        SendMessage([FromBody] SendMessageDto messageDto)
+        public async Task<IActionResult> SendMessage([FromBody] SendMessageDto messageDto)
         {
             var email = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var chatRoomId =
-                await _chatService.FindOrCreateChatRoomForUserAsync(email);
+            var chatRoomId = await _chatService.FindOrCreateChatRoomForUserAsync(email);
 
             if (chatRoomId <= 0)
             {
@@ -58,68 +56,57 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpPost("send/{email}")]
+        [Authorize(Roles = "Member,Admin")]
+        public async Task<IActionResult> SendMessage2([FromBody] SendMessageDto messageDto, [FromRoute] string email)
+        {
+            var chatRoomId = await _chatService.FindOrCreateChatRoomForUserAsync(email);
 
-[HttpPost("send/{email}")]
-[Authorize(Roles = "Member,Admin")]
-public async Task<IActionResult> SendMessage2([FromBody] SendMessageDto messageDto, [FromRoute] string email)
-{
-    var chatRoomId = await _chatService.FindOrCreateChatRoomForUserAsync(email);
+            if (chatRoomId <= 0)
+            {
+                return BadRequest("Unable to find or create a chat room.");
+            }
 
-    if (chatRoomId <= 0)
-    {
-        return BadRequest("Unable to find or create a chat room.");
-    }
+            messageDto.ChatRoomId = chatRoomId;
 
-    messageDto.ChatRoomId = chatRoomId;
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
 
-    var user = await _userManager.FindByEmailAsync(email);
-    if (user == null)
-    {
-        return Unauthorized("User not found.");
-    }
+            await _chatService.AddMessageAsync(user.Id, messageDto);
 
-    await _chatService.AddMessageAsync(user.Id, messageDto);
-
-    return Ok();
-}
-
-
+            return Ok();
+        }
 
         [HttpGet("{chatRoomId}")]
         [Authorize(Roles = "Member,Admin")]
-        // [Authorize(Roles = "Member,Admin")]
-        public async Task<ActionResult<IEnumerable<ChatMessageDto>>>
-        GetMessages(int chatRoomId)
+        public async Task<ActionResult<IEnumerable<ChatMessageDto>>> GetMessages(int chatRoomId)
         {
-            var messages =
-                await _context
-                    .ChatMessages
-                    .Where(m => m.ChatRoomId == chatRoomId)
-                    .OrderBy(m => m.Timestamp)
-                    .Select(m =>
-                        new ChatMessageDto {
-                            Content = m.Content,
-                            Timestamp = m.Timestamp,
-                            UserName = m.User.UserName
-                        })
-                    .ToListAsync();
+            var messages = await _context.ChatMessages
+                .Where(m => m.ChatRoomId == chatRoomId)
+                .OrderBy(m => m.Timestamp)
+                .Select(m => new ChatMessageDto
+                {
+                    Content = m.Content,
+                    Timestamp = m.Timestamp,
+                    UserName = m.User.UserName
+                })
+                .ToListAsync();
 
             return Ok(messages);
         }
 
         [HttpPost("send/admin/{chatRoomId}")]
         [Authorize(Roles = "Member,Admin")]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult>
-        SendAdminMessage(int chatRoomId, [FromBody] SendMessageDto messageDto)
+        public async Task<IActionResult> SendAdminMessage(int chatRoomId, [FromBody] SendMessageDto messageDto)
         {
-            // This ensures that only admins can access this method
             if (!User.IsInRole("Admin"))
             {
                 return Unauthorized("Only admins can send messages to any chat room.");
             }
 
-            // Check if the chat room exists
             var chatRoomExists = await _chatService.ChatRoomExists(chatRoomId);
             if (!chatRoomExists)
             {
@@ -133,7 +120,6 @@ public async Task<IActionResult> SendMessage2([FromBody] SendMessageDto messageD
                 return Unauthorized("User not found.");
             }
 
-            // Setting the chatRoomId from the method parameter
             messageDto.ChatRoomId = chatRoomId;
 
             await _chatService.AddMessageAsync(user.Id, messageDto);
@@ -141,70 +127,43 @@ public async Task<IActionResult> SendMessage2([FromBody] SendMessageDto messageD
             return Ok();
         }
 
+        [HttpPost("admin/{chatRoomId}")]
+        public async Task<IActionResult> SendAdminMessage2(int chatRoomId, [FromBody] SendMessageDto messageDto, [FromQuery] string userEmail)
+        {
+            var chatRoomExists = await _chatService.ChatRoomExists(chatRoomId);
+            if (!chatRoomExists)
+            {
+                return NotFound($"ChatRoom with Id {chatRoomId} not found.");
+            }
 
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
 
-[HttpPost("admin/{chatRoomId}")]
-// [Authorize(Roles = "Member,Admin")]
-public async Task<IActionResult> SendAdminMessage2(int chatRoomId, [FromBody] SendMessageDto messageDto, [FromQuery] string userEmail)
-{
-    // Ensure only admins can access this method
-    // if (!User.IsInRole("Admin"))
-    // {
-    //     return Unauthorized("Only admins can send messages to any chat room.");
-    // }
+            messageDto.ChatRoomId = chatRoomId;
 
-    // Check if the chat room exists
-    var chatRoomExists = await _chatService.ChatRoomExists(chatRoomId);
-    if (!chatRoomExists)
-    {
-        return NotFound($"ChatRoom with Id {chatRoomId} not found.");
-    }
+            await _chatService.AddMessageAsync(user.Id, messageDto);
 
-    var user = await _userManager.FindByEmailAsync(userEmail);
-    if (user == null)
-    {
-        return Unauthorized("User not found.");
-    }
-
-    // Setting the chatRoomId from the method parameter
-    messageDto.ChatRoomId = chatRoomId;
-
-    await _chatService.AddMessageAsync(user.Id, messageDto);
-
-    return Ok();
-}
-
+            return Ok();
+        }
 
         [HttpGet("chatrooms")]
-       // [Authorize(Roles = "Member,Admin")]
-        // [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<ChatRoomDto>>>
-        GetAllChatRooms()
+        public async Task<ActionResult<IEnumerable<ChatRoomDto>>> GetAllChatRooms()
         {
-            // This ensures that only admins can access this method
-            // if (!User.IsInRole("Admin"))
-            // {
-            //     return Unauthorized("Only admins can access chat room details.");
-            // }
-
-            var chatRooms =
-                await _context
-                    .ChatRooms
-                    .Select(cr =>
-                        new ChatRoomDto { Id = cr.Id, Name = cr.Name })
-                    .ToListAsync();
+            var chatRooms = await _context.ChatRooms
+                .Select(cr => new ChatRoomDto { Id = cr.Id, Name = cr.Name })
+                .ToListAsync();
 
             return Ok(chatRooms);
         }
 
         [HttpGet("userchatroom")]
-        
-        // [Authorize(Roles = "Member")]
         public async Task<ActionResult<ChatRoomWithMessagesDto>> GetMyChatRoom()
         {
             var email = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var chatRoomDto =
-                await _chatService.GetOrCreateChatRoomForUserAsync(email);
+            var chatRoomDto = await _chatService.GetOrCreateChatRoomForUserAsync(email);
             return Ok(chatRoomDto);
         }
     }

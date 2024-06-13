@@ -13,9 +13,7 @@ namespace API.Controllers
     public class PropertyController : BaseApiController
     {
         private readonly IPropertyService _propertyService;
-
         private readonly UserManager<User> _userManager;
-
         private readonly AstreeDbContext _context;
 
         public PropertyController(
@@ -29,12 +27,12 @@ namespace API.Controllers
             _context = context;
         }
 
-        // Example: Get all properties
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllProperties()
         {
             var properties = await _propertyService.GetAllPropertiesAsync();
-            return Ok(properties);
+            var propertyDtos = properties.Select(MapToPropertyDto).ToList();
+            return Ok(propertyDtos);
         }
 
         [HttpGet("{id}")]
@@ -46,26 +44,10 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            var propertyDto =
-                new PropertyDto {
-                    // Assign all other necessary fields from the property to the DTO
-                        Id = property.Id,
-                        ContractType = property.ContractType,
-                        StartDate = property.StartDate,
-                        EndDate = property.EndDate,
-                        Quota = property.Quota,
-                        Location = property.Location,
-                        Type = property.Type,
-                        YearOfConstruction = property.YearOfConstruction,
-                        PropertyValue = property.PropertyValue,
-                        Coverage = property.Coverage,
-                        UserId = property.UserId // This will be used to generate CoveragesList
-                };
-
+            var propertyDto = MapToPropertyDto(property);
             return Ok(propertyDto);
         }
 
-        // Example: Create a new property
         [HttpPost]
         public async Task<ActionResult<PropertyDto>> CreateProperty([FromBody] PropertyDto propertyDto)
         {
@@ -74,17 +56,13 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Get user email from JWT token
             var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Fetch user by email
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null)
             {
                 return Unauthorized("User not found.");
             }
 
-            // Business rule validations
             if (propertyDto.EndDate <= propertyDto.StartDate)
             {
                 return BadRequest("End date must be later than start date.");
@@ -95,39 +73,12 @@ namespace API.Controllers
                 return BadRequest("Property value must be a positive number.");
             }
 
-            // Map from DTO to domain model
-            var property = new Property
-            {
-                UserId = user.Id,
-                StartDate = propertyDto.StartDate,
-                EndDate = propertyDto.EndDate,
-                Quota = 0,
-                Location = propertyDto.Location,
-                Type = propertyDto.Type,
-                YearOfConstruction = propertyDto.YearOfConstruction,
-                PropertyValue = propertyDto.PropertyValue,
-                Coverage = propertyDto.Coverage
-            };
+            var property = MapToProperty(propertyDto, user.Id);
 
             try
             {
                 var createdProperty = await _propertyService.CreatePropertyAsync(property);
-
-                var returnDto = new PropertyDto
-                {
-                    Id = createdProperty.Id,
-                    ContractType = createdProperty.ContractType,
-                    StartDate = createdProperty.StartDate,
-                    EndDate = createdProperty.EndDate,
-                    Quota = createdProperty.Quota,
-                    Location = createdProperty.Location,
-                    Type = createdProperty.Type,
-                    YearOfConstruction = createdProperty.YearOfConstruction,
-                    PropertyValue = createdProperty.PropertyValue,
-                    Coverage = createdProperty.Coverage,
-                    UserId = createdProperty.UserId
-                };
-
+                var returnDto = MapToPropertyDto(createdProperty);
                 return CreatedAtAction(nameof(GetPropertyById), new { id = createdProperty.Id }, returnDto);
             }
             catch (ArgumentException ex)
@@ -135,7 +86,6 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProperty(long id, [FromBody] PropertyUpdateDto updateDto)
@@ -151,7 +101,6 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            // Business rule validations
             if (updateDto.EndDate <= updateDto.StartDate)
             {
                 return BadRequest("End date must be later than start date.");
@@ -162,22 +111,13 @@ namespace API.Controllers
                 return BadRequest("Property value must be a positive number.");
             }
 
-            // Map the updated fields from the DTO to the property entity
-            property.StartDate = updateDto.StartDate;
-            property.EndDate = updateDto.EndDate;
-            property.Location = updateDto.Location;
-            property.Type = updateDto.Type;
-            property.YearOfConstruction = updateDto.YearOfConstruction;
-            property.PropertyValue = updateDto.PropertyValue;
-            property.Coverage = updateDto.Coverage;
+            MapUpdateDtoToProperty(property, updateDto);
 
-            // Perform the update operation
             await _propertyService.UpdatePropertyAsync(property);
 
-            return NoContent(); // or return appropriate response
+            return NoContent();
         }
 
-        // Example: Delete a property
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProperty(long id)
         {
@@ -194,196 +134,152 @@ namespace API.Controllers
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<PropertyDto>>> GetPropertiesByUserId(int userId)
         {
-            var properties =
-                await _propertyService.GetPropertiesByUserIdAsync(userId);
+            var properties = await _propertyService.GetPropertiesByUserIdAsync(userId);
             if (properties == null || !properties.Any())
             {
                 return NotFound($"No properties found for user ID {userId}.");
             }
- 
-                                var propertyDtos =
-                properties
-                    .Select(property =>
-                        new PropertyDto {
-                        // Manual mapping from createdProperty to returnDto
-                        Id = property.Id,
-                        ContractType = property.ContractType,
-                        StartDate = property.StartDate,
-                        EndDate = property.EndDate,
-                        Quota = property.Quota,
-                        Location = property.Location,
-                        Type = property.Type,
-                        YearOfConstruction = property.YearOfConstruction,
-                        PropertyValue = property.PropertyValue,
-                        Coverage = property.Coverage,
-                        UserId = property.UserId // Make sure PropertyDto has a UserId property.
-                    })
-                    .ToList();
-            // Optionally, map the properties to DTOs if you're not sending entities directly
+
+            var propertyDtos = properties.Select(MapToPropertyDto).ToList();
             return Ok(propertyDtos);
         }
 
         [HttpGet("mycontracts")]
-        public async Task<ActionResult<IEnumerable<PropertyDto>>> mycontracts()
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> MyContracts()
         {
-            var userEmail =
-                HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null)
             {
                 return Unauthorized("User not found.");
             }
 
-            var properties =
-                await _propertyService.GetPropertiesByUserIdAsync(user.Id);
+            var properties = await _propertyService.GetPropertiesByUserIdAsync(user.Id);
             if (properties == null || !properties.Any())
             {
                 return NotFound($"No properties found for user ID {user.Id}.");
             }
 
-            // Map properties to PropertyDto list
-            var propertyDtos =
-                properties
-                    .Select(property =>
-                        new PropertyDto {
-                            // Assign all other necessary fields from the property to the DTO
-                              Id = property.Id,
-                        ContractType = property.ContractType,
-                        StartDate = property.StartDate,
-                        EndDate = property.EndDate,
-                        Quota = property.Quota,
-                        Location = property.Location,
-                        Type = property.Type,
-                        YearOfConstruction = property.YearOfConstruction,
-                        PropertyValue = property.PropertyValue,
-                        Coverage = property.Coverage,
-                        UserId = property.UserId 
-                            // Make sure to include any additional fields that PropertyDto expects
-                            // and are available in the Property entity
-                        })
-                    .ToList();
-
+            var propertyDtos = properties.Select(MapToPropertyDto).ToList();
             return Ok(propertyDtos);
         }
 
-        // Add other actions as necessary...
-[HttpGet("{id}/qr")]
-public async Task<IActionResult> GetPropertyContractQrCode(long id)
-{
-    var property = await _propertyService.GetPropertyByIdAsync(id);
-    if (property == null)
-    {
-        return NotFound();
-    }
-
-    var contractUrl = $"https://localhost:7054/PropertyContract/Details/{id}";
-    var qrCodeBytes = _propertyService.GeneratePropertyContractQRCode(contractUrl);
-    return File(qrCodeBytes, "image/png");
-}
-
-
-
-            [HttpPost("{id}/validate")]
-            public async Task<IActionResult> ValidatePropertyContract(long id)
+        [HttpGet("{id}/qr")]
+        public async Task<IActionResult> GetPropertyContractQrCode(long id)
+        {
+            var property = await _propertyService.GetPropertyByIdAsync(id);
+            if (property == null)
             {
-                try
-                {
-                    await _propertyService.ValidateContractAsync(id);
-                    return NoContent();
-                }
-                catch (KeyNotFoundException ex)
-                {
-                    return NotFound(ex.Message);
-                }
+                return NotFound();
             }
 
-[HttpGet("validated")]
-public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllValidatedProperties()
-{
-    var properties = await _propertyService.GetAllValidatedPropertiesAsync();
-    var propertyDtos = properties.Select(property => new PropertyDto
-    {
-        Id = property.Id,
-        ContractType = property.ContractType,
-        StartDate = property.StartDate,
-        EndDate = property.EndDate,
-        Quota = property.Quota,
-        Location = property.Location,
-        Type = property.Type,
-        YearOfConstruction = property.YearOfConstruction,
-        PropertyValue = property.PropertyValue,
-        Coverage = property.Coverage,
-        UserId = property.UserId
-    }).ToList();
+            var contractUrl = $"https://localhost:7054/PropertyContract/Details/{id}";
+            var qrCodeBytes = _propertyService.GeneratePropertyContractQRCode(contractUrl);
+            return File(qrCodeBytes, "image/png");
+        }
 
-    return Ok(propertyDtos);
-}
+        [HttpPost("{id}/validate")]
+        public async Task<IActionResult> ValidatePropertyContract(long id)
+        {
+            try
+            {
+                await _propertyService.ValidateContractAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
 
-[HttpGet("unvalidated")]
-public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllUnvalidatedProperties()
-{
-    var properties = await _propertyService.GetAllUnvalidatedPropertiesAsync();
-    var propertyDtos = properties.Select(property => new PropertyDto
-    {
-        Id = property.Id,
-        ContractType = property.ContractType,
-        StartDate = property.StartDate,
-        EndDate = property.EndDate,
-        Quota = property.Quota,
-        Location = property.Location,
-        Type = property.Type,
-        YearOfConstruction = property.YearOfConstruction,
-        PropertyValue = property.PropertyValue,
-        Coverage = property.Coverage,
-        UserId = property.UserId
-    }).ToList();
+        [HttpGet("validated")]
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllValidatedProperties()
+        {
+            var properties = await _propertyService.GetAllValidatedPropertiesAsync();
+            var propertyDtos = properties.Select(MapToPropertyDto).ToList();
+            return Ok(propertyDtos);
+        }
 
-    return Ok(propertyDtos);
-}
+        [HttpGet("unvalidated")]
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetAllUnvalidatedProperties()
+        {
+            var properties = await _propertyService.GetAllUnvalidatedPropertiesAsync();
+            var propertyDtos = properties.Select(MapToPropertyDto).ToList();
+            return Ok(propertyDtos);
+        }
 
-[HttpGet("mycontracts/validated")]
-public async Task<ActionResult<IEnumerable<PropertyDto>>> GetUserValidatedProperties()
-{
-    var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-    var user = await _userManager.FindByEmailAsync(userEmail);
-    if (user == null)
-    {
-        return Unauthorized("User not found.");
-    }
+        [HttpGet("mycontracts/validated")]
+        public async Task<ActionResult<IEnumerable<PropertyDto>>> GetUserValidatedProperties()
+        {
+            var userEmail = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return Unauthorized("User not found.");
+            }
 
-    var properties = await _propertyService.GetUserValidatedPropertiesAsync(user.Id);
-    var propertyDtos = properties.Select(property => new PropertyDto
-    {
-        Id = property.Id,
-        ContractType = property.ContractType,
-        StartDate = property.StartDate,
-        EndDate = property.EndDate,
-        Quota = property.Quota,
-        Location = property.Location,
-        Type = property.Type,
-        YearOfConstruction = property.YearOfConstruction,
-        PropertyValue = property.PropertyValue,
-        Coverage = property.Coverage,
-        UserId = property.UserId
-    }).ToList();
+            var properties = await _propertyService.GetUserValidatedPropertiesAsync(user.Id);
+            var propertyDtos = properties.Select(MapToPropertyDto).ToList();
+            return Ok(propertyDtos);
+        }
 
-    return Ok(propertyDtos);
-}
+        [HttpPost("{id}/unvalidate")]
+        public async Task<IActionResult> UnvalidatePropertyContract(long id)
+        {
+            try
+            {
+                await _propertyService.UnvalidateContractAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
 
-[HttpPost("{id}/unvalidate")]
-public async Task<IActionResult> UnvalidatePropertyContract(long id)
-{
-    try
-    {
-        await _propertyService.UnvalidateContractAsync(id);
-        return NoContent();
-    }
-    catch (KeyNotFoundException ex)
-    {
-        return NotFound(ex.Message);
-    }
-}
+        private PropertyDto MapToPropertyDto(Property property)
+        {
+            return new PropertyDto
+            {
+                Id = property.Id,
+                ContractType = property.ContractType,
+                StartDate = property.StartDate,
+                EndDate = property.EndDate,
+                Quota = property.Quota,
+                Location = property.Location,
+                Type = property.Type,
+                YearOfConstruction = property.YearOfConstruction,
+                PropertyValue = property.PropertyValue,
+                Coverage = property.Coverage,
+                UserId = property.UserId
+            };
+        }
 
+        private Property MapToProperty(PropertyDto dto, int userId)
+        {
+            return new Property
+            {
+                UserId = userId,
+                StartDate = dto.StartDate,
+                EndDate = dto.EndDate,
+                Quota = dto.Quota,
+                Location = dto.Location,
+                Type = dto.Type,
+                YearOfConstruction = dto.YearOfConstruction,
+                PropertyValue = dto.PropertyValue,
+                Coverage = dto.Coverage
+            };
+        }
 
+        private void MapUpdateDtoToProperty(Property property, PropertyUpdateDto updateDto)
+        {
+            property.StartDate = updateDto.StartDate;
+            property.EndDate = updateDto.EndDate;
+            property.Location = updateDto.Location;
+            property.Type = updateDto.Type;
+            property.YearOfConstruction = updateDto.YearOfConstruction;
+            property.PropertyValue = updateDto.PropertyValue;
+            property.Coverage = updateDto.Coverage;
+        }
     }
 }

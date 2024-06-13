@@ -21,6 +21,10 @@ namespace API.Extensions
             
             services.AddScoped<IAutomobileService, AutomobileService>();
             services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IChatService, ChatService>();
+
+
             services.AddScoped<ChatService>();
             services
                 .AddDbContext<AstreeDbContext>(options =>
