@@ -44,107 +44,73 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5MGNCRXP"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0 py-0" >
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ClientAstree</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-0 py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ClientAstree</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        foreach (var claim in User.Claims)
+                        {
+                            if (claim.Type == "role")
+                            {
+                                if (claim.Value == "Member")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-controller="User" asp-action="Profile">Profile</a>
+                                    </li>
+                                }
+                                else if (claim.Value == "Admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-controller="User" asp-action="Dashboard">Dashboard</a>
+                                    </li>
+                                }
+                            }
+                        }
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <form class="form-inline" method="post" asp-action="Logout" asp-controller="User" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link">
+                                    Logout
+                                </button>
+                            </form>
                         </li>
+                    }
+                    else
+                    {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                           <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
                         </li>
-
-                          @if (User.Identity.IsAuthenticated)
-                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
-                                                <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AutomobileContract" asp-action="Index">Automobile</a>
-                        </li>
-                                                <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PropertyContract" asp-action="Index">Property</a>
-                        </li>
-<li class="nav-item">
-    <a class="nav-link text-dark" asp-controller="AutomobileContract" asp-action="Create">Add Automobile</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link text-dark" asp-controller="PropertyContract" asp-action="Create">Add Property</a>
-</li>
- <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Complaints" asp-action="Index">View Complaints</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Complaints" asp-action="Submit">Submit Complaint</a>
-    </li>
-        <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Complaints" asp-action="Admin">Manage Complaints</a>
-    </li>
-<li class="nav-item">
-    <a class="nav-link" asp-controller="Complaints" asp-action="MyComplaints">My Complaints</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link text-dark" asp-controller="Chat" asp-action="Index">Chat Rooms</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link text-dark" asp-controller="Chat" asp-action="AdminChatRoom">Chat with Admin</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link text-dark" asp-controller="User" asp-action="Profile">Profile</a>
-</li>
-
-
-                        }
-
-                           </li>
-
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item"> 
-                                
-
-
-      <form class="form-inline" method="post" asp-action="Logout" asp-controller="User" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="nav-link btn btn-link ">
-                        Logout
-                    </button>
-                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
                         </li>
-                        }
-                            
-                        
-                    </ul>
-                </div>
+                    }
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
+
     <div>
         <main role="main" class=" my-0 py-0">
             @RenderBody()
         </main>
     </div>
 
-    <footer class=" border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - ClientAstree - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/js/core/jquery.min.js" type="text/javascript"asp-append-version="true"></script>
 <script src="~/js/core/popper.min.js" type="text/javascript"asp-append-version="true"></script>
 <script src="~/js/core/bootstrap.min.js" type="text/javascript"asp-append-version="true"></script>

@@ -1,220 +1,343 @@
 @model ClientAstree.Models.UserVM
 
-<div class="">
-    <div class="page-header page-header-small">
-        <div class="page-header-image" data-parallax="true" style="background-image:url('/img/fam1.png');">
+<div class="container-fluid">
+    <div class="row">
+        <!-- Side Menu on the left -->
+        <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
+            @Html.Partial("_SideMenu")
         </div>
-        <div class="container mt-3">
-            <h2 class="text-white">User Profile</h2>
-            <div class="container overflow-auto" style="max-height: 50vh; padding-bottom: 0; margin-bottom: 0;">
-                <div class="user-info">
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-envelope"></i> Email:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.Email</p>
+
+        <!-- Main Content Area -->
+        <div class="col-lg-10 col-md-9 col-sm-8 py-0 my-0 px-0 mx-0">
+            <div class="page-header page-header-small">
+                <div class="page-header-image" data-parallax="true" style="background-image:url('/img/fam1.png');">
+                </div>
+                <div class="container mt-3">
+                    <h2 class="text-white">User Profile</h2>
+                    <div class="container overflow-auto" style="max-height: 50vh; padding-bottom: 0; margin-bottom: 0;">
+                        <div class="user-info">
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-envelope"></i> Email:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.Email</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person"></i> First Name:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.FirstName</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person-fill"></i> Last Name:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.LastName</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-telephone"></i> Phone Number:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.PhoneNumber</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-card-text"></i> CIN:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.CIN</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-calendar3"></i> Birth Date:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.BirthDate</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-globe"></i> Nationality:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.Nationality</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-gender-ambiguous"></i> Gender:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.Gender</p>
+                                </div>
+                            </div>
+                            <div class="row mb-5 pb-5">
+                                <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person-lines-fill"></i> Civility:</label>
+                                <div class="col-sm-12 col-md-9">
+                                    <p class="form-control-plaintext text-white">@Model.Civility</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person"></i> First Name:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.FirstName</p>
+                </div>
+            </div>
+
+            <div class="section mb-5 pb-5">
+                <div class="container text-center mb-5 pb-5">
+                    <div class="button-container">
+                        <button type="button" class="btn btn-primary btn-round btn-lg" data-toggle="modal" data-target="#editProfileModal">Update Profile</button>
+                    </div>
+
+                    <!-- Cards container with flexbox for centering -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <div class="row">
+                            <!-- Automobile Contracts Card -->
+                            <div class="card" style="width: 20rem; margin-right: 10px;">
+                                <img class="card-img-top" src="/img/contract/auto/personalCar.png" alt="Automobile Contracts">
+                                <div class="card-body">
+                                    <h5 class="card-title">Automobile Contracts</h5>
+                                    <p class="card-text">You currently have <strong class="text-danger">@ViewBag.AutomobileContractCount</strong> automobile contracts.</p>
+                                    <a href="/AutomobileContract/MyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
+                                </div>
+                            </div>
+
+                            <!-- Property Contracts Card -->
+                            <div class="card" style="width: 20rem;">
+                                <img class="card-img-top" src="/img/contract/property/house.png" alt="Property Contracts">
+                                <div class="card-body">
+                                    <h5 class="card-title">Property Contracts</h5>
+                                    <p class="card-text">You currently have <strong class="text-danger">@ViewBag.PropertyContractCount</strong> property contracts.</p>
+                                    <a href="/PropertyContract/MyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person-fill"></i> Last Name:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.LastName</p>
+                </div>
+            </div>
+
+            <!-- Edit Profile Modal -->
+            <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-telephone"></i> Phone Number:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.PhoneNumber</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-card-text"></i> CIN:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.CIN</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-calendar3"></i> Birth Date:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.BirthDate</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-globe"></i> Nationality:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.Nationality</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-gender-ambiguous"></i> Gender:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.Gender</p>
-                        </div>
-                    </div>
-                    <div class="row mb-5 pb-5">
-                        <label class="col-sm-12 col-md-3 col-form-label text-md-start"><i class="bi bi-person-lines-fill"></i> Civility:</label>
-                        <div class="col-sm-12 col-md-9">
-                            <p class="form-control-plaintext text-white">@Model.Civility</p>
+                        <div class="modal-body">
+                            <form id="editProfileForm" method="post">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="@Model.Email">
+                                </div>
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" value="@Model.FirstName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName" value="@Model.LastName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="@Model.PhoneNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label>CIN</label>
+                                    <input type="text" class="form-control" id="cin" name="cin" value="@Model.CIN">
+                                </div>
+                                <div class="form-group">
+                                    <label>Birth Date</label>
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nationality</label>
+                                    <input type="text" class="form-control" id="nationality" name="nationality" value="@Model.Nationality">
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select class="form-control" id="gender" name="gender">
+                                        <option value="">Select Gender</option>
+                                        @foreach (var option in ViewBag.GenderOptions)
+                                        {
+                                            if (Model.Gender == option.Value)
+                                            {
+                                                <option value="@option.Value" selected>@option.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@option.Value">@option.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Civility</label>
+                                    <select class="form-control" id="civility" name="civility">
+                                        <option value="">Select Civility</option>
+                                        @foreach (var option in ViewBag.CivilityOptions)
+                                        {
+                                            if (Model.Civility == option.Value)
+                                            {
+                                                <option value="@option.Value" selected>@option.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@option.Value">@option.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="section mb-5 pb-5">
-        <div class="container text-center mb-5 pb-5">
-            <div class="button-container">
-                <button type="button" class="btn btn-primary btn-round btn-lg" data-toggle="modal" data-target="#editProfileModal">Update Profile</button>
-            </div>
-
-            <!-- Cards container with flexbox for centering -->
-            <div class="d-flex justify-content-center mt-4">
+    <footer class="footer footer-big" data-background-color="black">
+            <div class="container">
+              <div class="content">
                 <div class="row">
-                    <!-- Automobile Contracts Card -->
-                    <div class="card" style="width: 20rem; margin-right: 10px;">
-                        <img class="card-img-top" src="/img/contract/auto/personalCar.png" alt="Automobile Contracts">
-                        <div class="card-body">
-                            <h5 class="card-title">Automobile Contracts</h5>
-                            <p class="card-text">You currently have <strong class="text-danger">@ViewBag.AutomobileContractCount</strong> automobile contracts.</p>
-                            <a href="/AutomobileContract/MyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
-                        </div>
-                    </div>
+                  <div class="col-md-4">
+           
+                    <div class="social-feed">
+                                            <div class="feed-line">
+                        <img src="/img/logo-white.png" alt="">
+                      </div>
+                               <br>
+                      <div class="feed-line">
+                    
+                        <p>Vous voulez fractionner le paiement de votre prime d’assurance Auto chez ASTREE sur une année et sans intérêts ?
+Oui c’est possible...</p>
+                      </div>
+                      <div class="feed-line">
+                     
+<p>En savoir plus</p>                      </div>
 
-                    <!-- Property Contracts Card -->
-                    <div class="card" style="width: 20rem;">
-                        <img class="card-img-top" src="/img/contract/property/house.png" alt="Property Contracts">
-                        <div class="card-body">
-                            <h5 class="card-title">Property Contracts</h5>
-                            <p class="card-text">You currently have <strong class="text-danger">@ViewBag.PropertyContractCount</strong> property contracts.</p>
-                            <a href="/PropertyContract/MyContract" class="btn btn-primary btn-round btn-lg">View Details</a>
-                        </div>
                     </div>
+                  </div>
+                  <div class="col-md-2">
+                    <h5>Côté Pratique</h5>
+                    <ul class="links-vertical">
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/remplir-un-constat/" class="text-muted">
+                          Remplir un constat ?
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/foires-aux-questions/" class="text-muted">
+                          Foires aux Questions 
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/glossaire/" class="text-muted">
+                          Glossaire
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.astree.com.tn/taches-courantes/liens-utiles/" class="text-muted">
+                          Liens utiles
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-2">
+                    <h5>Siège Social</h5>
+                    <ul class="links-vertical">
+                      <li>
+                        <a href="#pablo" class="text-muted">
+                          45, Avenue Kheireddine Pacha,
+B.P. 780 TUNIS Cedex
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="text-muted">
+                         (+216) 71 90 42 11
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="text-muted">
+                          courrier@astree.com.tn
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <ul class="social-buttons">
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-twitter btn-round">
+                          <i class="fab fa-twitter"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-facebook btn-round">
+                          <i class="fab fa-facebook-square"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-dribbble btn-round">
+                          <i class="fab fa-dribbble"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-google btn-round">
+                          <i class="fab fa-google-plus"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#pablo" class="btn btn-icon btn-neutral btn-instagram btn-round">
+                          <i class="fab fa-instagram"></i>
+                        </a>
+                      </li>
+                    </ul>
+                    <h5>
+                      <small>Numbers Don't Lie</small>
+                    </h5>
+                    <h5>14.521
+                      <small class="text-muted">Freelancers</small>
+                    </h5>
+                    <h5>1.423.183
+                      <small class="text-muted">Transactions</small>
+                    </h5>
+                  </div>
                 </div>
+              </div>
+              <hr>
+              <div class="copyright">
+                Copyright ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script>2024 Creative Tim All Rights Reserved.
+              </div>
             </div>
-        </div>
-    </div>
-</div>
+          </footer>
 
-<!-- Edit Profile Modal -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editProfileForm" method="post">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="@Model.Email">
-                    </div>
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" value="@Model.FirstName">
-                    </div>
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" value="@Model.LastName">
-                    </div>
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value="@Model.PhoneNumber">
-                    </div>
-                    <div class="form-group">
-                        <label>CIN</label>
-                        <input type="text" class="form-control" id="cin" name="cin" value="@Model.CIN">
-                    </div>
-                    <div class="form-group">
-                        <label>Birth Date</label>
-                        <input type="date" class="form-control" id="birthDate" name="birthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group">
-                        <label>Nationality</label>
-                        <input type="text" class="form-control" id="nationality" name="nationality" value="@Model.Nationality">
-                    </div>
-                    <div class="form-group">
-                        <label>Gender</label>
-                        <select class="form-control" id="gender" name="gender">
-                            <option value="">Select Gender</option>
-                            @foreach (var option in ViewBag.GenderOptions)
-                            {
-                                if (Model.Gender == option.Value)
-                                {
-                                    <option value="@option.Value" selected>@option.Text</option>
-                                }
-                                else
-                                {
-                                    <option value="@option.Value">@option.Text</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Civility</label>
-                        <select class="form-control" id="civility" name="civility">
-                            <option value="">Select Civility</option>
-                            @foreach (var option in ViewBag.CivilityOptions)
-                            {
-                                if (Model.Civility == option.Value)
-                                {
-                                    <option value="@option.Value" selected>@option.Text</option>
-                                }
-                                else
-                                {
-                                    <option value="@option.Value">@option.Text</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
-$(document).ready(function() {
-    $('#editProfileForm').submit(function(e) {
-        e.preventDefault(); 
+    $(document).ready(function() {
+        $('#editProfileForm').submit(function(e) {
+            e.preventDefault(); 
 
-        var formData = $(this).serialize(); 
+            var formData = $(this).serialize(); 
 
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("UpdateProfile", "User")',
-            data: formData,
-            success: function(response) {
-                $('#editProfileModal').modal('hide');
-                window.location.reload(true); 
-            },
-            error: function() {
-                alert('Error updating profile.');
-            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateProfile", "User")',
+                data: formData,
+                success: function(response) {
+                    $('#editProfileModal').modal('hide');
+                    window.location.reload(true); 
+                },
+                error: function() {
+                    alert('Error updating profile.');
+                }
+            });
         });
     });
-});
 </script>
-
-<!-- Footer Section -->
-<footer class="footer">
-    <div class="container text-center">
-        <!-- Add your footer content here -->
-        <p>Footer content goes here.</p>
-    </div>
-</footer>
 
 <!-- Custom CSS -->
 <style>

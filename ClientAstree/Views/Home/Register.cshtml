@@ -29,118 +29,119 @@
                                 <span class="connector"></span>
                                 <img src="/img/register/p3.png" alt="Step 3" class="step-img" data-step="3">
                             </div>
-                                <form id="registrationForm" asp-action="Register" asp-controller="Home" method="post">
-                                    <!-- Step 1: Email and Password -->
-                                    <div class="form-section">
-                                        <div class="form-row">
-                                            <div class="form-group">
-                                                <label for="inputEmail" class="text-black">Email</label>
-                                                <input type="email" class="form-control" id="inputEmail" name="Email" placeholder="Email" required>
-                                                @if (ViewBag.EmailError != null)
+                            <form id="registrationForm" asp-action="Register" asp-controller="Home" method="post">
+                                <!-- Step 1: Email and Password -->
+                                <div class="form-section">
+                                    <div id="error-container" class="alert alert-danger" style="display:none;"></div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="inputEmail" class="text-black">Email</label>
+                                            <input type="email" class="form-control" id="inputEmail" name="Email" placeholder="Email" required>
+                                            @if (ViewBag.EmailError != null)
+                                            {
+                                                <span class="text-danger">@ViewBag.EmailError</span>
+                                            }
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputPassword" class="text-black">Password</label>
+                                            <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password" required>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="next-btn btn btn-primary">Next</button>
+                                </div>
+                                <!-- Step 2: First Name, Last Name, CIN, Phone Number -->
+                                <div class="form-section" style="display:none">
+                                    <div class="form-group">
+                                        <label for="inputFirstName" class="text-black">First Name</label>
+                                        <input type="text" class="form-control" id="inputFirstName" name="FirstName" placeholder="First Name..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputLastName" class="text-black">Last Name</label>
+                                        <input type="text" class="form-control" id="inputLastName" name="LastName" placeholder="Last Name..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputCIN" class="text-black">CIN</label>
+                                        <input type="text" class="form-control" id="inputCIN" name="Cin" placeholder="CIN..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPhoneNumber" class="text-black">Phone Number</label>
+                                        <input type="tel" class="form-control" id="inputPhoneNumber" name="PhoneNumber" placeholder="Your Phone Number..." required>
+                                    </div>
+                                    <button type="button" class="next-btn btn btn-primary">Next</button>
+                                </div>
+                                <!-- Step 3: Birth Date, Nationality, Civility, and Gender -->
+                                <div class="form-section" style="display:none">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="inputBirthDate" class="text-black">Birth Date</label>
+                                            <input type="date" class="form-control" id="inputBirthDate" name="BirthDate" placeholder="Birth Date..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputNationality" class="text-black">State</label>
+                                            <select id="inputNationality" class="form-control" name="Nationality" required>
+                                                <option value="">Select State...</option>
+                                                <option value="Ariana">Ariana</option>
+                                                <option value="Beja">Beja</option>
+                                                <option value="Ben Arous">Ben Arous</option>
+                                                <option value="Bizerte">Bizerte</option>
+                                                <option value="Gabes">Gabes</option>
+                                                <option value="Gafsa">Gafsa</option>
+                                                <option value="Jendouba">Jendouba</option>
+                                                <option value="Kairouan">Kairouan</option>
+                                                <option value="Kasserine">Kasserine</option>
+                                                <option value="Kebili">Kebili</option>
+                                                <option value="Kef">Kef</option>
+                                                <option value="Mahdia">Mahdia</option>
+                                                <option value="Manouba">Manouba</option>
+                                                <option value="Medenine">Medenine</option>
+                                                <option value="Monastir">Monastir</option>
+                                                <option value="Nabeul">Nabeul</option>
+                                                <option value="Sfax">Sfax</option>
+                                                <option value="Sidi Bouzid">Sidi Bouzid</option>
+                                                <option value="Siliana">Siliana</option>
+                                                <option value="Sousse">Sousse</option>
+                                                <option value="Tataouine">Tataouine</option>
+                                                <option value="Tozeur">Tozeur</option>
+                                                <option value="Tunis">Tunis (Capital)</option>
+                                                <option value="Zaghouan">Zaghouan</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputAddress" class="text-black">Address</label>
+                                            <input type="text" name="ConcatenatedNationality" class="form-control" id="inputAddress" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="inputCivility" class="text-black">Civility</label>
+                                            <select id="inputCivility" class="form-control" name="Civility" required>
+                                                <option value="">Select Civility...</option>
+                                                @if (ViewBag.CivilityOptions != null)
                                                 {
-                                                    <span class="text-danger">@ViewBag.EmailError</span>
+                                                    foreach (var option in ViewBag.CivilityOptions)
+                                                    {
+                                                        <option value="@option.Value">@option.Text</option>
+                                                    }
                                                 }
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputPassword" class="text-black">Password</label>
-                                                <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password" required>
-                                            </div>
+                                            </select>
                                         </div>
-                                        <button type="button" class="next-btn btn btn-primary">Next</button>
-                                    </div>
-                                    <!-- Step 2: First Name, Last Name, CIN, Phone Number -->
-                                        <div class="form-section" style="display:none">
-                                            <div class="form-group">
-                                                <label for="inputFirstName" class="text-black">First Name</label>
-                                                <input type="text" class="form-control" id="inputFirstName" name="FirstName" placeholder="First Name..." required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputLastName" class="text-black">Last Name</label>
-                                                <input type="text" class="form-control" id="inputLastName" name="LastName" placeholder="Last Name..." required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputCIN" class="text-black">CIN</label>
-                                                <input type="text" class="form-control" id="inputCIN" name="Cin" placeholder="CIN..." required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputPhoneNumber" class="text-black">Phone Number</label>
-                                                <input type="tel" class="form-control" id="inputPhoneNumber" name="PhoneNumber" placeholder="Your Phone Number..." required>
-                                            </div>
-                                            <button type="button" class="next-btn btn btn-primary">Next</button>
-                                        </div>
-                                    <!-- Step 3: Birth Date, Nationality, Civility, and Gender -->
-                                    <div class="form-section" style="display:none">
-                                        <div class="form-row">
-                                            <div class="form-group">
-                                                <label for="inputBirthDate" class="text-black">Birth Date</label>
-                                                <input type="date" class="form-control" id="inputBirthDate" name="BirthDate" placeholder="Birth Date..." required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputNationality" class="text-black">State</label>
-                                                        <select id="inputNationality" class="form-control" name="Nationality" required>
-                                            <option value="">Select State...</option>
-                                            <option value="Ariana">Ariana</option>
-                                            <option value="Beja">Beja</option>
-                                            <option value="Ben Arous">Ben Arous</option>
-                                            <option value="Bizerte">Bizerte</option>
-                                            <option value="Gabes">Gabes</option>
-                                            <option value="Gafsa">Gafsa</option>
-                                            <option value="Jendouba">Jendouba</option>
-                                            <option value="Kairouan">Kairouan</option>
-                                            <option value="Kasserine">Kasserine</option>
-                                            <option value="Kebili">Kebili</option>
-                                            <option value="Kef">Kef</option>
-                                            <option value="Mahdia">Mahdia</option>
-                                            <option value="Manouba">Manouba</option>
-                                            <option value="Medenine">Medenine</option>
-                                            <option value="Monastir">Monastir</option>
-                                            <option value="Nabeul">Nabeul</option>
-                                            <option value="Sfax">Sfax</option>
-                                            <option value="Sidi Bouzid">Sidi Bouzid</option>
-                                            <option value="Siliana">Siliana</option>
-                                            <option value="Sousse">Sousse</option>
-                                            <option value="Tataouine">Tataouine</option>
-                                            <option value="Tozeur">Tozeur</option>
-                                            <option value="Tunis">Tunis (Capital)</option>
-                                            <option value="Zaghouan">Zaghouan</option>
-                                        </select>
-                                             </div>
-                                            <div class="form-group">
-                                                <label for="inputAddress" class="text-black">Address</label>
-                                                <input type="text" name="ConcatenatedNationality" class="form-control" id="inputAddress" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group">
-                                                <label for="inputCivility" class="text-black">Civility</label>
-                                                <select id="inputCivility" class="form-control" name="Civility" required>
-                                                    <option value="">Select Civility...</option>
-                                                    @if (ViewBag.CivilityOptions != null)
+                                        <div class="form-group">
+                                            <label for="inputGender" class="text-black">Gender</label>
+                                            <select id="inputGender" class="form-control" name="Gender" required>
+                                                <option value="">Select Gender...</option>
+                                                @if (ViewBag.GenderOptions != null)
+                                                {
+                                                    foreach (var option in ViewBag.GenderOptions)
                                                     {
-                                                        foreach (var option in ViewBag.CivilityOptions)
-                                                        {
-                                                            <option value="@option.Value">@option.Text</option>
-                                                        }
+                                                        <option value="@option.Value">@option.Text</option>
                                                     }
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputGender" class="text-black">Gender</label>
-                                                <select id="inputGender" class="form-control" name="Gender" required>
-                                                    <option value="">Select Gender...</option>
-                                                    @if (ViewBag.GenderOptions != null)
-                                                    {
-                                                        foreach (var option in ViewBag.GenderOptions)
-                                                        {
-                                                            <option value="@option.Value">@option.Text</option>
-                                                        }
-                                                    }
-                                                </select>
-                                            </div>
+                                                }
+                                            </select>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Register</button>
                                     </div>
-                                </form>
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -148,7 +149,6 @@
         </div>
     </div>
 </div>
-
 
 <style>
 .step-indicators {
@@ -174,8 +174,6 @@
     transition: filter 0.3s ease-in-out;
 }
 </style>
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -215,18 +213,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const email = document.getElementById('inputEmail').value;
             const password = document.getElementById('inputPassword').value;
             if (!validateEmail(email)) {
-                alert('Please enter a valid email address.');
+                displayError('Please enter a valid email address.');
                 isValid = false;
             }
             if (!password || password.length < 8) {
-                alert('Password must be at least 8 characters long.');
+                displayError('Password must be at least 8 characters long.');
                 isValid = false;
             }
         } else if (index === 1) {
             const firstName = document.getElementById('inputFirstName').value;
             const lastName = document.getElementById('inputLastName').value;
             if (!firstName || !lastName) {
-                alert('Please enter both first name and last name.');
+                displayError('Please enter both first name and last name.');
                 isValid = false;
             }
         }
@@ -235,9 +233,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validateEmail(email) {
-        // Regular expression for email validation
      const emailRegex = /\S+@@\S+\.\S+/;
          return emailRegex.test(email);
+    }
+
+    function displayError(message) {
+        const errorContainer = document.getElementById('error-container');
+        errorContainer.innerText = message;
+        errorContainer.style.display = 'block';
     }
 
     nextButtons.forEach(button => {
@@ -255,7 +258,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     showSection(0);
 });
-
-
 </script>
-

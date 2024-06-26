@@ -215,8 +215,8 @@ Console.WriteLine("try");
 
 public async Task<IActionResult> Dashboard()
 {
-    var automobileContracts = await _automobileService.GetMyAutomobileContractsAsync();
-    var propertyContracts = await _propertyService.GetMyPropertyContractsAsync();
+    var automobileContracts = await _automobileService.AutomobileAllAsync();
+    var propertyContracts = await _propertyService.PropertyAllAsync();
     var users = await _userService.GetUsersAsync();
     var complaints = await _complaintService.GetAllComplaintsAsync();
 
@@ -403,5 +403,20 @@ public async Task<IActionResult> Edit(UserUpdateDTO model)
 
     return RedirectToAction("Index");
 }
+
+        public IActionResult Agencies()
+        {
+            // Sample data for demonstration purposes
+            var agencies = new List<AgencyVM>
+            {
+                new AgencyVM { Id = 1, Name = "Astree Assurance Tunis", Address = "Ave Habib Bourguiba, Tunis", Latitude = 36.8065, Longitude = 10.1815 },
+                new AgencyVM { Id = 2, Name = "Astree Assurance Sfax", Address = "Ave Hedi Chaker, Sfax", Latitude = 34.7398, Longitude = 10.7603 },
+                new AgencyVM { Id = 3, Name = "Astree Assurance Sousse", Address = "Ave 14 Janvier, Sousse", Latitude = 35.8256, Longitude = 10.636 },
+                new AgencyVM { Id = 4, Name = "Astree Assurance Nabeul", Address = "Ave Habib Thameur, Nabeul", Latitude = 36.4561, Longitude = 10.7376 }
+            };
+
+            return View(agencies);
+        }
+
     }
 }

@@ -75,6 +75,7 @@
     text-decoration: underline;
 }
 </style>
+
 <div id="side-menu" class="sidebar side-menu" data-color="blue">
     <div class="logo user-info">
         @if (User.Identity.IsAuthenticated)
@@ -136,7 +137,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" asp-controller="User" asp-action="Agencies">
                                 <i class="fas fa-building"></i>
                                 <p>Agencies</p>
                             </a>
@@ -192,5 +193,3 @@
         </ul>
     </div>
 </div>
-
-

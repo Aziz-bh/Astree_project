@@ -1,5 +1,7 @@
+@model IEnumerable<ClientAstree.Models.AgencyVM>
+
 @{
-    ViewData["Title"] = "User Contracts";
+    ViewData["Title"] = "Insurance Agencies";
 }
 
 <style>
@@ -12,45 +14,76 @@
     }
 
     .content-container {
-        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
-        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8); /* Light gray for the content container */
+        padding: 30px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         margin: 20px auto;
     }
 
-    .card-pricing {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 20px;
+    .section-header {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-header i {
+        margin-right: 10px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+    }
+
+    .card-body {
         text-align: center;
-        margin: 20px auto;
-    }
-
-    .card-raised {
-        background-color: #1E3A7A;
-        color: white;
-    }
-
-    .btn-neutral {
-        background-color: white;
-        color: #1E3A7A;
-    }
-
-    .card-img {
-        width: 350px;
-        height: auto;
-        display: block;
-        margin: 0 auto 10px;
     }
 
     .breadcrumb {
         background-color: transparent;
     }
 
-    .card-container {
-        display: flex;
-        justify-content: center;
+    .pagination-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #4e6b8b; /* Use your primary color */
+        border-color: #4e6b8b;
+    }
+
+    .btn-primary {
+        background-color: #1E3A7A;
+        border-color: #1E3A7A;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        filter: brightness(95%);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-danger {
+        color: #dc3545; /* Bootstrap red */
     }
 </style>
 
@@ -58,56 +91,35 @@
     <div class="row">
         <!-- Side Menu on the left -->
         <div class="col-lg-2 col-md-3 col-sm-4 py-0 my-0 px-0 mx-0">
-            @Html.Partial("_SideMenu")
+            @await Html.PartialAsync("_SideMenu")
         </div>
 
         <!-- Main Content Area -->
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="content-container">
-                <div class="title text-center">
-                    <h2>User Contracts</h2>
-                    <h4 class="description">Select the type of contract you want to manage.</h4>
+                <div class="section-header">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h4>Insurance Agencies</h4>
                 </div>
-
-                <div class="row card-container">
-                    <div class="col-md-4">
-                        <div class="card card-pricing">
-                            <div class="card-body">
-                                <img class="card-img" src="/img/dashboard/cardash.png" alt="Car Logo">
-                                <h5 class="category text-primary">Automobile Contracts</h5>
-                                <ul>
-                                    <li class="text-primary">View contract details</li>
-                                    <li class="text-primary">Edit or delete contracts</li>
-                                </ul>
-                                <a href="/AutomobileContract/MyContract" class="btn btn-primary btn-round">
-                                    Manage Automobile Contracts
-                                </a>
+                <hr />
+                <div class="row">
+                    @foreach (var agency in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@agency.Name</h5>
+                                    <p class="card-text">@agency.Address</p>
+                                    <div id="map-@agency.Id" style="height: 200px;"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card card-pricing card-raised">
-                            <div class="card-body  text-white">
-                                <img class="card-img" src="/img/dashboard/houseDash.png" alt="House Logo">
-                                <h5 class="category text-white">Property Contracts</h5>
-                                <ul>
-                                    <li class="text-white">View contract details</li>
-                                    <li class="text-white">Edit or delete contracts</li>
-                                </ul>
-                                <a href="/PropertyContract/MyContract" class="btn btn-neutral btn-round text-primary">
-                                    Manage Property Contracts
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
     <footer class="footer footer-big" data-background-color="black">
             <div class="container">
               <div class="content">
@@ -227,3 +239,26 @@ B.P. 780 TUNIS Cedex
               </div>
             </div>
           </footer>
+          
+@section Scripts {
+    <script>
+        function initMap() {
+            @foreach (var agency in Model)
+            {
+                <text>
+                var mapOptions = {
+                    center: new google.maps.LatLng(@agency.Latitude, @agency.Longitude),
+                    zoom: 15
+                };
+                var map = new google.maps.Map(document.getElementById("map-@agency.Id"), mapOptions);
+                var marker = new google.maps.Marker({
+                    position: { lat: @agency.Latitude, lng: @agency.Longitude },
+                    map: map,
+                    title: "@agency.Name"
+                });
+                </text>
+            }
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBp8wU-bvqWRahwRqvqHG94siT1EtiSnhk&callback=initMap"></script>
+}
