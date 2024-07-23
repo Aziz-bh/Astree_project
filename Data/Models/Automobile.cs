@@ -54,6 +54,9 @@ namespace Data.Models
         [Required]
         public Guarantees Guarantees { get; set; }
 
+
+/////////////////////////////////:should be in the service not in the model class we need to make the model class only has the attribute of automobile////
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             // Include all validations from the base Contract class
