@@ -32,6 +32,9 @@ namespace API.Services
         public async Task<Automobile>
         CreateAutomobileAsync(Automobile automobile)
         {
+
+
+///////////////////VALIDATION/////////////////////        
             if (automobile == null)
             {
                 throw new ArgumentNullException(nameof(automobile));
@@ -50,7 +53,7 @@ namespace API.Services
             {
                 throw new ArgumentException("EndDate must be after StartDate.");
             }
-
+//////////////////////////////////////////
             // Calculate and set the quota before adding the automobile to the context
             automobile = CalculateAndSetQuota(automobile);
 
